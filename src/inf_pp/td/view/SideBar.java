@@ -2,6 +2,7 @@ package inf_pp.td.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -17,22 +18,48 @@ public class SideBar extends JPanel {
 	private static final long serialVersionUID = -2976601330037398908L;
 
 	public SideBar() {
-		this.setBackground(new Color(0xFF0000));
+		this.setBackground(new Color(0xCCCCCC));
 		this.setPreferredSize(new Dimension(160,0));
 		this.setMinimumSize(new Dimension(160,0));
 		BoxLayout layout = new BoxLayout(this,BoxLayout.Y_AXIS);
 		this.setLayout(layout);
 		JPanel twrPane=new JPanel();
-		twrPane.add(new JButton("SingleTargetTower"));
-		twrPane.add(new JButton("AoeTower"));
-		twrPane.add(new JButton("Slow-Tower"));
+		twrPane.setLayout(new GridLayout(2,2,4,4));
+		twrPane.add(new JButton("DD"));
+		twrPane.add(new JButton("AE"));
+		twrPane.add(new JButton("SL"));
+		twrPane.add(new JButton("P"));
+		twrPane.setPreferredSize(new Dimension(160,160));
+		twrPane.setMaximumSize(new Dimension(160,160));
 		this.add(twrPane);
 		
-		this.add(new JLabel("Gold:"));
-		this.add(new JLabel("Leben:"));
-		this.add(new JLabel("Welle:"));
-		Box box=Box.createVerticalBox();
+		this.add(Box.createVerticalGlue());
 		
-		//layout.
+		JPanel uPane=new JPanel();
+		uPane.setLayout(new GridLayout(2,2,4,4));
+		uPane.add(new JButton("Damage"));
+		uPane.add(new JButton("Range"));
+		uPane.add(new JButton("Firerate"));
+		uPane.add(new JButton("?"));
+		uPane.setPreferredSize(new Dimension(160,160));
+		uPane.setMaximumSize(new Dimension(160,160));
+		this.add(uPane);
+		
+		this.add(Box.createVerticalGlue());
+		
+		JPanel iPane=new JPanel();
+		//iPane.setBackground(new Color(0x0000FF));
+		iPane.setOpaque(false);
+		iPane.setLayout(new GridLayout(0,1));
+		iPane.setPreferredSize(new Dimension(160,80));
+		iPane.setMinimumSize(new Dimension(160,80));
+		iPane.setMaximumSize(new Dimension(160,80));
+		JLabel p=new JLabel("Gold:");
+		iPane.add(p);
+		p=new JLabel("Lives:");
+		iPane.add(p);
+		p=new JLabel("Wave:");
+		iPane.add(p);
+		this.add(iPane);
 	}
 }
