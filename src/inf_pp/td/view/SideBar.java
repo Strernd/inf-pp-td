@@ -1,8 +1,10 @@
 package inf_pp.td.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -61,5 +63,30 @@ public class SideBar extends JPanel {
 		p=new JLabel("Wave:");
 		iPane.add(p);
 		this.add(iPane);
+	}
+	
+	/**
+	 * hacky method to bind a listener to all buttons in the sidebar
+	 * @param l the listener to use
+	 */
+	void addActionListener(ActionListener l) {
+		synchronized(this.getTreeLock()) {
+			for(Component c: this.getComponents())
+			{
+				//TODO: make better
+				if(c instanceof JButton) {
+					((JButton)c).addActionListener(l);
+				}
+				else if(c instanceof JPanel) {
+					synchronized(c.getTreeLock()) {
+						for(Component d: ((JPanel)c).getComponents()) {
+							if(d instanceof JButton) {
+								((JButton)d).addActionListener(l);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }

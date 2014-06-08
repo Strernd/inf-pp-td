@@ -1,16 +1,32 @@
 package inf_pp.td.model;
 
+import inf_pp.td.intercom.PlayAreaWayHolder;
+
 import java.awt.Point;
 import java.util.ArrayList;
 
-public class PlayArea {
+public class PlayArea implements PlayAreaWayHolder{
+	
+	/**
+	 * the number of columns this playing field has
+	 */
 	private int width;
+	
+	/**
+	 * the number of rows this playing field has
+	 */
 	private int height;
+	
+	/**
+	 * a list of all waypoints that creeps will walk
+	 */
 	private ArrayList<Point> waypoints;
 	
-	public PlayArea() {
-		width=7;
-		height=10;
+	public PlayArea(int width, int height) {
+		this.width=width;
+		this.height=height;
+		
+		//TODO: remove tehse, load from somewhere (c)
 		waypoints=new ArrayList<Point>();
 		waypoints.add(new Point(2,0));
 		waypoints.add(new Point(2,1));

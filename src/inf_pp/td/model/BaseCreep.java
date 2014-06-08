@@ -11,6 +11,9 @@ public class BaseCreep {
 	private int health;
 	private float moveSpeed;
 	
+	/**
+	 * moves the creep by its speed
+	 */
 	public void move(){
 	}
 }
