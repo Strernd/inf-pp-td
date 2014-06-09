@@ -27,6 +27,7 @@ public class Main {
 		//ctrl.setTickrate(64);
 		//ctrl.start();
 		
+		//TODO: better jitter performance
 		while(true){
 			try {
 				Thread.sleep(20);

@@ -33,7 +33,9 @@ public class Game extends java.util.Observable{
 	 * if the game is running
 	 */
 	private boolean running;
-	private CreepWaveSpawner spawner;
+	
+	//TODO: add parameter?
+	private CreepWaveSpawner spawner = new CreepWaveSpawner();
 	
 	/**
 	 * the amount of gold that the player currently has
@@ -45,15 +47,22 @@ public class Game extends java.util.Observable{
 	private int lives;
 	
 	public Game() {
+		
 		field=new PlayArea(10,10);
 		towers=new LinkedList<BaseTower>();
+		spawner.setWaypoints(field.getWaypoints());
 	}
+	
 	
 	/**
 	 * the game's "tick"-method, call once each tick to
 	 * let the model do all its stuff and notify the view about changes
+	 * @param time the time in ms that have passed since the beginning of the game
 	 */
-	public void tick(){
+	public void tick(long time){
+		//TODO: implement this shit
+		//spawner.spawn
+		//creeps.addAll(spawner.spawnCreeps(time));
 		this.setChanged();
 		this.notifyObservers();
 	}

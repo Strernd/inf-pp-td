@@ -36,6 +36,13 @@ public class PlayArea implements PlayAreaWayHolder{
 		waypoints.add(new Point(5,2));
 		waypoints.add(new Point(6,2));
 		waypoints.add(new Point(7,2));
+		waypoints.add(new Point(7,3));
+		waypoints.add(new Point(7,4));
+		waypoints.add(new Point(7,5));
+		waypoints.add(new Point(7,6));
+		waypoints.add(new Point(7,7));
+		waypoints.add(new Point(7,8));
+		waypoints.add(new Point(7,9));
 	}
 
 	public ArrayList<Point> getWaypoints() {

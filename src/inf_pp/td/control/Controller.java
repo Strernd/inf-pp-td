@@ -50,11 +50,16 @@ public class Controller implements ListenerContainer {
 		this.game=game;
 	}
 	
+	
+	private long time=System.currentTimeMillis();
+	public void setStartingTime() {
+		this.time=System.currentTimeMillis();
+	}
 	/**
 	 * call this once each tick
 	 */
 	public void tick(){
-		game.tick();
+		game.tick(System.currentTimeMillis()-this.time);
 	}
 	
 

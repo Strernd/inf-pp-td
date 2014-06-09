@@ -52,6 +52,7 @@ public class PlayArea extends JPanel {
 	 * @param game the Model to get all data from
 	 */
 	void updateState(Game game){
+		//TODO: improve painting
 		//fields[(int)(Math.random()*height)][(int)(Math.random()*width)].setBackground(new Color((int)(Math.random()*255)));
 		for(int y=0;y<height;++y) {
 			for(int x=0;x<width;++x) {
