@@ -27,7 +27,7 @@ public class Game extends java.util.Observable{
 	/**
 	 * a list of all creeps in the game
 	 */
-	private LinkedList<BaseCreep> creeps;
+	private LinkedList<BaseCreep> creeps=new LinkedList<BaseCreep>();
 	
 	/**
 	 * if the game is running
@@ -54,6 +54,7 @@ public class Game extends java.util.Observable{
 	}
 	
 	
+	private long lastTime=System.currentTimeMillis();
 	/**
 	 * the game's "tick"-method, call once each tick to
 	 * let the model do all its stuff and notify the view about changes
@@ -62,9 +63,14 @@ public class Game extends java.util.Observable{
 	public void tick(long time){
 		//TODO: implement this shit
 		//spawner.spawn
-		//creeps.addAll(spawner.spawnCreeps(time));
+		for(BaseCreep c : creeps){
+			if(c.move(time-lastTime))
+				creeps.remove(c);
+		}
+		creeps.addAll(spawner.spawnCreeps(time));
 		this.setChanged();
 		this.notifyObservers();
+		lastTime=time;
 	}
 
 

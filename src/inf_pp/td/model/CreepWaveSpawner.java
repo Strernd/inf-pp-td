@@ -12,11 +12,15 @@ public class CreepWaveSpawner {
 		this.waypoints=waypoints;
 	}
 	
+	private int cNum=0;
 	public Collection<BaseCreep> spawnCreeps(long time){
 		LinkedList<BaseCreep> result=new LinkedList<BaseCreep>();
 		//TODO: differentiate...
-		BaseCreep c=new BaseCreep(waypoints);
-		result.add(c);
+		if(cNum==0){
+			BaseCreep c=new BaseCreep(waypoints);
+			result.add(c);
+			cNum++;
+		}
 		return result;
 	}
 }
