@@ -3,10 +3,10 @@ package inf_pp.td.model;
 import java.awt.Point;
 
 public class BaseTower {
-	private Point position;
-	private int cooldown;
-	private float range;
-	private int fireRate;
+	protected Point position;
+	protected int cooldown;
+	protected float range;
+	protected int fireRate;
 	
 	
 	/**
@@ -21,8 +21,8 @@ public class BaseTower {
 	/**
 	 * fires (a projectile), does damage
 	 */
-	public void fire(){
-		
+	public void fire(Game game){
+		System.out.println(range);
 	}
 	
 	/**

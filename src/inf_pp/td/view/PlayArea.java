@@ -12,6 +12,7 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import javax.swing.JPanel;
@@ -25,8 +26,8 @@ public class PlayArea extends JPanel {
 	
 	//TODO: put into interfaces?
 	private ArrayList<Point> waypoints;
-	private LinkedList<BaseTower> towers;
-	private LinkedList<BaseCreep> creeps;
+	private HashSet<BaseTower> towers;
+	private HashSet<BaseCreep> creeps;
 	
 	/**
 	 * the dimensions of the playing grid, how many rows and columns

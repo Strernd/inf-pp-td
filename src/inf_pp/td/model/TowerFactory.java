@@ -24,7 +24,7 @@ public final class TowerFactory {
 		//TODO: implement different towers
 		switch(type){
 		default:
-			t=new BaseTower();
+			t=new ProjectileTower();
 			break;
 		}
 		t.setPosition(position);

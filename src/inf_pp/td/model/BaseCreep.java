@@ -1,5 +1,7 @@
 package inf_pp.td.model;
 
+import inf_pp.td.Util;
+
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -21,16 +23,16 @@ public class BaseCreep {
 		this.nextWp=1;
 		Point tP=waypoints.get(0);
 		this.position=new Point2D.Float(tP.x,tP.y);
-		System.out.println(position);
 	}
 	
 	/**
 	 * moves the creep by its speed
 	 */
 	public boolean move(long deltaT) {
-		Point2D.Float next=new Point2D.Float(waypoints.get(nextWp).x,waypoints.get(nextWp).y);
+		nextWp+=Util.moveI(moveSpeed*deltaT,position,waypoints.subList(nextWp, waypoints.size()));
+		return nextWp>=waypoints.size();
+		/*Point2D.Float next=new Point2D.Float(waypoints.get(nextWp).x,waypoints.get(nextWp).y);
 		double dist=next.distance(position);
-		//double dist=Math.sqrt((next.x-position.x)*(next.x-position.x)+(next.y-position.y)*(next.y-position.y));
 		if(dist<=moveSpeed*deltaT){
 			position.x=waypoints.get(nextWp).x;
 			position.y=waypoints.get(nextWp).y;
@@ -39,7 +41,6 @@ public class BaseCreep {
 				return true;
 		}
 		else{
-			//TODO: move to util class
 			next.x-=position.x;
 			next.y-=position.y;
 			next.x/=dist;
@@ -49,7 +50,7 @@ public class BaseCreep {
 			position.x+=next.x;
 			position.y+=next.y;
 		}
-		return false;
+		return false;*/
 	}
 	
 	public Point2D.Float getPosition(){

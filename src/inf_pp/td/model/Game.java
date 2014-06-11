@@ -3,6 +3,7 @@ package inf_pp.td.model;
 import inf_pp.td.intercom.PlayAreaWayHolder;
 
 import java.awt.Point;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -18,17 +19,17 @@ public class Game extends java.util.Observable{
 	/**
 	 * a list of all towers in the game
 	 */
-	private LinkedList<BaseTower> towers;
+	private HashSet<BaseTower> towers=new HashSet<BaseTower>();
 	
 	/**
 	 * a list of all projectiles in the game
 	 */
-	private LinkedList<BaseProjectile> projectiles;
+	private HashSet<BaseProjectile> projectiles=new HashSet<BaseProjectile>();
 	
 	/**
 	 * a list of all creeps in the game
 	 */
-	private LinkedList<BaseCreep> creeps=new LinkedList<BaseCreep>();
+	private HashSet<BaseCreep> creeps=new HashSet<BaseCreep>();
 	
 	/**
 	 * if the game is running
@@ -50,7 +51,6 @@ public class Game extends java.util.Observable{
 	public Game() {
 		
 		field=new PlayArea(10,10);
-		towers=new LinkedList<BaseTower>();
 		spawner.setWaypoints(field.getWaypoints());
 	}
 	
@@ -73,6 +73,14 @@ public class Game extends java.util.Observable{
 			if(it.next().move(deltaT))
 				it.remove();
 		}
+		for(BaseTower t: towers){
+			t.fire(this);
+		}
+		for(Iterator<BaseProjectile> it=projectiles.iterator();it.hasNext();){
+			if(it.next().move(deltaT)){
+				it.remove();
+			}
+		}
 		creeps.addAll(spawner.spawnCreeps(time));
 		this.setChanged();
 		this.notifyObservers();
@@ -91,13 +99,13 @@ public class Game extends java.util.Observable{
 	/**
 	 * @return get a list of all towers in this game
 	 */
-	public LinkedList<BaseTower> getTowers() {
+	public HashSet<BaseTower> getTowers() {
 		return towers;
 	}
 	/**
 	 * @return get a list of all towers in this game
 	 */
-	public LinkedList<BaseCreep> getCreeps() {
+	public HashSet<BaseCreep> getCreeps() {
 		return creeps;
 	}
 	
@@ -111,6 +119,10 @@ public class Game extends java.util.Observable{
 			throw new ArrayIndexOutOfBoundsException();
 		//TODO: prevent from building multiple towers on same position
 		towers.add(TowerFactory.buildTower(type, new Point(position)));
+	}
+	
+	void addProjectile(BaseProjectile p){
+		projectiles.add(p);
 	}
 	
 }
