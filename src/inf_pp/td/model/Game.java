@@ -3,6 +3,7 @@ package inf_pp.td.model;
 import inf_pp.td.intercom.PlayAreaWayHolder;
 
 import java.awt.Point;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Game extends java.util.Observable{
@@ -63,9 +64,14 @@ public class Game extends java.util.Observable{
 	public void tick(long time){
 		//TODO: implement this shit
 		//spawner.spawn
-		for(BaseCreep c : creeps){
+		/*for(BaseCreep c : creeps){
 			if(c.move(time-lastTime))
 				creeps.remove(c);
+		}*/
+		long deltaT=time-lastTime;
+		for(Iterator<BaseCreep> it=creeps.iterator();it.hasNext();){
+			if(it.next().move(deltaT))
+				it.remove();
 		}
 		creeps.addAll(spawner.spawnCreeps(time));
 		this.setChanged();
@@ -87,6 +93,12 @@ public class Game extends java.util.Observable{
 	 */
 	public LinkedList<BaseTower> getTowers() {
 		return towers;
+	}
+	/**
+	 * @return get a list of all towers in this game
+	 */
+	public LinkedList<BaseCreep> getCreeps() {
+		return creeps;
 	}
 	
 	/**

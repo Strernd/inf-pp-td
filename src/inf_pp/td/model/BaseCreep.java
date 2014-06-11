@@ -29,19 +29,14 @@ public class BaseCreep {
 	 */
 	public boolean move(long deltaT) {
 		Point2D.Float next=new Point2D.Float(waypoints.get(nextWp).x,waypoints.get(nextWp).y);
-		//double dist=next.distance(position);
-		double dist=Math.sqrt((next.x-position.x)*(next.x-position.x)+(next.y-position.y)*(next.y-position.y));
-		System.out.println(next);
-		System.out.println(position);
-		System.out.println(dist);
-		//return;
+		double dist=next.distance(position);
+		//double dist=Math.sqrt((next.x-position.x)*(next.x-position.x)+(next.y-position.y)*(next.y-position.y));
 		if(dist<=moveSpeed*deltaT){
 			position.x=waypoints.get(nextWp).x;
 			position.y=waypoints.get(nextWp).y;
 			++nextWp;
 			if(nextWp>=waypoints.size())
 				return true;
-				//System.out.println("Angekommen!!");
 		}
 		else{
 			//TODO: move to util class
@@ -55,5 +50,9 @@ public class BaseCreep {
 			position.y+=next.y;
 		}
 		return false;
+	}
+	
+	public Point2D.Float getPosition(){
+		return position;
 	}
 }
