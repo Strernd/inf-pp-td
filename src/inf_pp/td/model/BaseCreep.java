@@ -10,7 +10,7 @@ public class BaseCreep {
 	private Point2D.Float position;
 	private ArrayList<Point> waypoints;
 	private int nextWp;
-	private int health;
+	private int health=100;
 	private float moveSpeed;
 	
 	BaseCreep(ArrayList<Point> waypoints){
@@ -55,5 +55,16 @@ public class BaseCreep {
 	
 	public Point2D.Float getPosition(){
 		return position;
+	}
+
+	public void doDamage(int dmg) {
+		this.health-=dmg;		
+	}
+	
+	public boolean isDead(){
+		return this.health<=0;
+	}
+	public float getHealthPercentage(){
+		return (float)(health)/(float)100;
 	}
 }

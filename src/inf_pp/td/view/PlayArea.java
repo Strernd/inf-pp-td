@@ -2,6 +2,7 @@ package inf_pp.td.view;
 
 import inf_pp.td.intercom.PlayAreaWayHolder;
 import inf_pp.td.model.BaseCreep;
+import inf_pp.td.model.BaseProjectile;
 import inf_pp.td.model.BaseTower;
 import inf_pp.td.model.Game;
 
@@ -28,6 +29,7 @@ public class PlayArea extends JPanel {
 	private ArrayList<Point> waypoints;
 	private HashSet<BaseTower> towers;
 	private HashSet<BaseCreep> creeps;
+	private HashSet<BaseProjectile> projectiles;
 	
 	/**
 	 * the dimensions of the playing grid, how many rows and columns
@@ -80,14 +82,15 @@ public class PlayArea extends JPanel {
 		waypoints=game.getPlayArea().getWaypoints();
 		towers=game.getTowers();
 		creeps=game.getCreeps();
+		projectiles=game.getProjectiles();
 		//this.invalidate();
 		this.repaint();
 	}
 
 	@Override
 	public void paintComponent(Graphics gs) {
+		//long t1=System.nanoTime();
 		Graphics2D g=(Graphics2D)gs;
-		Rectangle bounds=g.getDeviceConfiguration().getBounds();
 		super.paintComponent(gs);
 		//g.setColor(new Color(0xFFFF00));
 		//g.fillRect(20, 30, 40, 50);
@@ -103,7 +106,15 @@ public class PlayArea extends JPanel {
 			g.fillRect(t.getPosition().x*tw, t.getPosition().y*th, tw, th);
 		}
 		for(BaseCreep c : creeps){
+			g.setColor(Color.getHSBColor(c.getHealthPercentage()/3,1,1));
 			g.fillRect((int)((c.getPosition().x+.25)*tw), (int)((c.getPosition().y+.25)*th), (int)(.5*tw), (int)(.5*th));
 		}
+		g.setColor(new Color(0x00FF00));
+		for(BaseProjectile p: projectiles){
+			g.fillRect((int)((p.getPosition().x+.3333)*tw), (int)((p.getPosition().y+.3333)*th), (int)(.3333*tw), (int)(.3333*th));
+		}
+		/*float t2=(System.nanoTime()-t1)/(float)100;
+		if(t2>1000)
+			System.out.println(t2);*/
 	}
 }

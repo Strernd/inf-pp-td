@@ -33,6 +33,7 @@ public final class Util {
 		int nextWp=0;
 		//Point2D.Float next=new Point2D.Float(points.get(nextWp).x,points.get(nextWp).y);
 		Point2D.Float next=points.get(nextWp);
+		next=new Point2D.Float(next.x,next.y);
 		double dist=next.distance(position);
 		
 		if(nextWp>=points.size())
@@ -47,6 +48,7 @@ public final class Util {
 				return nextWp;
 			next.x=points.get(nextWp).x;
 			next.y=points.get(nextWp).y;
+			next=new Point2D.Float(next.x,next.y);
 			dist=next.distance(position);
 		}
 		

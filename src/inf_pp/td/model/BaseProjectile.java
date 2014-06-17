@@ -14,4 +14,8 @@ public class BaseProjectile {
 	public boolean move(long deltaT){
 		return true;
 	}
+
+	public Point2D.Float getPosition() {
+		return position;
+	}
 }

@@ -70,11 +70,12 @@ public class Game extends java.util.Observable{
 		}*/
 		long deltaT=time-lastTime;
 		for(Iterator<BaseCreep> it=creeps.iterator();it.hasNext();){
-			if(it.next().move(deltaT))
+			BaseCreep c=it.next();
+			if(c.isDead()||c.move(deltaT))
 				it.remove();
 		}
 		for(BaseTower t: towers){
-			t.fire(this);
+			t.fire(this,time);
 		}
 		for(Iterator<BaseProjectile> it=projectiles.iterator();it.hasNext();){
 			if(it.next().move(deltaT)){
@@ -92,7 +93,6 @@ public class Game extends java.util.Observable{
 	 * @return the play area used in this game
 	 */
 	public PlayAreaWayHolder getPlayArea() {
-		// TODO Auto-generated method stub
 		return field;
 	}
 
@@ -117,12 +117,20 @@ public class Game extends java.util.Observable{
 	public void buildTower(TowerFactory.TowerType type, Point position) throws ArrayIndexOutOfBoundsException{
 		if(position.x<0||position.y<0||position.x>=field.getWidth()||position.y>=field.getHeight())
 			throw new ArrayIndexOutOfBoundsException();
-		//TODO: prevent from building multiple towers on same position
+		for (BaseTower t: towers){
+			if(t.getPosition().equals(position))
+				return;
+		}
 		towers.add(TowerFactory.buildTower(type, new Point(position)));
 	}
 	
 	void addProjectile(BaseProjectile p){
 		projectiles.add(p);
+	}
+
+
+	public HashSet<BaseProjectile> getProjectiles() {
+		return projectiles;
 	}
 	
 }

@@ -4,7 +4,7 @@ import java.awt.Point;
 
 public class BaseTower {
 	protected Point position;
-	protected int cooldown;
+	protected long cooldown;
 	protected float range;
 	protected int fireRate;
 	
@@ -21,8 +21,15 @@ public class BaseTower {
 	/**
 	 * fires (a projectile), does damage
 	 */
-	public void fire(Game game){
-		System.out.println(range);
+	public int doFire(Game game){
+		//System.out.println(range);
+		return 0;
+	}
+	
+	public void fire(Game game,long time){
+		if(time>cooldown){
+			cooldown=time+doFire(game);
+		}
 	}
 	
 	/**

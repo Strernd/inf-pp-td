@@ -11,7 +11,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Game game=new Game();
-		Controller ctrl=new Controller();		
+		final Controller ctrl=new Controller();		
 		
 		Frame frame=new Frame(game);
 		frame.setSize(640, 480);
@@ -28,15 +28,20 @@ public class Main {
 		//ctrl.start();
 		
 		//TODO: better jitter performance
-		while(true){
-			try {
-				Thread.sleep(20);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		Thread t=new Thread(){
+			public void run(){
+				while(true){
+					try {
+						Thread.sleep(20);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					ctrl.tick();
+				}
 			}
-			ctrl.tick();
-		}
+		};
+		t.start();
 	}
 
 }
