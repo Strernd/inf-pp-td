@@ -48,8 +48,8 @@ public class Game extends java.util.Observable{
 	 */
 	private int lives;
 	
-	public Game() {
-		
+	public Game(int lives) {
+		this.lives=lives;
 		field=new PlayArea(10,10);
 		spawner.setWaypoints(field.getWaypoints());
 	}
@@ -71,7 +71,8 @@ public class Game extends java.util.Observable{
 		long deltaT=time-lastTime;
 		for(Iterator<BaseCreep> it=creeps.iterator();it.hasNext();){
 			BaseCreep c=it.next();
-			if(c.isDead()||c.move(deltaT))
+			c.move(deltaT,this);
+			if(c.isDead())
 				it.remove();
 		}
 		for(BaseTower t: towers){
@@ -131,6 +132,17 @@ public class Game extends java.util.Observable{
 
 	public HashSet<BaseProjectile> getProjectiles() {
 		return projectiles;
+	}
+	
+	public int getLives(){
+		return lives;
+	}
+	
+	void takeLife(int num){
+		lives-=num;
+	}
+	void takeLife(){
+		takeLife(1);
 	}
 	
 }

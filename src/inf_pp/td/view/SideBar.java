@@ -1,5 +1,7 @@
 package inf_pp.td.view;
 
+import inf_pp.td.model.Game;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -18,6 +20,10 @@ public class SideBar extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -2976601330037398908L;
+	
+	JLabel livesLabel;
+	JLabel goldLabel;
+	JLabel waveLabel;
 
 	public SideBar() {
 		this.setBackground(new Color(0xCCCCCC));
@@ -56,12 +62,12 @@ public class SideBar extends JPanel {
 		iPane.setPreferredSize(new Dimension(160,80));
 		iPane.setMinimumSize(new Dimension(160,80));
 		iPane.setMaximumSize(new Dimension(160,80));
-		JLabel p=new JLabel("Gold:");
-		iPane.add(p);
-		p=new JLabel("Lives:");
-		iPane.add(p);
-		p=new JLabel("Wave:");
-		iPane.add(p);
+		goldLabel=new JLabel("Gold:");
+		iPane.add(goldLabel);
+		livesLabel=new JLabel("Lives:");
+		iPane.add(livesLabel);
+		waveLabel=new JLabel("Wave:");
+		iPane.add(waveLabel);
 		this.add(iPane);
 	}
 	
@@ -88,5 +94,9 @@ public class SideBar extends JPanel {
 				}
 			}
 		}
+	}
+	
+	void updateState(Game game){
+		livesLabel.setText("Lives: "+game.getLives());
 	}
 }

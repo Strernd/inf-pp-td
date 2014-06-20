@@ -15,7 +15,8 @@ public class BaseTower {
 	 * @return false if tower can not fire
 	 */
 	public boolean canFire(){
-		return cooldown==0;
+		//TODO: remove?
+		return cooldown<System.currentTimeMillis();
 	}
 	
 	/**

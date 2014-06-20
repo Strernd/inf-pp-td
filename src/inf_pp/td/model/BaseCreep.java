@@ -11,14 +11,16 @@ public class BaseCreep {
 	private ArrayList<Point> waypoints;
 	private int nextWp;
 	private int health=100;
+	private int maxHealth=100;
 	private float moveSpeed;
 	
-	BaseCreep(ArrayList<Point> waypoints){
+	BaseCreep(ArrayList<Point> waypoints, int maxHealth, float moveSpeed){
 		if(waypoints==null)
 			throw new NullPointerException();
 		else if(waypoints.size()<2)
 			throw new ArrayIndexOutOfBoundsException();
-		moveSpeed=0.001f;
+		this.maxHealth=maxHealth;
+		this.moveSpeed=moveSpeed;
 		this.waypoints=waypoints;
 		this.nextWp=1;
 		Point tP=waypoints.get(0);
@@ -28,29 +30,13 @@ public class BaseCreep {
 	/**
 	 * moves the creep by its speed
 	 */
-	public boolean move(long deltaT) {
+	public void move(long deltaT, Game game) {
 		nextWp+=Util.moveI(moveSpeed*deltaT,position,waypoints.subList(nextWp, waypoints.size()));
-		return nextWp>=waypoints.size();
-		/*Point2D.Float next=new Point2D.Float(waypoints.get(nextWp).x,waypoints.get(nextWp).y);
-		double dist=next.distance(position);
-		if(dist<=moveSpeed*deltaT){
-			position.x=waypoints.get(nextWp).x;
-			position.y=waypoints.get(nextWp).y;
-			++nextWp;
-			if(nextWp>=waypoints.size())
-				return true;
+		if(nextWp>=waypoints.size()){
+			game.takeLife();
+			kill();
 		}
-		else{
-			next.x-=position.x;
-			next.y-=position.y;
-			next.x/=dist;
-			next.y/=dist;
-			next.x*=moveSpeed*deltaT;
-			next.y*=moveSpeed*deltaT;
-			position.x+=next.x;
-			position.y+=next.y;
-		}
-		return false;*/
+		//return nextWp>=waypoints.size();
 	}
 	
 	public Point2D.Float getPosition(){
@@ -65,6 +51,9 @@ public class BaseCreep {
 		return this.health<=0;
 	}
 	public float getHealthPercentage(){
-		return (float)(health)/(float)100;
+		return (float)(health)/(float)maxHealth;
+	}
+	protected void kill(){
+		health=0;
 	}
 }
