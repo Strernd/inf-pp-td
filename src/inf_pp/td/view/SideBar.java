@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,17 +34,21 @@ public class SideBar extends JPanel {
 		this.setLayout(layout);
 		JPanel twrPane=new JPanel();
 		twrPane.setLayout(new GridLayout(2,2,4,4));
-		JButton b=new JButton("DD");
+		JButton b=new JButton();
 		b.setActionCommand("build_dd");
+		b.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_DD)));
 		twrPane.add(b);
-		b=new JButton("AE");
+		b=new JButton("");
 		b.setActionCommand("build_ae");
+		b.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_AE)));
 		twrPane.add(b);
-		b=new JButton("SL");
+		b=new JButton("");
 		b.setActionCommand("build_sl");
+		b.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_SL)));
 		twrPane.add(b);
-		b=new JButton("P");
+		b=new JButton("");
 		b.setActionCommand("build_p");
+		b.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_P)));
 		twrPane.add(b);
 		
 		twrPane.setPreferredSize(new Dimension(160,160));

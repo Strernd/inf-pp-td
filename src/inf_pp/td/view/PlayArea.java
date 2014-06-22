@@ -40,31 +40,7 @@ public class PlayArea extends JPanel {
 	private HashSet<BaseTower> towers;
 	private HashSet<BaseCreep> creeps;
 	private HashSet<BaseProjectile> projectiles;
-	
-	
-	private static enum GraphicsTiles{
-		TOWER_DD,TOWER_AE,TOWER_SL,TOWER_P
-	}
-	
-	private static final Map<GraphicsTiles, Image> tiles;
-	
-	static {
-		tiles=new HashMap<GraphicsTiles,Image>();
-		HashMap<GraphicsTiles,String> paths=new HashMap<>();
-		paths.put(GraphicsTiles.TOWER_DD,"assets/graphics/tower/dd.png");
-		paths.put(GraphicsTiles.TOWER_AE,"assets/graphics/tower/ae.png");
-		paths.put(GraphicsTiles.TOWER_SL,"assets/graphics/tower/sl.png");
-		paths.put(GraphicsTiles.TOWER_P,"assets/graphics/tower/p.png");
-		for(Map.Entry<GraphicsTiles,String> e: paths.entrySet()){
-			try {
-				tiles.put(e.getKey(),ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(e.getValue())));
-			} catch (IOException e1) {
-				// TODO Print error to user
-				//e1.printStackTrace();
-			}
-		}
-	}
-	
+		
 	/**
 	 * the dimensions of the playing grid, how many rows and columns
 	 */
@@ -124,19 +100,16 @@ public class PlayArea extends JPanel {
 		}
 		g.setColor(new Color(0xFF0000));
 		for(BaseTower t: towers){
-			//g.fillRect(t.getPosition().x*tw, t.getPosition().y*th, tw, th);
-			//g.drawImage(ddi, t.getPosition().x*tw, t.getPosition().y*th, t.getPosition().x*tw+tw, t.getPosition().y*th+tw, null);
-			//g.drawImage(ddi, t.getPosition().x*tw, t.getPosition().y*th, tw, th, null);
-			GraphicsTiles gt=null;
+			Tiles.TileId gt=null;
 			//TODO: improve this, this is ugly/impossible to separate from model
 			if(t instanceof ProjectileTower)
-				gt=GraphicsTiles.TOWER_DD;
+				gt=Tiles.TileId.TOWER_DD;
 			else if(t instanceof AreaTower)
-				gt=GraphicsTiles.TOWER_AE;
+				gt=Tiles.TileId.TOWER_AE;
 			//TODO: do some fallback
 			if(gt==null)
 				continue;
-			g.drawImage(tiles.get(gt), t.getPosition().x*tw, t.getPosition().y*th, tw, th, null);
+			g.drawImage(Tiles.get(gt), t.getPosition().x*tw, t.getPosition().y*th, tw, th, null);
 		}
 		for(BaseCreep c : creeps){
 			g.setColor(Color.getHSBColor(c.getHealthPercentage()/3,1,1));
