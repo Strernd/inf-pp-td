@@ -1,9 +1,11 @@
 package inf_pp.td;
 
+import inf_pp.td.model.BaseCreep;
+
 import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Float;
 import java.util.AbstractList;
+import java.util.Collection;
 import java.util.List;
 
 public final class Util {
@@ -15,7 +17,7 @@ public final class Util {
 		}
 
 		@Override
-		public Float get(int index) {
+		public Point2D.Float get(int index) {
 			Point p=sourceList.get(index);
 			return new Point2D.Float(p.x,p.y);
 		}
@@ -66,5 +68,30 @@ public final class Util {
 	public static int moveI(float distance, Point2D.Float position, List<Point> points) {
 		List<Point2D.Float> list=new PointListWrapper(points);
 		return move(distance,position,list);
+	}
+	
+	public static BaseCreep nearestCreep(Point2D.Float position, Collection<BaseCreep> creeps){
+		return nearestCreep(position,creeps,Float.POSITIVE_INFINITY);
+	}
+	public static BaseCreep nearestCreep(Point2D.Float position, Collection<BaseCreep> creeps,float maxDistance){
+		if(creeps.size()==0)
+			return null;
+		double minDist=Double.POSITIVE_INFINITY;
+		BaseCreep minCreep=null;
+		for(BaseCreep c : creeps){
+			double dist=c.getPosition().distance(position);
+			if(dist<minDist){
+				minDist=dist;
+				minCreep=c;
+			}
+		}
+		if(minDist>maxDistance)
+			return null;
+		else
+			return minCreep;
+	}
+	
+	public static Point2D.Float pointToFloat(Point p){
+		return new Point2D.Float(p.x,p.y);
 	}
 }

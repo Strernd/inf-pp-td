@@ -33,10 +33,19 @@ public class SideBar extends JPanel {
 		this.setLayout(layout);
 		JPanel twrPane=new JPanel();
 		twrPane.setLayout(new GridLayout(2,2,4,4));
-		twrPane.add(new JButton("DD"));
-		twrPane.add(new JButton("AE"));
-		twrPane.add(new JButton("SL"));
-		twrPane.add(new JButton("P"));
+		JButton b=new JButton("DD");
+		b.setActionCommand("build_dd");
+		twrPane.add(b);
+		b=new JButton("AE");
+		b.setActionCommand("build_ae");
+		twrPane.add(b);
+		b=new JButton("SL");
+		b.setActionCommand("build_sl");
+		twrPane.add(b);
+		b=new JButton("P");
+		b.setActionCommand("build_p");
+		twrPane.add(b);
+		
 		twrPane.setPreferredSize(new Dimension(160,160));
 		twrPane.setMaximumSize(new Dimension(160,160));
 		this.add(twrPane);

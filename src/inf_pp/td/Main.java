@@ -18,7 +18,7 @@ public class Main {
 		frame.setVisible(true);
 		//TODO: do we need to do some cleanup?
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setModel(game);
+		//frame.setModel(game);
 		frame.addListener(ctrl);
 		
 		game.addObserver(frame);

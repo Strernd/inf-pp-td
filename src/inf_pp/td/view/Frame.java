@@ -29,7 +29,7 @@ public class Frame extends JFrame implements java.util.Observer {
 	private SideBar sidebar;
 	private static final long serialVersionUID = 8781344923489487475L;
 	
-	private Game game;
+	//private Game game;
 	
 	public Frame(Game game){
 		//this.game=game;
@@ -55,6 +55,7 @@ public class Frame extends JFrame implements java.util.Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		Game game=(Game)arg;
 		// TODO Auto-generated method stub
 		playArea.updateState(game);
 		sidebar.updateState(game);
@@ -63,9 +64,9 @@ public class Frame extends JFrame implements java.util.Observer {
 	/**
 	 * @param set the model to get data from
 	 */
-	public void setModel(Game game) {
+	/*public void setModel(Game game) {
 		this.game=game;
-	}
+	}*/
 
 	
 	/**

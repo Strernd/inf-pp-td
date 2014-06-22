@@ -68,14 +68,31 @@ public class Controller implements ListenerContainer {
 
 		@Override
 		public void actionPerformed(ActionEvent ev) {
-			//TODO: add differentiation
 			//TODO: add upgrade...
-			try{
-				//game.buildTower(TowerFactory.buildTower(DIRECT_DMG,0,0));
-				game.buildTower(TowerType.DIRECT_DMG, selectedField);
-			}catch(ArrayIndexOutOfBoundsException e){
+			String ac=ev.getActionCommand().toLowerCase();
+			if(ac.startsWith("build_")) {
+				TowerType type=null;
+				switch(ac.substring("build_".length())){
+				case "dd":
+					type=TowerType.DIRECT_DMG;
+					break;
+				case "ae":
+					type=TowerType.AREA_OF_EFFECT;
+					break;
+				case "sl":
+					type=TowerType.SLOW;
+					break;
+				case "p":
+					type=TowerType.P;
+					break;
+				}
+				if(type!=null){
+					try{
+						game.buildTower(type, selectedField);
+					}catch(ArrayIndexOutOfBoundsException e){
+					}
+				}
 			}
-			//System.out.println("Built");
 		}
 
 	}
@@ -84,7 +101,7 @@ public class Controller implements ListenerContainer {
 	
 	public class FieldSelectListener extends MouseInputAdapter {		
 		@Override
-		public void mouseClicked(MouseEvent ev) {
+		public void mousePressed(MouseEvent ev) {
 			int x=ev.getX()*game.getPlayArea().getWidth()/((JPanel)ev.getSource()).getWidth();
 			int y=ev.getY()*game.getPlayArea().getHeight()/((JPanel)ev.getSource()).getHeight();
 			selectedField.x=x;
@@ -92,8 +109,6 @@ public class Controller implements ListenerContainer {
 			//System.out.println(x+",  "+y);
 			//System.out.println(((JPanel)ev.getSource()).getWidth());
 			super.mouseClicked(ev);
-		}
-		
-		
+		}		
 	}
 }

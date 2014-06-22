@@ -4,7 +4,6 @@ import java.awt.Point;
 
 public final class TowerFactory {
 	/**
-	 * @author marc
 	 * All available tower types are listed here.
 	 */
 	public enum TowerType {
@@ -23,6 +22,9 @@ public final class TowerFactory {
 		BaseTower t;
 		//TODO: implement different towers
 		switch(type){
+		case AREA_OF_EFFECT:
+			t=new AreaTower();
+			break;
 		default:
 			t=new ProjectileTower();
 			break;

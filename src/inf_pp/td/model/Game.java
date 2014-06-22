@@ -85,7 +85,7 @@ public class Game extends java.util.Observable{
 		}
 		creeps.addAll(spawner.spawnCreeps(time));
 		this.setChanged();
-		this.notifyObservers();
+		this.notifyObservers(this);
 		lastTime=time;
 	}
 

@@ -15,6 +15,13 @@ public class GuidedProjectile extends BaseProjectile {
 		super(position);
 		this.target=target;
 		this.moveSpeed=0.0015f;
+		this.damage=0;
+	}
+	
+	public GuidedProjectile(Point2D.Float position,BaseCreep target, float moveSpeed, int damage) {
+		this(position,target);
+		this.moveSpeed=moveSpeed;
+		this.damage=damage;
 	}
 
 	@Override
@@ -23,7 +30,7 @@ public class GuidedProjectile extends BaseProjectile {
 		t.add(target.getPosition());
 		//hit?
 		if(Util.move(moveSpeed*deltaT,position,t)>0){
-			target.doDamage(10);
+			target.doDamage(damage);
 			return true;
 		}
 		else

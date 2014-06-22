@@ -17,7 +17,7 @@ public class CreepWaveSpawner {
 	public Collection<BaseCreep> spawnCreeps(long time){
 		LinkedList<BaseCreep> result=new LinkedList<BaseCreep>();
 		//TODO: differentiate...
-		if(cNum<=50 && time>lastCreep+1000){
+		if(cNum<=50 && time>lastCreep+500){
 			BaseCreep c=new BaseCreep(waypoints,100,0.001f);
 			result.add(c);
 			cNum++;

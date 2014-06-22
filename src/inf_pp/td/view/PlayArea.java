@@ -92,6 +92,9 @@ public class PlayArea extends JPanel {
 		//long t1=System.nanoTime();
 		Graphics2D g=(Graphics2D)gs;
 		super.paintComponent(gs);
+		//check if we have valid data
+		if(waypoints==null)
+			return;
 		//g.setColor(new Color(0xFFFF00));
 		//g.fillRect(20, 30, 40, 50);
 		int tw=(this.getWidth()/width);

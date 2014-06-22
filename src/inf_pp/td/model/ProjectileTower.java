@@ -1,5 +1,7 @@
 package inf_pp.td.model;
 
+import inf_pp.td.Util;
+
 import java.awt.geom.Point2D;
 
 public class ProjectileTower extends BaseTower {
@@ -10,18 +12,9 @@ public class ProjectileTower extends BaseTower {
 
 	@Override
 	public int doFire(Game game){
-		if(game.getCreeps().size()==0)
-			return 0;
-		double minDist=Double.POSITIVE_INFINITY;
-		BaseCreep minCreep=null;
-		for(BaseCreep c : game.getCreeps()){
-			double dist=c.getPosition().distance(this.position);
-			if(dist<minDist){
-				minDist=dist;
-				minCreep=c;
-			}
-		}
-		if(minDist>this.range)
+		BaseCreep minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), this.range);
+
+		if(minCreep==null)
 			return 0;
 		GuidedProjectile p=new GuidedProjectile(new Point2D.Float(position.x,position.y),minCreep);
 		game.addProjectile(p);
