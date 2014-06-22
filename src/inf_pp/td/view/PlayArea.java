@@ -1,21 +1,31 @@
 package inf_pp.td.view;
 
 import inf_pp.td.intercom.PlayAreaWayHolder;
+import inf_pp.td.model.AreaTower;
 import inf_pp.td.model.BaseCreep;
 import inf_pp.td.model.BaseProjectile;
 import inf_pp.td.model.BaseTower;
 import inf_pp.td.model.Game;
+import inf_pp.td.model.ProjectileTower;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class PlayArea extends JPanel {
@@ -31,6 +41,30 @@ public class PlayArea extends JPanel {
 	private HashSet<BaseCreep> creeps;
 	private HashSet<BaseProjectile> projectiles;
 	
+	
+	private static enum GraphicsTiles{
+		TOWER_DD,TOWER_AE,TOWER_SL,TOWER_P
+	}
+	
+	private static final Map<GraphicsTiles, Image> tiles;
+	
+	static {
+		tiles=new HashMap<GraphicsTiles,Image>();
+		HashMap<GraphicsTiles,String> paths=new HashMap<>();
+		paths.put(GraphicsTiles.TOWER_DD,"assets/graphics/tower/dd.png");
+		paths.put(GraphicsTiles.TOWER_AE,"assets/graphics/tower/ae.png");
+		paths.put(GraphicsTiles.TOWER_SL,"assets/graphics/tower/sl.png");
+		paths.put(GraphicsTiles.TOWER_P,"assets/graphics/tower/p.png");
+		for(Map.Entry<GraphicsTiles,String> e: paths.entrySet()){
+			try {
+				tiles.put(e.getKey(),ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(e.getValue())));
+			} catch (IOException e1) {
+				// TODO Print error to user
+				//e1.printStackTrace();
+			}
+		}
+	}
+	
 	/**
 	 * the dimensions of the playing grid, how many rows and columns
 	 */
@@ -39,25 +73,8 @@ public class PlayArea extends JPanel {
 	private static final long serialVersionUID = -6607180777510972878L;
 
 	PlayArea(PlayAreaWayHolder pa) {
-		//inf_pp.td.model.PlayArea pa=new inf_pp.td.model.PlayArea();
 		width=pa.getWidth();
 		height=pa.getHeight();
-		
-		/*fields=new JPanel[height][width];
-		
-		this.setLayout(new GridLayout(height,width));
-		for(int y=0;y<height;++y){
-			for(int x=0;x<width;++x){
-				fields[y][x] = new JPanel();
-				this.add(fields[y][x]);
-			}
-		}
-		paintWay(pa.getWaypoints());*/
-	}
-	
-	private void paintWay(ArrayList<Point> waypoints) {
-		/*for (Point wp : waypoints)
-			fields[wp.y][wp.x].setBackground(new Color(0xFFFFFF));*/
 	}
 	
 	/**
@@ -95,6 +112,7 @@ public class PlayArea extends JPanel {
 		//check if we have valid data
 		if(waypoints==null)
 			return;
+
 		//g.setColor(new Color(0xFFFF00));
 		//g.fillRect(20, 30, 40, 50);
 		int tw=(this.getWidth()/width);
@@ -106,7 +124,19 @@ public class PlayArea extends JPanel {
 		}
 		g.setColor(new Color(0xFF0000));
 		for(BaseTower t: towers){
-			g.fillRect(t.getPosition().x*tw, t.getPosition().y*th, tw, th);
+			//g.fillRect(t.getPosition().x*tw, t.getPosition().y*th, tw, th);
+			//g.drawImage(ddi, t.getPosition().x*tw, t.getPosition().y*th, t.getPosition().x*tw+tw, t.getPosition().y*th+tw, null);
+			//g.drawImage(ddi, t.getPosition().x*tw, t.getPosition().y*th, tw, th, null);
+			GraphicsTiles gt=null;
+			//TODO: improve this, this is ugly/impossible to separate from model
+			if(t instanceof ProjectileTower)
+				gt=GraphicsTiles.TOWER_DD;
+			else if(t instanceof AreaTower)
+				gt=GraphicsTiles.TOWER_AE;
+			//TODO: do some fallback
+			if(gt==null)
+				continue;
+			g.drawImage(tiles.get(gt), t.getPosition().x*tw, t.getPosition().y*th, tw, th, null);
 		}
 		for(BaseCreep c : creeps){
 			g.setColor(Color.getHSBColor(c.getHealthPercentage()/3,1,1));
