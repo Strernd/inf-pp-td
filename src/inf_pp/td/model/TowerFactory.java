@@ -25,6 +25,9 @@ public final class TowerFactory {
 		case AREA_OF_EFFECT:
 			t=new AreaTower();
 			break;
+		case SLOW:
+			t=new SlowTower();
+			break;
 		default:
 			t=new ProjectileTower();
 			break;

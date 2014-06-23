@@ -7,6 +7,7 @@ import inf_pp.td.model.BaseProjectile;
 import inf_pp.td.model.BaseTower;
 import inf_pp.td.model.Game;
 import inf_pp.td.model.ProjectileTower;
+import inf_pp.td.model.SlowTower;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -106,6 +107,8 @@ public class PlayArea extends JPanel {
 				gt=Tiles.TileId.TOWER_DD;
 			else if(t instanceof AreaTower)
 				gt=Tiles.TileId.TOWER_AE;
+			else if(t instanceof SlowTower)
+				gt=Tiles.TileId.TOWER_SL;
 			//TODO: do some fallback
 			if(gt==null)
 				continue;

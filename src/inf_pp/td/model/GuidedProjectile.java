@@ -10,6 +10,8 @@ import java.util.List;
 
 public class GuidedProjectile extends BaseProjectile {
 	protected BaseCreep target;
+	
+	//TODO: subclass damage?
 
 	public GuidedProjectile(Point2D.Float position,BaseCreep target) {
 		super(position);
@@ -30,7 +32,7 @@ public class GuidedProjectile extends BaseProjectile {
 		t.add(target.getPosition());
 		//hit?
 		if(Util.move(moveSpeed*deltaT,position,t)>0){
-			target.doDamage(damage);
+			hit();
 			return true;
 		}
 		else
@@ -38,4 +40,7 @@ public class GuidedProjectile extends BaseProjectile {
 		//return Util.move(moveSpeed*deltaT,position,t)>0;
 	}
 	
+	protected void hit(){
+		target.doDamage(damage);
+	}
 }

@@ -1,12 +1,18 @@
 package inf_pp.td;
 
 import inf_pp.td.model.BaseCreep;
+import inf_pp.td.model.Buff;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.AbstractList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public final class Util {
 	private static class PointListWrapper extends AbstractList<Point2D.Float> {
@@ -93,5 +99,22 @@ public final class Util {
 	
 	public static Point2D.Float pointToFloat(Point p){
 		return new Point2D.Float(p.x,p.y);
+	}
+	
+	public static Object getBuffedValue(Object val, Buff.Type type, Map<String,Buff> buffs) {
+		for(Iterator<Entry<String, Buff> > it= buffs.entrySet().iterator();it.hasNext();) {
+			Entry<String,Buff> e=it.next();
+			if(e.getValue().canRemove()) {
+				it.remove();
+			}
+			else {
+				val= e.getValue().apply(val, type);
+			}
+			
+		}
+		/*for (Buff b : buffs){
+			val=b.apply(val,type);
+		}*/
+		return val;
 	}
 }
