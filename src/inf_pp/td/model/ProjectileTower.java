@@ -16,7 +16,7 @@ public class ProjectileTower extends BaseTower {
 
 		if(minCreep==null)
 			return 0;
-		GuidedProjectile p=new GuidedProjectile(new Point2D.Float(position.x,position.y),minCreep);
+		GuidedProjectile p=new GuidedProjectile(new Point2D.Float(position.x,position.y),minCreep,0.002f,10);
 		game.addProjectile(p);
 		return 500;
 	}

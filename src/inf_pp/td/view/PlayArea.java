@@ -6,6 +6,7 @@ import inf_pp.td.model.BaseCreep;
 import inf_pp.td.model.BaseProjectile;
 import inf_pp.td.model.BaseTower;
 import inf_pp.td.model.Game;
+import inf_pp.td.model.PoisonTower;
 import inf_pp.td.model.ProjectileTower;
 import inf_pp.td.model.SlowTower;
 import inf_pp.td.view.Tiles.TileId;
@@ -116,6 +117,8 @@ public class PlayArea extends JPanel {
 				gt=Tiles.TileId.TOWER_AE;
 			else if(t instanceof SlowTower)
 				gt=Tiles.TileId.TOWER_SL;
+			else if(t instanceof PoisonTower)
+				gt=Tiles.TileId.TOWER_P;
 			//TODO: do some fallback
 			if(gt==null)
 				continue;

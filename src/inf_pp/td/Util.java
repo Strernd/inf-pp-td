@@ -101,14 +101,14 @@ public final class Util {
 		return new Point2D.Float(p.x,p.y);
 	}
 	
-	public static Object getBuffedValue(Object val, Buff.Type type, Map<String,Buff> buffs) {
+	public static Object getBuffedValue(Object val, Buff.Type type, Map<String,Buff> buffs,long time) {
 		for(Iterator<Entry<String, Buff> > it= buffs.entrySet().iterator();it.hasNext();) {
 			Entry<String,Buff> e=it.next();
 			if(e.getValue().canRemove()) {
 				it.remove();
 			}
 			else {
-				val= e.getValue().apply(val, type);
+				val= e.getValue().apply(val, type, time);
 			}
 			
 		}

@@ -6,7 +6,7 @@ import inf_pp.td.Util;
 
 public class AreaTower extends BaseTower {
 	public AreaTower(){
-		range=1.2f;
+		range=1.5f;
 	}
 
 	@Override

@@ -71,9 +71,10 @@ public class Game extends java.util.Observable{
 		long deltaT=time-lastTime;
 		for(Iterator<BaseCreep> it=creeps.iterator();it.hasNext();){
 			BaseCreep c=it.next();
-			c.move(deltaT,this);
-			if(c.isDead())
+			c.move(time,this);
+			if(c.isDead()){
 				it.remove();
+			}
 		}
 		for(BaseTower t: towers){
 			t.fire(this,time);

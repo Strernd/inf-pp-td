@@ -32,14 +32,25 @@ public class BaseCreep {
 	}
 	
 	public float getMoveSpeed() {
-		return (float) Util.getBuffedValue(baseMoveSpeed,Type.MOVE_SPEED,buffs);
+		//TODO: set parameter time to some valid variable
+		return (float) Util.getBuffedValue(baseMoveSpeed,Type.MOVE_SPEED,buffs,0);
 	}
 	
+	
+	//TODO: improve this
+	private long lastTime=0;
 	/**
 	 * moves the creep by its speed
 	 */
-	public void move(long deltaT, Game game) {
+	public void move(long time, Game game) {
+		this.health=(int)Util.getBuffedValue(this.health, Buff.Type.DOT, buffs,time);
+		long deltaT;
+		if(lastTime!=0)
+			deltaT=time-lastTime;
+		else deltaT=0;
+		lastTime=time;
 		nextWp+=Util.moveI(getMoveSpeed()*deltaT,position,waypoints.subList(nextWp, waypoints.size()));
+		System.out.println(position);
 		if(nextWp>=waypoints.size()){
 			game.takeLife();
 			kill();

@@ -28,6 +28,9 @@ public final class TowerFactory {
 		case SLOW:
 			t=new SlowTower();
 			break;
+		case P:
+			t=new PoisonTower();
+			break;
 		default:
 			t=new ProjectileTower();
 			break;

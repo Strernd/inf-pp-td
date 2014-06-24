@@ -4,6 +4,10 @@ import java.awt.geom.Point2D;
 
 public class Slowjectile extends GuidedProjectile {
 
+	/**
+	 * @param position
+	 * @param target
+	 */
 	public Slowjectile(Point2D.Float position, BaseCreep target) {
 		super(position,target);
 		// TODO Auto-generated constructor stub
@@ -14,9 +18,9 @@ public class Slowjectile extends GuidedProjectile {
 		Buff b=new Buff(){
 
 			@Override
-			public Object apply(Object arg0, Type type) {
+			public Object apply(Object arg0, Type type, long time) {
 				if(type==Buff.Type.MOVE_SPEED){
-					return (float)arg0 / 2;
+					return (float)arg0 * 0.80f;
 				}
 				return arg0;
 			}
