@@ -8,6 +8,7 @@ import inf_pp.td.model.BaseTower;
 import inf_pp.td.model.Game;
 import inf_pp.td.model.ProjectileTower;
 import inf_pp.td.model.SlowTower;
+import inf_pp.td.view.Tiles.TileId;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -96,8 +97,14 @@ public class PlayArea extends JPanel {
 		int th=(this.getHeight()/height);
 		//System.out.println(tw+ " , "+th);
 		//g.scale(tw,th);
-		for(Point wp : waypoints){
-			g.fillRect(wp.x*tw, wp.y*th, 1*tw, 1*th);
+		Image bg=Tiles.get(TileId.WORLD);
+		if(bg!=null) {
+			g.drawImage(bg,0,0,tw*width,th*height,null);
+		}
+		else {
+			for(Point wp : waypoints){
+				g.fillRect(wp.x*tw, wp.y*th, 1*tw, 1*th);
+			}
 		}
 		g.setColor(new Color(0xFF0000));
 		for(BaseTower t: towers){

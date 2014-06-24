@@ -11,7 +11,8 @@ public final class Tiles {
 	private Tiles(){}
 	
 	static enum TileId{
-		TOWER_DD,TOWER_AE,TOWER_SL,TOWER_P
+		TOWER_DD,TOWER_AE,TOWER_SL,TOWER_P,
+		WORLD
 	}
 	
 	private static final Map<TileId, Image> tiles;
@@ -30,6 +31,16 @@ public final class Tiles {
 				// TODO Print error to user
 				//e1.printStackTrace();
 			}
+		}
+		setWorldTile("world/background.jpg");
+	}
+	
+	static void setWorldTile(String filename) {
+		try {
+			tiles.put(TileId.WORLD,ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("assets/graphics/"+filename)));
+		} catch (IOException e) {
+			// TODO Print Error To User
+			//e.printStackTrace();
 		}
 	}
 	
