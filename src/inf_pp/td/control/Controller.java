@@ -51,7 +51,6 @@ public class Controller implements ListenerContainer {
 	public Controller() {
 		fieldListener = new FieldSelectListener();
 		sbListener = new SidebarListener();
-		//TimeSource = new TimeSource();
 	}
 	
 	/**
@@ -83,6 +82,42 @@ public class Controller implements ListenerContainer {
 		game.tick(time);
 	}
 	
+	
+	private void SaveGame(String path) {
+		try {
+			FileOutputStream file=new FileOutputStream(path);
+			ObjectOutputStream oout=new ObjectOutputStream(file);
+			oout.writeObject(game);
+			oout.writeObject(time);
+			oout.close();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void LoadGame(String path) {
+		FileInputStream file;
+		try {
+			file = new FileInputStream(path);
+			ObjectInputStream oin = new ObjectInputStream(file);
+			game=(Game) oin.readObject();
+			time=(TimeSource) oin.readObject();
+			oin.close();
+			file.close();
+			game.addObserver(frame);
+			time.skipTick();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	
 	public class SidebarListener implements ActionListener {
@@ -115,36 +150,10 @@ public class Controller implements ListenerContainer {
 				}
 			}
 			else if(ac.equals("?")){
-				try {
-					FileOutputStream file=new FileOutputStream("save1.tdsv");
-					ObjectOutputStream oout=new ObjectOutputStream(file);
-					oout.writeObject(game);
-					oout.close();
-				}
-				catch(IOException e) {
-					e.printStackTrace();
-				}
+				SaveGame("save1.tdsv");
 			}
 			else if(ac.equals("firerate")){
-				FileInputStream file;
-				//TODO: fix time when loading
-				try {
-					file = new FileInputStream("save1.tdsv");
-					ObjectInputStream oin = new ObjectInputStream(file);
-					game=(Game) oin.readObject();
-					oin.close();
-					file.close();
-					game.addObserver(frame);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				LoadGame("save1.tdsv");
 			}
 			else{
 				//System.out.println(ac);

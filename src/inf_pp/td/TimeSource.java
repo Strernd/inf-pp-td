@@ -1,8 +1,6 @@
 package inf_pp.td;
 
-public class TimeSource {
-	
-	//TODO: should fail when saved?
+public class TimeSource implements java.io.Serializable {
 	
 	private long startTime=0;
 	private long lastTick=0;
