@@ -1,8 +1,10 @@
 package inf_pp.td.model;
 
+import inf_pp.td.TimeSource;
+
 import java.awt.geom.Point2D;
 
-public class BaseProjectile {
+public class BaseProjectile implements java.io.Serializable {
 	protected float moveSpeed;
 	protected Point2D.Float position;
 	protected int damage;
@@ -13,7 +15,7 @@ public class BaseProjectile {
 		damage=0;
 	}
 	
-	public boolean move(long deltaT){
+	public boolean move(TimeSource deltaT){
 		return true;
 	}
 

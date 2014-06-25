@@ -5,7 +5,7 @@ import inf_pp.td.intercom.PlayAreaWayHolder;
 import java.awt.Point;
 import java.util.ArrayList;
 
-public class PlayArea implements PlayAreaWayHolder{
+public class PlayArea implements PlayAreaWayHolder, java.io.Serializable{
 	
 	/**
 	 * the number of columns this playing field has

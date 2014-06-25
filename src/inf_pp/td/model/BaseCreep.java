@@ -1,5 +1,6 @@
 package inf_pp.td.model;
 
+import inf_pp.td.TimeSource;
 import inf_pp.td.Util;
 import inf_pp.td.model.Buff.Type;
 
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class BaseCreep {
+public class BaseCreep implements java.io.Serializable {
 	private Point2D.Float position;
 	private ArrayList<Point> waypoints;
 	private int nextWp;
@@ -33,24 +34,16 @@ public class BaseCreep {
 	
 	public float getMoveSpeed() {
 		//TODO: set parameter time to some valid variable
-		return (float) Util.getBuffedValue(baseMoveSpeed,Type.MOVE_SPEED,buffs,0);
+		return (float) Util.getBuffedValue(baseMoveSpeed,Type.MOVE_SPEED,buffs,null);
 	}
 	
 	
-	//TODO: improve this
-	private long lastTime=0;
 	/**
 	 * moves the creep by its speed
 	 */
-	public void move(long time, Game game) {
-		this.health=(int)Util.getBuffedValue(this.health, Buff.Type.DOT, buffs,time);
-		long deltaT;
-		if(lastTime!=0)
-			deltaT=time-lastTime;
-		else deltaT=0;
-		lastTime=time;
-		nextWp+=Util.moveI(getMoveSpeed()*deltaT,position,waypoints.subList(nextWp, waypoints.size()));
-		System.out.println(position);
+	public void move(TimeSource time, Game game) {
+		this.health=(int)Util.getBuffedValue(this.health, Buff.Type.DOT, buffs, time);
+		nextWp+=Util.moveI(getMoveSpeed()*time.getMillisSinceLastTick(),position,waypoints.subList(nextWp, waypoints.size()));
 		if(nextWp>=waypoints.size()){
 			game.takeLife();
 			kill();

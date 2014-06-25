@@ -1,8 +1,10 @@
 package inf_pp.td.model;
 
+import inf_pp.td.TimeSource;
+
 import java.awt.geom.Point2D;
 
-public class Slowjectile extends GuidedProjectile {
+public class Slowjectile extends GuidedProjectile{
 
 	/**
 	 * @param position
@@ -18,7 +20,7 @@ public class Slowjectile extends GuidedProjectile {
 		Buff b=new Buff(){
 
 			@Override
-			public Object apply(Object arg0, Type type, long time) {
+			public Object apply(Object arg0, Type type, TimeSource time) {
 				if(type==Buff.Type.MOVE_SPEED){
 					return (float)arg0 * 0.80f;
 				}

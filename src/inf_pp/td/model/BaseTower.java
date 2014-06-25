@@ -1,8 +1,10 @@
 package inf_pp.td.model;
 
+import inf_pp.td.TimeSource;
+
 import java.awt.Point;
 
-public class BaseTower {
+public class BaseTower implements java.io.Serializable {
 	protected Point position;
 	protected long cooldown;
 	protected float range;
@@ -27,9 +29,9 @@ public class BaseTower {
 		return 0;
 	}
 	
-	public void fire(Game game,long time){
-		if(time>cooldown){
-			cooldown=time+doFire(game);
+	public void fire(Game game, TimeSource time){
+		if(time.getMillisSinceStart()>cooldown){
+			cooldown=time.getMillisSinceStart()+doFire(game);
 		}
 	}
 	

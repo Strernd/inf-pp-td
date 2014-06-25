@@ -1,5 +1,6 @@
 package inf_pp.td.model;
 
+import inf_pp.td.TimeSource;
 import inf_pp.td.Util;
 
 import java.awt.Point;
@@ -27,11 +28,11 @@ public class GuidedProjectile extends BaseProjectile {
 	}
 
 	@Override
-	public boolean move(long deltaT) {
+	public boolean move(TimeSource time) {
 		List<Point2D.Float> t=new ArrayList<Point2D.Float>();
 		t.add(target.getPosition());
 		//hit?
-		if(Util.move(moveSpeed*deltaT,position,t)>0){
+		if(Util.move(moveSpeed*time.getMillisSinceLastTick(),position,t)>0){
 			hit();
 			return true;
 		}

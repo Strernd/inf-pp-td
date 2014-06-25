@@ -1,10 +1,11 @@
 package inf_pp.td.model;
 
 import inf_pp.td.model.Buff.Type;
+import inf_pp.td.TimeSource;
 
 import java.awt.geom.Point2D.Float;
 
-public class PoisonProjectile extends GuidedProjectile {
+public class PoisonProjectile extends GuidedProjectile{
 
 	public PoisonProjectile(Float position, BaseCreep target) {
 		super(position, target);
@@ -24,12 +25,12 @@ public class PoisonProjectile extends GuidedProjectile {
 			long lastTime=0;
 
 			@Override
-			public Object apply(Object arg0, Type type, long time) {
+			public Object apply(Object arg0, Type type, TimeSource time) {
 				if(type==Buff.Type.DOT){
 					int diff=0;
-					if(lastTime+500<time){
-						diff=5;
-						lastTime=time;
+					if(lastTime+100<time.getMillisSinceStart()){
+						diff=1;
+						lastTime=time.getMillisSinceStart();
 					}
 					return (int)arg0 - diff;
 				}
@@ -43,6 +44,6 @@ public class PoisonProjectile extends GuidedProjectile {
 			}
 			
 		};
-		target.addBuff("SlowjectileSlow",b);
+		target.addBuff("Poisoned",b);
 	}
 }

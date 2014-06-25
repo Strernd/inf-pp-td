@@ -1,13 +1,13 @@
 package inf_pp.td.model;
 
+import inf_pp.td.TimeSource;
 import inf_pp.td.intercom.PlayAreaWayHolder;
 
 import java.awt.Point;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 
-public class Game extends java.util.Observable{
+public class Game extends java.util.Observable implements java.io.Serializable{
 	
 	/**
 	 * the playing area with dimensions and all teh waypoints 
@@ -55,20 +55,20 @@ public class Game extends java.util.Observable{
 	}
 	
 	
-	private long lastTime=System.currentTimeMillis();
+	//private long lastTime=System.currentTimeMillis();
 	/**
 	 * the game's "tick"-method, call once each tick to
 	 * let the model do all its stuff and notify the view about changes
-	 * @param time the time in ms that have passed since the beginning of the game
+	 * @param time a TimeSource-Object to get the current time from
 	 */
-	public void tick(long time){
+	public void tick(TimeSource time){
 		//TODO: implement this shit
 		//spawner.spawn
 		/*for(BaseCreep c : creeps){
 			if(c.move(time-lastTime))
 				creeps.remove(c);
 		}*/
-		long deltaT=time-lastTime;
+		//long deltaT=time-lastTime;
 		for(Iterator<BaseCreep> it=creeps.iterator();it.hasNext();){
 			BaseCreep c=it.next();
 			c.move(time,this);
@@ -80,14 +80,13 @@ public class Game extends java.util.Observable{
 			t.fire(this,time);
 		}
 		for(Iterator<BaseProjectile> it=projectiles.iterator();it.hasNext();){
-			if(it.next().move(deltaT)){
+			if(it.next().move(time)){
 				it.remove();
 			}
 		}
 		creeps.addAll(spawner.spawnCreeps(time));
 		this.setChanged();
 		this.notifyObservers(this);
-		lastTime=time;
 	}
 
 
