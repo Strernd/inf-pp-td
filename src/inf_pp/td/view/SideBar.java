@@ -59,9 +59,15 @@ public class SideBar extends JPanel {
 		
 		JPanel uPane=new JPanel();
 		uPane.setLayout(new GridLayout(2,2,4,4));
-		uPane.add(new JButton("Damage"));
-		uPane.add(new JButton("Range"));
-		uPane.add(new JButton("Firerate"));
+		b=new JButton("Damage");
+		b.setActionCommand("upgrade_damage");
+		uPane.add(b);
+		b=new JButton("Range");
+		b.setActionCommand("upgrade_range");
+		uPane.add(b);
+		b=new JButton("Fire Rate");
+		b.setActionCommand("upgrade_firerate");
+		uPane.add(b);
 		uPane.add(new JButton("?"));
 		uPane.setPreferredSize(new Dimension(160,160));
 		uPane.setMaximumSize(new Dimension(160,160));

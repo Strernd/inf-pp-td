@@ -115,11 +115,15 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 	 * @param position where to build the tower
 	 * @throws ArrayIndexOutOfBoundsException if the tower is to be placed outside the playing field
 	 */
-	public void buildTower(TowerFactory.TowerType type, Point position) throws ArrayIndexOutOfBoundsException{
+	public void buildTower(TowerType type, Point position) throws ArrayIndexOutOfBoundsException{
 		if(position.x<0||position.y<0||position.x>=field.getWidth()||position.y>=field.getHeight())
 			throw new ArrayIndexOutOfBoundsException();
 		for (BaseTower t: towers){
 			if(t.getPosition().equals(position))
+				return;
+		}
+		for (Point p : field.getWaypoints()){
+			if(p.equals(position))
 				return;
 		}
 		towers.add(TowerFactory.buildTower(type, new Point(position)));
@@ -145,4 +149,17 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 		takeLife(1);
 	}
 	
+	public void upgradeTower(UpgradeType type, Point position){
+		BaseTower t=null;
+		for (BaseTower ti: towers){
+			if(ti.getPosition().equals(position)){
+				t=ti;
+				break;
+			}
+		}
+		//TODO: Exception?
+		if(t==null)
+			return;
+		t.upgrade(type);
+	}
 }

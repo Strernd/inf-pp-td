@@ -4,13 +4,6 @@ import java.awt.Point;
 
 public final class TowerFactory {
 	/**
-	 * All available tower types are listed here.
-	 */
-	public enum TowerType {
-		DIRECT_DMG,AREA_OF_EFFECT,SLOW,P
-	}
-	
-	/**
 	 * Create an instance of a tower.
 	 * The class of the tower and possibly any values to give to the tower
 	 * will be determined by the type-parameter.

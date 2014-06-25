@@ -10,6 +10,8 @@ public class BaseTower implements java.io.Serializable {
 	protected float range;
 	protected int fireRate;
 	
+	protected UpgradePolicy upgradePolicy;
+	
 	
 	/**
 	 * check if this tower is able to fire at the moment
@@ -48,5 +50,9 @@ public class BaseTower implements java.io.Serializable {
 	 */
 	public void setPosition(Point position) {
 		this.position=position;
+	}
+
+	public void upgrade(UpgradeType type) {
+		upgradePolicy.upgrade(type);
 	}
 }

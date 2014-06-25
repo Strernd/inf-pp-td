@@ -5,7 +5,8 @@ import inf_pp.td.intercom.ListenerContainer;
 import inf_pp.td.model.BaseTower;
 import inf_pp.td.model.Game;
 import inf_pp.td.model.TowerFactory;
-import inf_pp.td.model.TowerFactory.TowerType;
+import inf_pp.td.model.TowerType;
+import inf_pp.td.model.UpgradeType;
 import inf_pp.td.view.Frame;
 
 import java.awt.Point;
@@ -148,6 +149,22 @@ public class Controller implements ListenerContainer {
 					}catch(ArrayIndexOutOfBoundsException e){
 					}
 				}
+			}
+			else if(ac.startsWith("upgrade_")){
+				UpgradeType type=null;
+				switch(ac.substring("upgrade_".length())){
+				case "damage":
+					type=UpgradeType.UPGRADE_DAMAGE;
+					break;
+				case "range":
+					type=UpgradeType.UPGRADE_RANGE;
+					break;
+				case "firerate":
+					type=UpgradeType.UPGRADE_FIRERATE;
+					break;
+				}
+				if(type!=null)
+					game.upgradeTower(type,selectedField);
 			}
 			else if(ac.equals("?")){
 				SaveGame("save1.tdsv");

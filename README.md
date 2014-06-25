@@ -18,3 +18,4 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - Threads?
 - Model und View stärker durch Interfaces Trennen
 - ``instanceof`` vermeiden wenn möglich
+- Creeps und Tower identifizieren
