@@ -8,6 +8,7 @@ import java.util.HashSet;
 public class SlowTower extends BaseTower {
 	public SlowTower(){
 		range=2.5f;
+		upgradePolicy=new ExponentialUpgrade();
 	}
 
 	@Override

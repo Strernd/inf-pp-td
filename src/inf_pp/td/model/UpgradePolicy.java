@@ -1,10 +1,8 @@
 package inf_pp.td.model;
 
-public interface UpgradePolicy {
+public interface UpgradePolicy extends java.io.Serializable{
 	
 	void upgrade(UpgradeType type);
 	
-	float getRange();
-	float getDamage();
-	float getCooldown();
+	Object getValue(UpgradeType type);
 }

@@ -63,7 +63,7 @@ public class BaseCreep implements java.io.Serializable {
 		return this.health<=0;
 	}
 	public float getHealthPercentage(){
-		return (float)(health)/(float)maxHealth;
+		return  Math.max((float)(health)/(float)maxHealth,0);
 	}
 	protected void kill(){
 		health=0;

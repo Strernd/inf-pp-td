@@ -4,10 +4,13 @@ import inf_pp.td.TimeSource;
 
 import java.awt.Point;
 
-public class BaseTower implements java.io.Serializable {
+public abstract class BaseTower implements java.io.Serializable {
 	protected Point position;
+	@Deprecated
 	protected long cooldown;
+	@Deprecated
 	protected float range;
+	@Deprecated
 	protected int fireRate;
 	
 	protected UpgradePolicy upgradePolicy;
@@ -53,6 +56,7 @@ public class BaseTower implements java.io.Serializable {
 	}
 
 	public void upgrade(UpgradeType type) {
-		upgradePolicy.upgrade(type);
+		if(upgradePolicy!=null)
+			upgradePolicy.upgrade(type);
 	}
 }

@@ -154,13 +154,13 @@ public class Controller implements ListenerContainer {
 				UpgradeType type=null;
 				switch(ac.substring("upgrade_".length())){
 				case "damage":
-					type=UpgradeType.UPGRADE_DAMAGE;
+					type=UpgradeType.DAMAGE;
 					break;
 				case "range":
-					type=UpgradeType.UPGRADE_RANGE;
+					type=UpgradeType.RANGE;
 					break;
 				case "firerate":
-					type=UpgradeType.UPGRADE_FIRERATE;
+					type=UpgradeType.FIRERATE;
 					break;
 				}
 				if(type!=null)
