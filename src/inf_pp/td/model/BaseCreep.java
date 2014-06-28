@@ -32,14 +32,22 @@ public class BaseCreep implements java.io.Serializable {
 		this.position=new Point2D.Float(tP.x,tP.y);
 	}
 	
+	/**
+	 * Retrieves the moving speed of a creep
+	 * 
+	 * @return Moving Speed
+	 */
 	public float getMoveSpeed() {
 		//TODO: set parameter time to some valid variable
 		return (float) Util.getBuffedValue(baseMoveSpeed,Type.MOVE_SPEED,buffs,null);
 	}
 	
-	
+
 	/**
 	 * moves the creep by its speed
+	 * 
+	 * @param time
+	 * @param game Instance of the Game
 	 */
 	public void move(TimeSource time, Game game) {
 		this.health=(int)Util.getBuffedValue(this.health, Buff.Type.DOT, buffs, time);
@@ -51,26 +59,65 @@ public class BaseCreep implements java.io.Serializable {
 		//return nextWp>=waypoints.size();
 	}
 	
+	/**
+	 * Returns the current position of a creep
+	 * 
+	 * @return position
+	 */
 	public Point2D.Float getPosition(){
 		return position;
 	}
 
+	/**
+	 * Substract damage from creeps health
+	 * 
+	 * @param dmg Amount Damage dealt
+	 */
 	public void doDamage(int dmg) {
 		this.health-=dmg;		
 	}
 	
+	/**
+	 * Returns if the creep is dead or not
+	 * 
+	 * @return is the creep dead?
+	 */
 	public boolean isDead(){
 		return this.health<=0;
 	}
+	
+	/**
+	 * Returns the health in absolute value
+	 * 
+	 * @return Health in Factor of maximum health
+	 */
 	public float getHealthPercentage(){
 		return  Math.max((float)(health)/(float)maxHealth,0);
 	}
+	
+	/**
+	 * Sets the creeps health to zero
+	 */
 	protected void kill(){
 		health=0;
 	}
+	
+	/**
+	 * Adds buff to the creep 
+	 * 
+	 * @param id
+	 * @param b
+	 */
 	public void addBuff(String id,Buff b){
 		buffs.put(id,b);
 	}
+	
+	/**
+	 * Returns whether the creep has a certain buff or not
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public boolean hasBuff(String id){
 		return buffs.containsKey(id);
 	}
