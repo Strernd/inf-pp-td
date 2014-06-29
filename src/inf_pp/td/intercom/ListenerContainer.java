@@ -1,6 +1,7 @@
 package inf_pp.td.intercom;
 
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 
 import javax.swing.event.MouseInputListener;
 
@@ -13,5 +14,10 @@ public interface ListenerContainer {
 	/**
 	 * @return an ActionListener-Instance to be used by all build and upgrade buttons
 	 */
-	public ActionListener getButtonListener();
+	public ActionListener getActionListener();
+	
+	/**
+	 * @return a WindowListener to be used for window-related actions
+	 */
+	public WindowListener getWindowListener();
 }

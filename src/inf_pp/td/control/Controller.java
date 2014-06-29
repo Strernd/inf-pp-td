@@ -9,10 +9,16 @@ import inf_pp.td.model.TowerType;
 import inf_pp.td.model.UpgradeType;
 import inf_pp.td.view.Frame;
 
+import java.awt.Component;
+import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -20,16 +26,23 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Controller implements ListenerContainer {
 	
 	private FieldSelectListener fieldListener;
 	private SidebarListener sbListener;
+	private WindowListener wListener=new TDWindowListener();
 	private Point selectedField=new Point(-1,-1);
 	private Frame frame;
+	private JFileChooser fc;
 	
 	int tickrate;
 	
@@ -45,13 +58,22 @@ public class Controller implements ListenerContainer {
 	}
 
 	@Override
-	public ActionListener getButtonListener() {
+	public ActionListener getActionListener() {
 		return sbListener;
+	}
+	
+	@Override
+	public WindowListener getWindowListener() {
+		return wListener;
 	}
 
 	public Controller() {
 		fieldListener = new FieldSelectListener();
 		sbListener = new SidebarListener();
+		fc=new JFileChooser();
+		fc.setFileFilter(new FileNameExtensionFilter("Tower-Defense Speicherstände", "tdsv"));
+		fc.setAcceptAllFileFilterUsed(false);
+		//TODO: set directory?
 	}
 	
 	/**
@@ -67,6 +89,7 @@ public class Controller implements ListenerContainer {
 	public void setView(Frame frame) {
 		this.frame=frame;
 		frame.addListener(this);
+		frame.setDefaultCloseOperation(Frame.DO_NOTHING_ON_CLOSE);
 		if(game!=null)
 			game.addObserver(frame);
 	}
@@ -84,7 +107,7 @@ public class Controller implements ListenerContainer {
 	}
 	
 	
-	private void SaveGame(String path) {
+	private void saveGame(String path) {
 		try {
 			FileOutputStream file=new FileOutputStream(path);
 			ObjectOutputStream oout=new ObjectOutputStream(file);
@@ -97,7 +120,7 @@ public class Controller implements ListenerContainer {
 		}
 	}
 	
-	private void LoadGame(String path) {
+	private void loadGame(String path) {
 		FileInputStream file;
 		try {
 			file = new FileInputStream(path);
@@ -119,13 +142,54 @@ public class Controller implements ListenerContainer {
 			e.printStackTrace();
 		}
 	}
+	
+	private void saveWithDialog() {
+		boolean p=isPaused();
+		pause(true);
+		if(fc.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
+			saveGame(fc.getSelectedFile().getAbsolutePath());
+		pause(p);
+	}
+	
+	private void loadWithDialog() {
+		boolean p=isPaused();
+		pause(true);
+		if(fc.showOpenDialog(null)==JFileChooser.APPROVE_OPTION)
+			loadGame(fc.getSelectedFile().getAbsolutePath());
+		else
+			pause(p);
+	}
+	
+	public void pause(boolean p) {
+		if(p==paused)
+			return;
+		paused=p;
+		if(!paused)
+			time.skipTick();
+	}
+	
+	public void togglePause() {
+		pause(!paused);
+	}
+	
+	public boolean isPaused() {
+		return paused;
+	}
+	
+	public void askExit() {
+		boolean p=isPaused();
+		pause(true);
+		if(JOptionPane.showConfirmDialog(null,"Wirklich Beenden?","test",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
+			System.exit(0);
+		else
+			pause(p);
+	}
 
 	
-	public class SidebarListener implements ActionListener {
+	private class SidebarListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ev) {
-			//TODO: add upgrade...
 			String ac=ev.getActionCommand().toLowerCase();
 			if(ac.startsWith("build_")) {
 				TowerType type=null;
@@ -166,17 +230,19 @@ public class Controller implements ListenerContainer {
 				if(type!=null)
 					game.upgradeTower(type,selectedField);
 			}
-			else if(ac.equals("?")){
-				SaveGame("save1.tdsv");
+			else if(ac.equals("pause")) {
+				togglePause();
 			}
-			else if(ac.equals("firerate")){
-				LoadGame("save1.tdsv");
+			else if(ac.equals("save")) {
+				saveWithDialog();
 			}
-			else{
-				//System.out.println(ac);
-				paused=!paused;
-				if(!paused)
-					time.skipTick();
+			else if(ac.equals("load")) {
+				loadWithDialog();
+			}
+			else if(ac.equals("exit")) {
+				askExit();
+			}
+			else{				
 			}
 		}
 
@@ -184,7 +250,7 @@ public class Controller implements ListenerContainer {
 	
 	
 	
-	public class FieldSelectListener extends MouseInputAdapter {		
+	private class FieldSelectListener extends MouseInputAdapter {		
 		@Override
 		public void mousePressed(MouseEvent ev) {
 			int x=ev.getX()*game.getPlayArea().getWidth()/((JPanel)ev.getSource()).getWidth();
@@ -195,4 +261,13 @@ public class Controller implements ListenerContainer {
 		}		
 	}
 
+	public class TDWindowListener extends WindowAdapter {
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			System.out.println("exit?");
+			askExit();
+		}
+		
+	}
 }

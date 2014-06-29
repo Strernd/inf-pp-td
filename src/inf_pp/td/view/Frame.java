@@ -6,10 +6,16 @@ import inf_pp.td.model.Game;
 import java.awt.BorderLayout;
 import java.util.Observable;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 
 /**
@@ -27,6 +33,9 @@ public class Frame extends JFrame implements java.util.Observer {
 	 * a panel to hold all buttons and labels in the sidebar
 	 */
 	private SideBar sidebar;
+	
+	private JMenuBar menuBar;
+	
 	private static final long serialVersionUID = 8781344923489487475L;
 	
 	//private Game game;
@@ -34,13 +43,7 @@ public class Frame extends JFrame implements java.util.Observer {
 	public Frame(Game game){
 		//this.game=game;
 		//Game pa=game;
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		JPanel mainPanel= new JPanel();
 		this.add(mainPanel);
 		BorderLayout layout=new BorderLayout();
@@ -51,6 +54,26 @@ public class Frame extends JFrame implements java.util.Observer {
 		
 		sidebar=new SideBar();
 		mainPanel.add(sidebar,BorderLayout.EAST);
+		
+		menuBar=new JMenuBar();
+		JMenu gameMenu=new JMenu("Spiel");
+		JMenuItem item=new JMenuItem("Pause/Weiter");
+		item.setActionCommand("pause");
+		gameMenu.add(item);
+		item=new JMenuItem("Speichern");
+		item.setActionCommand("save");
+		gameMenu.add(item);
+		item=new JMenuItem("Laden");
+		item.setActionCommand("load");
+		gameMenu.add(item);
+		item=new JMenuItem("Beenden");
+		item.setActionCommand("exit");
+		gameMenu.add(item);
+		menuBar.add(gameMenu);
+		//JMenuItem men=new JMenuItem("Pause");
+		//men.setActionCommand("pause");
+		//menuBar.add(men);
+		this.setJMenuBar(menuBar);
 	}
 
 	@Override
@@ -75,7 +98,17 @@ public class Frame extends JFrame implements java.util.Observer {
 	 */
 	public void addListener(ListenerContainer l) {
 		playArea.addMouseListener(l.getFieldSelectListener());
-		sidebar.addActionListener(l.getButtonListener());
+		sidebar.addActionListener(l.getActionListener());
+		this.addWindowListener(l.getWindowListener());
+		for(int i = 0; i<menuBar.getMenuCount();++i) {
+			JMenu m=menuBar.getMenu(i);
+			if(m==null)
+				continue;
+			m.addActionListener(l.getActionListener());
+			for(int j = 0;j<m.getItemCount();++j) {
+				m.getItem(j).addActionListener(l.getActionListener());
+			}
+		}
 		
 	}
 

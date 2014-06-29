@@ -70,31 +70,30 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 				creeps.remove(c);
 		}*/
 		//long deltaT=time-lastTime;
-		if(this.getLives() > 0){
-			for(Iterator<BaseCreep> it=creeps.iterator();it.hasNext();){
-				BaseCreep c=it.next();
-				c.move(time,this);
-				if(c.isDead()){
-					it.remove();
-				}
-			}
-			for(BaseTower t: towers){
-				t.fire(this,time);
-			}
-			for(Iterator<BaseProjectile> it=projectiles.iterator();it.hasNext();){
-				if(it.next().move(time)){
-					it.remove();
-				}
-			}
-			creeps.addAll(spawner.spawnCreeps(time));
-			this.setChanged();
-			this.notifyObservers(this);
+		if(this.getLives() <= 0){
+			this.running=false;
+			return;
 		}
-		else{
-			this.running = false;
-			//TODO: Show message: You lost
-			
+		
+		for(Iterator<BaseCreep> it=creeps.iterator();it.hasNext();){
+			BaseCreep c=it.next();
+			c.move(time,this);
+			if(c.isDead()){
+				it.remove();
+			}
 		}
+		for(BaseTower t: towers){
+			t.fire(this,time);
+		}
+		for(Iterator<BaseProjectile> it=projectiles.iterator();it.hasNext();){
+			if(it.next().move(time)){
+				it.remove();
+			}
+		}
+		creeps.addAll(spawner.spawnCreeps(time));
+		this.setChanged();
+		this.notifyObservers(this);
+
 	}
 
 

@@ -1,14 +1,27 @@
 package inf_pp.td;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import inf_pp.td.control.Controller;
 import inf_pp.td.model.Game;
 import inf_pp.td.view.Frame;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main {
 
 	public static void main(String[] args) {
+		
+		//Let's look native
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 		
 		Game game=new Game(20);
 		final Controller ctrl=new Controller();
@@ -17,7 +30,7 @@ public class Main {
 		frame.setSize(640, 480);
 		frame.setVisible(true);
 		//TODO: do we need to do some cleanup?
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		//frame.setModel(game);
 		//frame.addListener(ctrl);
 		
