@@ -5,13 +5,16 @@ import inf_pp.td.TimeSource;
 import java.awt.geom.Point2D;
 
 public class Slowjectile extends GuidedProjectile{
+	
+	final private float slowFactor;
 
 	/**
 	 * @param position
 	 * @param target
 	 */
-	public Slowjectile(Point2D.Float position, BaseCreep target) {
+	public Slowjectile(Point2D.Float position, BaseCreep target, float slowFactor) {
 		super(position,target);
+		this.slowFactor=slowFactor;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -22,7 +25,7 @@ public class Slowjectile extends GuidedProjectile{
 			@Override
 			public Object apply(Object arg0, Type type, TimeSource time) {
 				if(type==Buff.Type.MOVE_SPEED){
-					return (float)arg0 * 0.80f;
+					return (float)arg0 * slowFactor;
 				}
 				return arg0;
 			}

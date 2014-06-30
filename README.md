@@ -10,7 +10,7 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - ~~Speichern und Laden~~
 - ~~Menu einbauen~~
 - Sterben/Verlieren können
-- Upgrade-Mechanik
+- ~~Upgrade-Mechanik~~
 - Gold
 - Creepwaves organisieren
 - ~~Einheitlicher Zeitgeber~~

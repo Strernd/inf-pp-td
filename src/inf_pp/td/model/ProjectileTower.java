@@ -8,7 +8,11 @@ public class ProjectileTower extends BaseTower {
 	
 	public ProjectileTower(){
 		//range=2.5f;
-		upgradePolicy=new ExponentialUpgrade();
+		ExponentialUpgrade up=new ExponentialUpgrade();
+		upgradePolicy=up;
+		up.setFunction(UpgradeType.DAMAGE,new ExponentialUpgrade.ExpFun(-5,1.2f,9));
+		up.setFunction(UpgradeType.RANGE,new ExponentialUpgrade.ExpFun(.5f,1.1f,1));
+		up.setFunction(UpgradeType.FIRERATE,new ExponentialUpgrade.ExpFun(333,0.75f,667));
 	}
 
 	@Override
@@ -16,7 +20,7 @@ public class ProjectileTower extends BaseTower {
 		BaseCreep minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
 		//System.out.println((float)upgradePolicy.getValue(UpgradeType.RANGE));
 
-		System.out.println((int)Math.round((float)upgradePolicy.getValue(UpgradeType.DAMAGE)));
+		//System.out.println((int)Math.round((float)upgradePolicy.getValue(UpgradeType.DAMAGE)));
 		if(minCreep==null)
 			return 0;
 		GuidedProjectile p=new GuidedProjectile(new Point2D.Float(position.x,position.y),minCreep,0.002f,(int)Math.round((float)upgradePolicy.getValue(UpgradeType.DAMAGE)));

@@ -6,18 +6,23 @@ import inf_pp.td.Util;
 
 public class AreaTower extends BaseTower {
 	public AreaTower(){
-		range=1.5f;
+		ExponentialUpgrade up=new ExponentialUpgrade();
+		upgradePolicy=up;
+		up.setFunction(UpgradeType.DAMAGE,new ExponentialUpgrade.ExpFun(-5,1.3f,8));
+		up.setFunction(UpgradeType.RANGE,new ExponentialUpgrade.ExpFun(.2f,1.1f,1));
+		up.setFunction(UpgradeType.FIRERATE,new ExponentialUpgrade.ExpFun(333,0.75f,667));
 	}
 
 	@Override
 	public int doFire(Game game) {
 		boolean hasFired=false;
 		for (BaseCreep c : game.getCreeps()) {
-			if(c.getPosition().distance(this.position)<this.range) {
-				c.doDamage(10);
+			if(c.getPosition().distance(this.position)<(float)upgradePolicy.getValue(UpgradeType.RANGE)) {
+				c.doDamage(((Float)upgradePolicy.getValue(UpgradeType.DAMAGE)).intValue());
 				hasFired=true;
+				//System.out.println(((Float)upgradePolicy.getValue(UpgradeType.DAMAGE)).intValue());
 			}
 		}
-		return hasFired?1000:0;
+		return hasFired?((Float)upgradePolicy.getValue(UpgradeType.FIRERATE)).intValue():0;
 	}
 }
