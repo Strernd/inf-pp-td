@@ -28,12 +28,12 @@ public class GuidedProjectile extends BaseProjectile {
 	}
 
 	@Override
-	public boolean move(TimeSource time) {
+	public boolean move(TimeSource time, Game game) {
 		List<Point2D.Float> t=new ArrayList<Point2D.Float>();
 		t.add(target.getPosition());
 		//hit?
 		if(Util.move(moveSpeed*time.getMillisSinceLastTick(),position,t)>0){
-			hit();
+			hit(game);
 			return true;
 		}
 		else
@@ -41,7 +41,7 @@ public class GuidedProjectile extends BaseProjectile {
 		//return Util.move(moveSpeed*deltaT,position,t)>0;
 	}
 	
-	protected void hit(){
-		target.doDamage(damage);
+	protected void hit(Game game){
+		target.doDamage(damage,game);
 	}
 }

@@ -17,9 +17,10 @@ public class BaseCreep implements java.io.Serializable {
 	private int health=100;
 	private int maxHealth=100;
 	private float baseMoveSpeed;
+	private int gold=1;
 	private HashMap<String,Buff> buffs=new HashMap<String,Buff>(); 
 	
-	BaseCreep(ArrayList<Point> waypoints, int maxHealth, float baseMoveSpeed){
+	BaseCreep(ArrayList<Point> waypoints, int maxHealth, float baseMoveSpeed, int goldWorth){
 		if(waypoints==null)
 			throw new NullPointerException();
 		else if(waypoints.size()<2)
@@ -30,6 +31,7 @@ public class BaseCreep implements java.io.Serializable {
 		this.nextWp=1;
 		Point tP=waypoints.get(0);
 		this.position=new Point2D.Float(tP.x,tP.y);
+		this.gold=goldWorth;
 	}
 	
 	/**
@@ -73,8 +75,11 @@ public class BaseCreep implements java.io.Serializable {
 	 * 
 	 * @param dmg Amount Damage dealt
 	 */
-	public void doDamage(int dmg) {
-		this.health-=dmg;		
+	public void doDamage(int dmg, Game game) {
+		this.health-=dmg;
+		if(isDead()){ //Did we just kill it?
+			game.addGold(gold);
+		}
 	}
 	
 	/**

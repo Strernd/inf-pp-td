@@ -18,7 +18,7 @@ public class AreaTower extends BaseTower {
 		boolean hasFired=false;
 		for (BaseCreep c : game.getCreeps()) {
 			if(c.getPosition().distance(this.position)<(float)upgradePolicy.getValue(UpgradeType.RANGE)) {
-				c.doDamage(((Float)upgradePolicy.getValue(UpgradeType.DAMAGE)).intValue());
+				c.doDamage(((Float)upgradePolicy.getValue(UpgradeType.DAMAGE)).intValue(),game);
 				hasFired=true;
 				//System.out.println(((Float)upgradePolicy.getValue(UpgradeType.DAMAGE)).intValue());
 			}

@@ -11,7 +11,7 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - ~~Menu einbauen~~
 - Sterben/Verlieren können
 - ~~Upgrade-Mechanik~~
-- Gold
+- ~~Gold~~
 - Creepwaves organisieren
 - ~~Einheitlicher Zeitgeber~~
 - ~~Pausieren~~
@@ -20,3 +20,5 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - ``instanceof`` vermeiden wenn möglich
 - Creeps und Tower identifizieren
 - Grafiken für Projektile?
+- Übergabe des Game-Objektes vermeiden?
+- BALANCING!!!

@@ -43,7 +43,7 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 	/**
 	 * the amount of gold that the player currently has
 	 */
-	private int gold=100;
+	private int gold=100000; //TODO: Just for debug
 	/**
 	 * the remaining lives the player has
 	 */
@@ -63,8 +63,7 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 	 * @param time a TimeSource-Object to get the current time from
 	 */
 	public void tick(TimeSource time){
-		//TODO: get some flat gold
-		//long deltaT=time-lastTime;
+		addBasicIncome(time);
 		if(this.getLives() <= 0){
 			this.running=false;
 			return;
@@ -81,7 +80,7 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 			t.fire(this,time);
 		}
 		for(Iterator<BaseProjectile> it=projectiles.iterator();it.hasNext();){
-			if(it.next().move(time)){
+			if(it.next().move(time, this)){
 				it.remove();
 			}
 		}
@@ -175,6 +174,21 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 		t.upgrade(type);
 	}
 
+	
+	private long lastIncome=0;
+	private void addBasicIncome(TimeSource time) {
+		if(lastIncome+1000<time.getMillisSinceStart()){
+			lastIncome=time.getMillisSinceStart();
+			float now=lastIncome/30000; //Half-Minutes since Start
+			gold+=(int)(Math.pow(1.5f,now)*5);
+			//TODO: tweak this formula
+		}
+	}
+	
+	void addGold(int amount) {
+		gold+=amount;
+		System.out.println("Gold added");
+	}
 
 	public int getGold() {
 		return gold;

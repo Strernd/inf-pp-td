@@ -15,7 +15,7 @@ public class BaseProjectile implements java.io.Serializable {
 		damage=0;
 	}
 	
-	public boolean move(TimeSource deltaT){
+	public boolean move(TimeSource deltaT, Game game){
 		return true;
 	}
 

@@ -22,7 +22,7 @@ public class PoisonProjectile extends GuidedProjectile{
 	}
 
 	@Override
-	protected void hit() {
+	protected void hit(Game game) {
 		Buff b=new Buff(){
 			
 			long lastTime=0;

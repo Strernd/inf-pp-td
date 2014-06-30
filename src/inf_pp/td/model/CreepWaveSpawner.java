@@ -20,7 +20,7 @@ public class CreepWaveSpawner implements java.io.Serializable {
 		LinkedList<BaseCreep> result=new LinkedList<BaseCreep>();
 		//TODO: differentiate...
 		if(cNum<=50 && time.getMillisSinceStart()>lastCreep+1000){
-			BaseCreep c=new BaseCreep(waypoints,100,0.001f);
+			BaseCreep c=new BaseCreep(waypoints,100,0.001f,100);
 			result.add(c);
 			cNum++;
 			lastCreep=time.getMillisSinceStart();

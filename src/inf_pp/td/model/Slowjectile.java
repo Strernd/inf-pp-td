@@ -19,7 +19,7 @@ public class Slowjectile extends GuidedProjectile{
 	}
 	
 	@Override
-	protected void hit() {
+	protected void hit(Game game) {
 		Buff b=new Buff(){
 
 			@Override
