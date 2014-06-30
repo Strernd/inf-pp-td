@@ -118,5 +118,6 @@ public class SideBar extends JPanel {
 	
 	void updateState(Game game){
 		livesLabel.setText("Lives: "+game.getLives());
+		goldLabel.setText("Gold: "+game.getGold());
 	}
 }

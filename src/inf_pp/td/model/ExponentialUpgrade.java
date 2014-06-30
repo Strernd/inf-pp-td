@@ -56,6 +56,7 @@ public class ExponentialUpgrade implements UpgradePolicy {
 		}
 	}
 	
+	@Override
 	public Object getValue(UpgradeType type){
 		try{
 			return upgrader.get(type).getValue();
@@ -63,6 +64,11 @@ public class ExponentialUpgrade implements UpgradePolicy {
 			//TODO: display Error?
 			return 0;
 		}
+	}
+	
+	@Override
+	public int getLevel(UpgradeType type){
+		return upgrader.get(type).level;
 	}
 	
 	public void setFunction(UpgradeType type, ExpFun f) {

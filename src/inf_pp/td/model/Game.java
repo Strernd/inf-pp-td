@@ -43,7 +43,7 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 	/**
 	 * the amount of gold that the player currently has
 	 */
-	private int gold;
+	private int gold=100;
 	/**
 	 * the remaining lives the player has
 	 */
@@ -56,19 +56,14 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 	}
 	
 	
-	//private long lastTime=System.currentTimeMillis();
+	//private long lastGold=System.currentTimeMillis();
 	/**
 	 * the game's "tick"-method, call once each tick to
 	 * let the model do all its stuff and notify the view about changes
 	 * @param time a TimeSource-Object to get the current time from
 	 */
 	public void tick(TimeSource time){
-		//TODO: implement this shit
-		//spawner.spawn
-		/*for(BaseCreep c : creeps){
-			if(c.move(time-lastTime))
-				creeps.remove(c);
-		}*/
+		//TODO: get some flat gold
 		//long deltaT=time-lastTime;
 		if(this.getLives() <= 0){
 			this.running=false;
@@ -123,6 +118,10 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 	 * @throws ArrayIndexOutOfBoundsException if the tower is to be placed outside the playing field
 	 */
 	public void buildTower(TowerType type, Point position) throws ArrayIndexOutOfBoundsException{
+		int price=PriceProvider.getTowerPrice(type);
+		if(price>gold)
+			return;
+		//TODO: different exception?
 		if(position.x<0||position.y<0||position.x>=field.getWidth()||position.y>=field.getHeight())
 			throw new ArrayIndexOutOfBoundsException();
 		for (BaseTower t: towers){
@@ -133,6 +132,7 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 			if(p.equals(position))
 				return;
 		}
+		gold-=price;
 		towers.add(TowerFactory.buildTower(type, new Point(position)));
 	}
 	
@@ -167,6 +167,16 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 		//TODO: Exception?
 		if(t==null)
 			return;
+		//TODO: Exception
+		int price=PriceProvider.getUpgradePrice(t,type);
+		if(price>gold)
+			return;
+		gold-=price;
 		t.upgrade(type);
+	}
+
+
+	public int getGold() {
+		return gold;
 	}
 }

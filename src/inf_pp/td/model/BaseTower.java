@@ -21,6 +21,7 @@ public abstract class BaseTower implements java.io.Serializable {
 	 * @return true if tower can fire
 	 * @return false if tower can not fire
 	 */
+	@Deprecated
 	public boolean canFire(){
 		//TODO: remove?
 		return cooldown<System.currentTimeMillis();
@@ -58,5 +59,12 @@ public abstract class BaseTower implements java.io.Serializable {
 	public void upgrade(UpgradeType type) {
 		if(upgradePolicy!=null)
 			upgradePolicy.upgrade(type);
+	}
+	
+	public int getLevel(UpgradeType type) {
+		if(upgradePolicy!=null)
+			return upgradePolicy.getLevel(type);
+		else
+			return 0;
 	}
 }
