@@ -117,14 +117,28 @@ public class PlayArea extends JPanel {
 		for(BaseTower t: towers){
 			Tiles.TileId gt=null;
 			//TODO: improve this, this is ugly/impossible to separate from model
-			if(t instanceof ProjectileTower)
+			/*if(t instanceof ProjectileTower)
 				gt=Tiles.TileId.TOWER_DD;
 			else if(t instanceof AreaTower)
 				gt=Tiles.TileId.TOWER_AE;
 			else if(t instanceof SlowTower)
 				gt=Tiles.TileId.TOWER_SL;
 			else if(t instanceof PoisonTower)
+				gt=Tiles.TileId.TOWER_P;*/
+			switch(t.getType()){
+			case DIRECT_DMG:
+				gt=Tiles.TileId.TOWER_DD;
+				break;
+			case AREA_OF_EFFECT:
+				gt=Tiles.TileId.TOWER_AE;
+				break;
+			case SLOW:
+				gt=Tiles.TileId.TOWER_SL;
+				break;
+			case POISON:
 				gt=Tiles.TileId.TOWER_P;
+				break;
+			}
 			//TODO: do some fallback
 			if(gt==null)
 				continue;

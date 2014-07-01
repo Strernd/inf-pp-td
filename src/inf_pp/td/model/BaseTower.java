@@ -1,12 +1,14 @@
 package inf_pp.td.model;
 
 import inf_pp.td.TimeSource;
+import inf_pp.td.intercom.TowerType;
 
 import java.awt.Point;
 
 public abstract class BaseTower implements java.io.Serializable {
+	protected TowerType towerType=null;
+	
 	protected Point position;
-	@Deprecated
 	protected long cooldown;
 	@Deprecated
 	protected float range;
@@ -14,6 +16,7 @@ public abstract class BaseTower implements java.io.Serializable {
 	protected int fireRate;
 	
 	protected UpgradePolicy upgradePolicy;
+	
 	
 	
 	/**
@@ -66,5 +69,9 @@ public abstract class BaseTower implements java.io.Serializable {
 			return upgradePolicy.getLevel(type);
 		else
 			return 0;
+	}
+	
+	public TowerType getType() {
+		return towerType;
 	}
 }

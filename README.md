@@ -17,9 +17,10 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - ~~Pausieren~~
 - Threads?
 - Model und View stärker durch Interfaces trennen
-- ``instanceof`` vermeiden wenn möglich
+- ~~``instanceof`` vermeiden wenn möglich~~
 - Creeps und Tower identifizieren
 - Grafiken für Projektile?
 - Übergabe des Game-Objektes vermeiden?
 - BALANCING!!!
 - Synchronisieren zwischen Game- und GUI-Thread
+- Menupunkt Neues Spiel

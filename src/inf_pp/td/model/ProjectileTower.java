@@ -1,6 +1,7 @@
 package inf_pp.td.model;
 
 import inf_pp.td.Util;
+import inf_pp.td.intercom.TowerType;
 
 import java.awt.geom.Point2D;
 
@@ -13,6 +14,7 @@ public class ProjectileTower extends BaseTower {
 		up.setFunction(UpgradeType.DAMAGE,new ExponentialUpgrade.ExpFun(-5,1.2f,9));
 		up.setFunction(UpgradeType.RANGE,new ExponentialUpgrade.ExpFun(.5f,1.1f,1));
 		up.setFunction(UpgradeType.FIRERATE,new ExponentialUpgrade.ExpFun(333,0.75f,667));
+		towerType=TowerType.DIRECT_DMG;
 	}
 
 	@Override

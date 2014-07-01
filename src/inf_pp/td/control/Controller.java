@@ -3,10 +3,10 @@ package inf_pp.td.control;
 import inf_pp.td.TimeSource;
 import inf_pp.td.intercom.ListenerContainer;
 import inf_pp.td.intercom.TdState;
+import inf_pp.td.intercom.TowerType;
 import inf_pp.td.model.BaseTower;
 import inf_pp.td.model.Game;
 import inf_pp.td.model.TowerFactory;
-import inf_pp.td.model.TowerType;
 import inf_pp.td.model.UpgradeType;
 import inf_pp.td.view.Frame;
 
@@ -96,15 +96,22 @@ public class Controller implements ListenerContainer {
 	}
 	
 	
-	private boolean paused=false;
+	//TODO: prevent pause-abuse
+	private boolean paused=true;
 	/**
 	 * call this once each tick
 	 */
 	public void tick(){
-		if(paused)
-			return;
-		time.tick();
-		game.tick(time);
+		if(!paused){
+			time.tick();
+			game.tick(time);
+			if(game.hasLost()){
+				//TODO: put this somewhere else (View?)
+				JOptionPane.showMessageDialog(frame, "Leider verloren!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
+				pause(true);
+			}
+			//TODO: else if hasLost?
+		}
 		frame.update(new TdState(game,selectedField));
 	}
 	
@@ -165,6 +172,8 @@ public class Controller implements ListenerContainer {
 	public void pause(boolean p) {
 		if(p==paused)
 			return;
+		if(!p&&(game.hasWon()||game.hasLost()))
+			return;
 		paused=p;
 		if(!paused)
 			time.skipTick();
@@ -206,7 +215,7 @@ public class Controller implements ListenerContainer {
 					type=TowerType.SLOW;
 					break;
 				case "p":
-					type=TowerType.P;
+					type=TowerType.POISON;
 					break;
 				}
 				if(type!=null){
@@ -259,7 +268,7 @@ public class Controller implements ListenerContainer {
 			int y=ev.getY()*game.getPlayArea().getHeight()/((JPanel)ev.getSource()).getHeight();
 			selectedField.x=x;
 			selectedField.y=y;
-			super.mouseClicked(ev);
+			super.mousePressed(ev);
 		}		
 	}
 

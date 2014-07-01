@@ -1,5 +1,7 @@
 package inf_pp.td.model;
 
+import inf_pp.td.intercom.TowerType;
+
 import java.awt.Point;
 
 public final class TowerFactory {
@@ -21,7 +23,7 @@ public final class TowerFactory {
 		case SLOW:
 			t=new SlowTower();
 			break;
-		case P:
+		case POISON:
 			t=new PoisonTower();
 			break;
 		default:

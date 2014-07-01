@@ -1,5 +1,7 @@
 package inf_pp.td.model;
 
+import inf_pp.td.intercom.TowerType;
+
 final class PriceProvider {
 	private PriceProvider(){}
 	

@@ -2,6 +2,7 @@ package inf_pp.td.model;
 
 import inf_pp.td.TimeSource;
 import inf_pp.td.intercom.PlayAreaWayHolder;
+import inf_pp.td.intercom.TowerType;
 
 import java.awt.Point;
 import java.util.HashSet;
@@ -35,7 +36,6 @@ public class Game implements java.io.Serializable{
 	/**
 	 * if the game is running
 	 */
-	private boolean running;
 	
 	//TODO: add parameter?
 	private CreepWaveSpawner spawner = new CreepWaveSpawner();
@@ -64,10 +64,6 @@ public class Game implements java.io.Serializable{
 	 */
 	public void tick(TimeSource time){
 		addBasicIncome(time);
-		if(this.getLives() <= 0){
-			this.running=false;
-			return;
-		}
 		
 		for(Iterator<BaseCreep> it=creeps.iterator();it.hasNext();){
 			BaseCreep c=it.next();
@@ -191,5 +187,14 @@ public class Game implements java.io.Serializable{
 
 	public int getGold() {
 		return gold;
+	}
+	
+	public boolean hasWon() {
+		//TODO: implement this
+		return false;
+	}
+	
+	public boolean hasLost() {
+		return lives<=0;
 	}
 }

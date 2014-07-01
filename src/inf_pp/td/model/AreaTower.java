@@ -3,6 +3,7 @@ package inf_pp.td.model;
 import java.util.LinkedList;
 
 import inf_pp.td.Util;
+import inf_pp.td.intercom.TowerType;
 
 public class AreaTower extends BaseTower {
 	public AreaTower(){
@@ -11,6 +12,7 @@ public class AreaTower extends BaseTower {
 		up.setFunction(UpgradeType.DAMAGE,new ExponentialUpgrade.ExpFun(-5,1.3f,8));
 		up.setFunction(UpgradeType.RANGE,new ExponentialUpgrade.ExpFun(.2f,1.1f,1));
 		up.setFunction(UpgradeType.FIRERATE,new ExponentialUpgrade.ExpFun(333,0.75f,667));
+		towerType=TowerType.AREA_OF_EFFECT;
 	}
 
 	@Override
