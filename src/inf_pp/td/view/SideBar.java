@@ -1,5 +1,6 @@
 package inf_pp.td.view;
 
+import inf_pp.td.intercom.TdState;
 import inf_pp.td.model.Game;
 
 import java.awt.Color;
@@ -116,8 +117,8 @@ public class SideBar extends JPanel {
 		}
 	}
 	
-	void updateState(Game game){
-		livesLabel.setText("Lives: "+game.getLives());
-		goldLabel.setText("Gold: "+game.getGold());
+	void updateState(TdState state){
+		livesLabel.setText("Lives: "+state.getGame().getLives());
+		goldLabel.setText("Gold: "+state.getGame().getGold());
 	}
 }

@@ -22,3 +22,4 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - Grafiken für Projektile?
 - Übergabe des Game-Objektes vermeiden?
 - BALANCING!!!
+- Synchronisieren zwischen Game- und GUI-Thread

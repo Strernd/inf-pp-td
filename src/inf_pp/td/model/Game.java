@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 
-public class Game extends java.util.Observable implements java.io.Serializable{
+public class Game implements java.io.Serializable{
 	
 	/**
 	 * the playing area with dimensions and all teh waypoints 
@@ -85,9 +85,8 @@ public class Game extends java.util.Observable implements java.io.Serializable{
 			}
 		}
 		creeps.addAll(spawner.spawnCreeps(time));
-		this.setChanged();
-		this.notifyObservers(this);
-
+		//this.setChanged();
+		//this.notifyObservers(this);
 	}
 
 

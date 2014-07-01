@@ -1,6 +1,7 @@
 package inf_pp.td.view;
 
 import inf_pp.td.intercom.ListenerContainer;
+import inf_pp.td.intercom.TdState;
 import inf_pp.td.model.Game;
 
 import java.awt.BorderLayout;
@@ -22,7 +23,7 @@ import javax.swing.event.MenuListener;
  * @author marc
  *
  */
-public class Frame extends JFrame implements java.util.Observer {
+public class Frame extends JFrame {
 
 	/**
 	 * a panel to display the playing area, draws all towers, waypoints, creeps, projectiles...
@@ -76,12 +77,11 @@ public class Frame extends JFrame implements java.util.Observer {
 		this.setJMenuBar(menuBar);
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		Game game=(Game)arg;
+	public void update(TdState state) {
+		Game game=state.getGame();
 		// TODO Auto-generated method stub
-		playArea.updateState(game);
-		sidebar.updateState(game);
+		playArea.updateState(state);
+		sidebar.updateState(state);
 	}
 	
 	/**

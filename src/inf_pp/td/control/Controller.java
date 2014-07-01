@@ -2,6 +2,7 @@ package inf_pp.td.control;
 
 import inf_pp.td.TimeSource;
 import inf_pp.td.intercom.ListenerContainer;
+import inf_pp.td.intercom.TdState;
 import inf_pp.td.model.BaseTower;
 import inf_pp.td.model.Game;
 import inf_pp.td.model.TowerFactory;
@@ -71,7 +72,7 @@ public class Controller implements ListenerContainer {
 		fieldListener = new FieldSelectListener();
 		sbListener = new SidebarListener();
 		fc=new JFileChooser();
-		fc.setFileFilter(new FileNameExtensionFilter("Tower-Defense Speicherstände", "tdsv"));
+		fc.setFileFilter(new FileNameExtensionFilter("Tower-Defense Speicherstï¿½nde", "tdsv"));
 		fc.setAcceptAllFileFilterUsed(false);
 		//TODO: set directory?
 	}
@@ -82,16 +83,16 @@ public class Controller implements ListenerContainer {
 	 */
 	public void setModel(Game game) {
 		this.game=game;
-		if(frame!=null)
-			game.addObserver(frame);
+		/*if(frame!=null)
+			game.addObserver(frame);*/
 	}
 	
 	public void setView(Frame frame) {
 		this.frame=frame;
 		frame.addListener(this);
 		frame.setDefaultCloseOperation(Frame.DO_NOTHING_ON_CLOSE);
-		if(game!=null)
-			game.addObserver(frame);
+		/*if(game!=null)
+			game.addObserver(frame);*/
 	}
 	
 	
@@ -104,6 +105,7 @@ public class Controller implements ListenerContainer {
 			return;
 		time.tick();
 		game.tick(time);
+		frame.update(new TdState(game,selectedField));
 	}
 	
 	
@@ -129,7 +131,7 @@ public class Controller implements ListenerContainer {
 			time=(TimeSource) oin.readObject();
 			oin.close();
 			file.close();
-			game.addObserver(frame);
+			//game.addObserver(frame);
 			time.skipTick();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

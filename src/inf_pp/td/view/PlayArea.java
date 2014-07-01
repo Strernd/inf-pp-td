@@ -1,6 +1,7 @@
 package inf_pp.td.view;
 
 import inf_pp.td.intercom.PlayAreaWayHolder;
+import inf_pp.td.intercom.TdState;
 import inf_pp.td.model.AreaTower;
 import inf_pp.td.model.BaseCreep;
 import inf_pp.td.model.BaseProjectile;
@@ -43,6 +44,7 @@ public class PlayArea extends JPanel {
 	private HashSet<BaseTower> towers;
 	private HashSet<BaseCreep> creeps;
 	private HashSet<BaseProjectile> projectiles;
+	private Point selectedField;
 		
 	/**
 	 * the dimensions of the playing grid, how many rows and columns
@@ -60,7 +62,8 @@ public class PlayArea extends JPanel {
 	 * refresh the view. has to be called if anything in the model changes
 	 * @param game the Model to get all data from
 	 */
-	void updateState(Game game){
+	void updateState(TdState state){
+		//System.out.println("updateState "+Thread.currentThread().getName());
 		//TODO: improve painting
 		//fields[(int)(Math.random()*height)][(int)(Math.random()*width)].setBackground(new Color((int)(Math.random()*255)));
 		/*for(int y=0;y<height;++y) {
@@ -73,18 +76,21 @@ public class PlayArea extends JPanel {
 			Point p=t.getPosition();
 			fields[p.y][p.x].setBackground(new Color(0xFF0000));
 		}*/
+		Game game=state.getGame();
 		width=game.getPlayArea().getWidth();
 		height=game.getPlayArea().getHeight();
 		waypoints=game.getPlayArea().getWaypoints();
 		towers=game.getTowers();
 		creeps=game.getCreeps();
 		projectiles=game.getProjectiles();
+		selectedField=state.getSelectedField();
 		//this.invalidate();
 		this.repaint();
 	}
 
 	@Override
 	public void paintComponent(Graphics gs) {
+		//System.out.println("paintComponent" + Thread.currentThread().getName());
 		//long t1=System.nanoTime();
 		Graphics2D g=(Graphics2D)gs;
 		super.paintComponent(gs);
@@ -131,6 +137,9 @@ public class PlayArea extends JPanel {
 		g.setColor(new Color(0x00FF00));
 		for(BaseProjectile p: projectiles){
 			g.fillRect((int)((p.getPosition().x+.3333)*tw), (int)((p.getPosition().y+.3333)*th), (int)(.3333*tw), (int)(.3333*th));
+		}
+		if(selectedField.x>=0&&selectedField.y>=0&&selectedField.x<width&&selectedField.y<height){
+			g.drawRect(selectedField.x*tw, selectedField.y*th, tw, th);
 		}
 		/*float t2=(System.nanoTime()-t1)/(float)100;
 		if(t2>1000)
