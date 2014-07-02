@@ -1,5 +1,7 @@
 package inf_pp.td.view;
 
+import inf_pp.td.Tiles;
+import inf_pp.td.Tiles.TileId;
 import inf_pp.td.intercom.PlayAreaWayHolder;
 import inf_pp.td.intercom.TdState;
 import inf_pp.td.model.AreaTower;
@@ -10,7 +12,6 @@ import inf_pp.td.model.Game;
 import inf_pp.td.model.PoisonTower;
 import inf_pp.td.model.ProjectileTower;
 import inf_pp.td.model.SlowTower;
-import inf_pp.td.view.Tiles.TileId;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -86,7 +87,7 @@ public class PlayArea extends JPanel {
 		creeps=game.getCreeps();
 		projectiles=game.getProjectiles();
 		selectedField=state.getSelectedField();
-		this.repaint();
+		this.repaint(); //.repaint() is thread-safe
 	}
 
 	@Override
@@ -157,22 +158,11 @@ public class PlayArea extends JPanel {
 			//g.fillRect((int)((p.getPosition().x+.3333)*tw), (int)((p.getPosition().y+.3333)*th), (int)(.3333*tw), (int)(.3333*th));
 			AffineTransform at=new AffineTransform();
 			Image tile=Tiles.get(Tiles.TileId.PROJECTILE);
-			//at.translate(-tile.getWidth(null)/2,-tile.getHeight(null)/2);
 			Point2D.Float direction=p.getMoveVector();
-			System.out.println(direction);
 			at.translate((p.getPosition().x+.5)*tw,(p.getPosition().y+.5)*th);
-			//at.translate(5.5*tw,5.5*th);
 			at.scale(tw/(float)2/tile.getWidth(null),th/(float)2/tile.getHeight(null));
-			//at.translate(tw/2,th/2);
-			//at.translate(-.5*tw,-.5*th);
 			at.rotate(Math.atan2(direction.x,-direction.y));
-			//at.rotate(-Math.PI/4);
-			//at.translate(-tw/4,-th/4);
 			at.translate(-tw/2,-th/2);
-
-			
-			//
-			//g.drawImage(tile, (int)((p.getPosition().x+.25)*tw), (int)((p.getPosition().y+.25)*th), (int)(.5*tw), (int)(.5*th), null);
 			g.drawImage(tile, at, null);
 		}
 		g.setColor(new Color(0x00FF00));

@@ -103,21 +103,26 @@ public class Frame extends JFrame {
 	 * set the listeners for the playing field and the sidebar
 	 * @param l a ListenerContainer to get the listers from.
 	 */
-	public void addListener(ListenerContainer l) {
+	public void addListener(final ListenerContainer l) {
+		final Frame savedThis=this;
 		//TODO: make this better? this is very ugly
-		playArea.addMouseListener(l.getFieldSelectListener());
-		sidebar.addActionListener(l.getActionListener());
-		this.addWindowListener(l.getWindowListener());
-		for(int i = 0; i<menuBar.getMenuCount();++i) {
-			JMenu m=menuBar.getMenu(i);
-			if(m==null)
-				continue;
-			m.addActionListener(l.getActionListener());
-			for(int j = 0;j<m.getItemCount();++j) {
-				m.getItem(j).addActionListener(l.getActionListener());
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				playArea.addMouseListener(l.getFieldSelectListener());
+				sidebar.addActionListener(l.getActionListener());
+				savedThis.addWindowListener(l.getWindowListener());
+				for(int i = 0; i<menuBar.getMenuCount();++i) {
+					JMenu m=menuBar.getMenu(i);
+					if(m==null)
+						continue;
+					m.addActionListener(l.getActionListener());
+					for(int j = 0;j<m.getItemCount();++j) {
+						m.getItem(j).addActionListener(l.getActionListener());
+					}
+				}
 			}
-		}
-		
+		});
 	}
 	
 	public void newGame(final Game game) {

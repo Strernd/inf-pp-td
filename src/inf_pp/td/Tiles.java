@@ -1,4 +1,4 @@
-package inf_pp.td.view;
+package inf_pp.td;
 
 import java.awt.Image;
 import java.io.IOException;
@@ -10,10 +10,11 @@ import javax.imageio.ImageIO;
 public final class Tiles {
 	private Tiles(){}
 	
-	static enum TileId{
+	public static enum TileId{
 		TOWER_DD,TOWER_AE,TOWER_SL,TOWER_P,
 		CREEP_SMILEY,
-		WORLD, PROJECTILE
+		WORLD, PROJECTILE,
+		WINDOW_ICON
 	}
 	
 	private static final Map<TileId, Image> tiles;
@@ -27,6 +28,7 @@ public final class Tiles {
 		paths.put(TileId.TOWER_P,"assets/graphics/tower/p.png");
 		paths.put(TileId.CREEP_SMILEY,"assets/graphics/creeps/smiley1.png");
 		paths.put(TileId.PROJECTILE,"assets/graphics/misc/projectile.png");
+		paths.put(TileId.WINDOW_ICON,"assets/graphics/misc/tdicon.png");
 		for(Map.Entry<TileId,String> e: paths.entrySet()){
 			try {
 				tiles.put(e.getKey(),ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(e.getValue())));
@@ -47,7 +49,7 @@ public final class Tiles {
 		}
 	}
 	
-	static Image get(TileId id){
+	public static Image get(TileId id){
 		return tiles.get(id);
 	}
 }

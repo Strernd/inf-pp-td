@@ -295,7 +295,6 @@ public class Controller implements ListenerContainer {
 
 		@Override
 		public void windowClosing(WindowEvent e) {
-			System.out.println("exit?");
 			askExit();
 		}
 		

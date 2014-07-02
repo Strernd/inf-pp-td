@@ -1,5 +1,6 @@
 package inf_pp.td.view;
 
+import inf_pp.td.Tiles;
 import inf_pp.td.intercom.TdState;
 import inf_pp.td.model.Game;
 
@@ -15,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class SideBar extends JPanel {
 
@@ -119,8 +121,13 @@ public class SideBar extends JPanel {
 		}
 	}
 	
-	void updateState(TdState state){
-		livesLabel.setText("Lives: "+state.getGame().getLives());
-		goldLabel.setText("Gold: "+state.getGame().getGold());
+	void updateState(final TdState state){
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				livesLabel.setText("Lives: "+state.getGame().getLives());
+				goldLabel.setText("Gold: "+state.getGame().getGold());
+			}
+		});
 	}
 }

@@ -2,12 +2,14 @@ package inf_pp.td;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
 
 import inf_pp.td.control.Controller;
 import inf_pp.td.model.Game;
 import inf_pp.td.view.Frame;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -23,12 +25,30 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		Game game=new Game(20);
+		final Game game=new Game(20);
 		final Controller ctrl=new Controller();
 		
-		Frame frame=new Frame(game);
-		frame.setSize(640, 480);
-		frame.setVisible(true);
+		//this is needed to assign
+		final Frame[] frame=new Frame[1];
+		try {
+			SwingUtilities.invokeAndWait(new Runnable(){
+
+				@Override
+				public void run() {
+					frame[0]=new Frame(game);
+					frame[0].setSize(640, 480);
+					frame[0].setVisible(true);
+					frame[0].setTitle("Inf-PP Tower Defense Bernd Strehl/Marc André Wittorf");
+					frame[0].setIconImage(Tiles.get(Tiles.TileId.WINDOW_ICON));
+				}
+				
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			// TODO show error?
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
 		//TODO: do we need to do some cleanup?
 		//frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		//frame.setModel(game);
@@ -36,7 +56,7 @@ public class Main {
 		
 		//game.addObserver(frame);
 		ctrl.setModel(game);
-		ctrl.setView(frame);
+		ctrl.setView(frame[0]);
 		//TODO: threads?
 		//ctrl.setTickrate(64);
 		//ctrl.start();
