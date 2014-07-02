@@ -24,3 +24,4 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - BALANCING!!!
 - Synchronisieren zwischen Game- und GUI-Thread
 - ~~Menupunkt Neues Spiel~~
+- Buff Wirkdauer

@@ -190,8 +190,7 @@ public class Game implements java.io.Serializable{
 	}
 	
 	public boolean hasWon() {
-		//TODO: implement this
-		return false;
+		return !spawner.hasMoreCreeps() && creeps.size()==0 && !hasLost();
 	}
 	
 	public boolean hasLost() {

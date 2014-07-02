@@ -72,7 +72,7 @@ public class Controller implements ListenerContainer {
 		fieldListener = new FieldSelectListener();
 		sbListener = new SidebarListener();
 		fc=new JFileChooser();
-		fc.setFileFilter(new FileNameExtensionFilter("Tower-Defense Speicherst�nde", "tdsv"));
+		fc.setFileFilter(new FileNameExtensionFilter("Tower-Defense Speicherstände", "tdsv"));
 		fc.setAcceptAllFileFilterUsed(false);
 		//TODO: set directory?
 	}
@@ -105,12 +105,15 @@ public class Controller implements ListenerContainer {
 		if(!paused){
 			time.tick();
 			game.tick(time);
+			//TODO: put this somewhere else (View?)
 			if(game.hasLost()){
-				//TODO: put this somewhere else (View?)
 				JOptionPane.showMessageDialog(frame, "Leider verloren!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
 				pause(true);
 			}
-			//TODO: else if hasLost?
+			else if(game.hasWon()){
+				JOptionPane.showMessageDialog(frame, "Gewonnen!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
+				pause(true);
+			}
 		}
 		frame.update(new TdState(game,selectedField));
 	}

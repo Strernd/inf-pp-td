@@ -18,20 +18,23 @@ public class BaseCreep implements java.io.Serializable {
 	private int maxHealth=100;
 	private float baseMoveSpeed;
 	private int gold=1;
+	private final String type;
 	private HashMap<String,Buff> buffs=new HashMap<String,Buff>(); 
 	
-	BaseCreep(ArrayList<Point> waypoints, int maxHealth, float baseMoveSpeed, int goldWorth){
+	BaseCreep(ArrayList<Point> waypoints, int maxHealth, float baseMoveSpeed, int goldWorth, String type){
 		if(waypoints==null)
 			throw new NullPointerException();
 		else if(waypoints.size()<2)
 			throw new ArrayIndexOutOfBoundsException();
 		this.maxHealth=maxHealth;
+		this.health=maxHealth;
 		this.baseMoveSpeed=baseMoveSpeed;
 		this.waypoints=waypoints;
 		this.nextWp=1;
 		Point tP=waypoints.get(0);
 		this.position=new Point2D.Float(tP.x,tP.y);
 		this.gold=goldWorth;
+		this.type=type;
 	}
 	
 	/**
@@ -125,5 +128,9 @@ public class BaseCreep implements java.io.Serializable {
 	 */
 	public boolean hasBuff(String id){
 		return buffs.containsKey(id);
+	}
+	
+	public String getType() {
+		return type;
 	}
 }

@@ -116,15 +116,6 @@ public class PlayArea extends JPanel {
 		g.setColor(new Color(0xFF0000));
 		for(BaseTower t: towers){
 			Tiles.TileId gt=null;
-			//TODO: improve this, this is ugly/impossible to separate from model
-			/*if(t instanceof ProjectileTower)
-				gt=Tiles.TileId.TOWER_DD;
-			else if(t instanceof AreaTower)
-				gt=Tiles.TileId.TOWER_AE;
-			else if(t instanceof SlowTower)
-				gt=Tiles.TileId.TOWER_SL;
-			else if(t instanceof PoisonTower)
-				gt=Tiles.TileId.TOWER_P;*/
 			switch(t.getType()){
 			case DIRECT_DMG:
 				gt=Tiles.TileId.TOWER_DD;
@@ -139,15 +130,23 @@ public class PlayArea extends JPanel {
 				gt=Tiles.TileId.TOWER_P;
 				break;
 			}
-			//TODO: do some fallback
+			//TODO: do some fallback/throw exception?
 			if(gt==null)
 				continue;
 			g.drawImage(Tiles.get(gt), t.getPosition().x*tw, t.getPosition().y*th, tw, th, null);
 		}
 		for(BaseCreep c : creeps){
 			//TODO: differentiate
-			//g.fillRect((int)((c.getPosition().x+.25)*tw), (int)((c.getPosition().y+.25)*th), (int)(.5*tw), (int)(.5*th));
-			g.drawImage(Tiles.get(TileId.CREEP_SMILEY), (int)((c.getPosition().x+.25)*tw), (int)((c.getPosition().y+.25)*th), (int)(.5*tw), (int)(.5*th), null);
+			Tiles.TileId t=null;
+			switch(c.getType()) {
+			case "smiley":
+				t=Tiles.TileId.CREEP_SMILEY;
+				break;
+			}
+			//TODO: fallback/exception?
+			if(t==null)
+				continue;
+			g.drawImage(Tiles.get(t), (int)((c.getPosition().x+.25)*tw), (int)((c.getPosition().y+.25)*th), (int)(.5*tw), (int)(.5*th), null);
 			g.setColor(Color.getHSBColor(c.getHealthPercentage()/3,1,1));
 			int hbHeight=Math.max((int)(.075*th),1);
 			g.fillRect((int)((c.getPosition().x+.25)*tw), (int)((c.getPosition().y+.25)*th)-hbHeight, (int)(.5*c.getHealthPercentage()*tw), hbHeight);
