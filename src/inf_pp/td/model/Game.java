@@ -168,6 +168,23 @@ public class Game implements java.io.Serializable{
 		gold-=price;
 		t.upgrade(type);
 	}
+	
+	public void sellTower(Point position){
+		BaseTower t=null;
+		for (BaseTower ti: towers){
+			if(ti.getPosition().equals(position)){
+				t=ti;
+				break;
+			}
+		}
+		if(t==null)
+			return;
+		TowerType type = t.getType();
+		//TODO: Better Sell price
+		int price=PriceProvider.getTowerPrice(type);
+		gold += price/2;
+		t.remove(this);
+	}
 
 	
 	private long lastIncome=0;

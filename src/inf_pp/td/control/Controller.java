@@ -251,6 +251,9 @@ public class Controller implements ListenerContainer {
 				if(type!=null)
 					game.upgradeTower(type,selectedField);
 			}
+			else if(ac.equals("sell_tower")) {
+				game.sellTower(selectedField);
+			}
 			else if(ac.equals("pause")) {
 				togglePause();
 			}

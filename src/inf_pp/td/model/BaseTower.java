@@ -4,6 +4,7 @@ import inf_pp.td.TimeSource;
 import inf_pp.td.intercom.TowerType;
 
 import java.awt.Point;
+import java.util.Iterator;
 
 public abstract class BaseTower implements java.io.Serializable {
 	protected TowerType towerType=null;
@@ -41,6 +42,14 @@ public abstract class BaseTower implements java.io.Serializable {
 	public void fire(Game game, TimeSource time){
 		if(time.getMillisSinceStart()>cooldown){
 			cooldown=time.getMillisSinceStart()+doFire(game);
+		}
+	}
+	
+	public void remove(Game game){
+		for(Iterator<BaseTower> it=game.getTowers().iterator();it.hasNext();){
+			if(it.next().equals(this)){
+				it.remove();
+			}
 		}
 	}
 	
