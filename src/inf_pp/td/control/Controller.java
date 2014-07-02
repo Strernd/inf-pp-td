@@ -115,6 +115,13 @@ public class Controller implements ListenerContainer {
 		frame.update(new TdState(game,selectedField));
 	}
 	
+	public void newGame(){
+		pause(true);
+		game=new Game(20);
+		time=new TimeSource();
+		if(frame!=null)
+			frame.newGame(game);
+	}
 	
 	private void saveGame(String path) {
 		try {
@@ -253,7 +260,8 @@ public class Controller implements ListenerContainer {
 			else if(ac.equals("exit")) {
 				askExit();
 			}
-			else{				
+			else if(ac.equals("newgame")) {
+				newGame();
 			}
 		}
 

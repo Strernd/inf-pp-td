@@ -24,6 +24,8 @@ import javax.swing.event.MenuListener;
  *
  */
 public class Frame extends JFrame {
+	
+	JPanel mainPanel;
 
 	/**
 	 * a panel to display the playing area, draws all towers, waypoints, creeps, projectiles...
@@ -45,7 +47,7 @@ public class Frame extends JFrame {
 		//this.game=game;
 		//Game pa=game;
 
-		JPanel mainPanel= new JPanel();
+		mainPanel= new JPanel();
 		this.add(mainPanel);
 		BorderLayout layout=new BorderLayout();
 		mainPanel.setLayout(layout);
@@ -58,7 +60,10 @@ public class Frame extends JFrame {
 		
 		menuBar=new JMenuBar();
 		JMenu gameMenu=new JMenu("Spiel");
-		JMenuItem item=new JMenuItem("Pause/Weiter");
+		JMenuItem item=new JMenuItem("Neues Spiel");
+		item.setActionCommand("newgame");
+		gameMenu.add(item);
+		item=new JMenuItem("Pause/Weiter");
 		item.setActionCommand("pause");
 		gameMenu.add(item);
 		item=new JMenuItem("Speichern");
@@ -110,6 +115,13 @@ public class Frame extends JFrame {
 			}
 		}
 		
+	}
+	
+	public void newGame(Game game) {
+		//TODO: adjust parameters instead of new-generation?
+		mainPanel.remove(playArea);
+		playArea=new PlayArea(game.getPlayArea());
+		mainPanel.add(playArea,BorderLayout.CENTER);
 	}
 
 }

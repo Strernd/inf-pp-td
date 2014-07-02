@@ -145,8 +145,12 @@ public class PlayArea extends JPanel {
 			g.drawImage(Tiles.get(gt), t.getPosition().x*tw, t.getPosition().y*th, tw, th, null);
 		}
 		for(BaseCreep c : creeps){
+			//TODO: differentiate
+			//g.fillRect((int)((c.getPosition().x+.25)*tw), (int)((c.getPosition().y+.25)*th), (int)(.5*tw), (int)(.5*th));
+			g.drawImage(Tiles.get(TileId.CREEP_SMILEY), (int)((c.getPosition().x+.25)*tw), (int)((c.getPosition().y+.25)*th), (int)(.5*tw), (int)(.5*th), null);
 			g.setColor(Color.getHSBColor(c.getHealthPercentage()/3,1,1));
-			g.fillRect((int)((c.getPosition().x+.25)*tw), (int)((c.getPosition().y+.25)*th), (int)(.5*tw), (int)(.5*th));
+			int hbHeight=Math.max((int)(.075*th),1);
+			g.fillRect((int)((c.getPosition().x+.25)*tw), (int)((c.getPosition().y+.25)*th)-hbHeight, (int)(.5*c.getHealthPercentage()*tw), hbHeight);
 		}
 		g.setColor(new Color(0x00FF00));
 		for(BaseProjectile p: projectiles){
