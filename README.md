@@ -9,17 +9,17 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - Tower anders organisieren?
 - ~~Speichern und Laden~~
 - ~~Menu einbauen~~
-- Sterben/Verlieren können
+- ~~Sterben/Verlieren können~~
 - ~~Upgrade-Mechanik~~
 - ~~Gold~~
-- Creepwaves organisieren
+- ~~Creepwaves organisieren~~
 - ~~Einheitlicher Zeitgeber~~
 - ~~Pausieren~~
 - Threads?
 - Model und View stärker durch Interfaces trennen
 - ~~``instanceof`` vermeiden wenn möglich~~
 - Creeps und Tower identifizieren
-- Grafiken für Projektile?
+- ~~Grafiken für Projektile?~~
 - Übergabe des Game-Objektes vermeiden?
 - BALANCING!!!
 - Synchronisieren zwischen Game- und GUI-Thread

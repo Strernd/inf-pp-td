@@ -122,8 +122,9 @@ public class Controller implements ListenerContainer {
 		pause(true);
 		game=new Game(20);
 		time=new TimeSource();
-		if(frame!=null)
+		if(frame!=null) {
 			frame.newGame(game);
+		}
 	}
 	
 	private void saveGame(String path) {
@@ -165,8 +166,12 @@ public class Controller implements ListenerContainer {
 	private void saveWithDialog() {
 		boolean p=isPaused();
 		pause(true);
-		if(fc.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
-			saveGame(fc.getSelectedFile().getAbsolutePath());
+		if(fc.showSaveDialog(null)==JFileChooser.APPROVE_OPTION) {
+			String path=fc.getSelectedFile().getAbsolutePath();
+			if(!path.endsWith(".tdsv"))
+				path=path.concat(".tdsv");
+			saveGame(path);
+		}
 		pause(p);
 	}
 	

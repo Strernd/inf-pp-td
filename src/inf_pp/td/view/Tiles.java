@@ -13,7 +13,7 @@ public final class Tiles {
 	static enum TileId{
 		TOWER_DD,TOWER_AE,TOWER_SL,TOWER_P,
 		CREEP_SMILEY,
-		WORLD
+		WORLD, PROJECTILE
 	}
 	
 	private static final Map<TileId, Image> tiles;
@@ -26,6 +26,7 @@ public final class Tiles {
 		paths.put(TileId.TOWER_SL,"assets/graphics/tower/sl.png");
 		paths.put(TileId.TOWER_P,"assets/graphics/tower/p.png");
 		paths.put(TileId.CREEP_SMILEY,"assets/graphics/creeps/smiley1.png");
+		paths.put(TileId.PROJECTILE,"assets/graphics/misc/projectile.png");
 		for(Map.Entry<TileId,String> e: paths.entrySet()){
 			try {
 				tiles.put(e.getKey(),ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(e.getValue())));

@@ -19,6 +19,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -84,7 +86,6 @@ public class PlayArea extends JPanel {
 		creeps=game.getCreeps();
 		projectiles=game.getProjectiles();
 		selectedField=state.getSelectedField();
-		//this.invalidate();
 		this.repaint();
 	}
 
@@ -151,12 +152,32 @@ public class PlayArea extends JPanel {
 			int hbHeight=Math.max((int)(.075*th),1);
 			g.fillRect((int)((c.getPosition().x+.25)*tw), (int)((c.getPosition().y+.25)*th)-hbHeight, (int)(.5*c.getHealthPercentage()*tw), hbHeight);
 		}
-		g.setColor(new Color(0x00FF00));
+		
 		for(BaseProjectile p: projectiles){
-			g.fillRect((int)((p.getPosition().x+.3333)*tw), (int)((p.getPosition().y+.3333)*th), (int)(.3333*tw), (int)(.3333*th));
+			//g.fillRect((int)((p.getPosition().x+.3333)*tw), (int)((p.getPosition().y+.3333)*th), (int)(.3333*tw), (int)(.3333*th));
+			AffineTransform at=new AffineTransform();
+			Image tile=Tiles.get(Tiles.TileId.PROJECTILE);
+			//at.translate(-tile.getWidth(null)/2,-tile.getHeight(null)/2);
+			Point2D.Float direction=p.getMoveVector();
+			System.out.println(direction);
+			at.translate((p.getPosition().x+.5)*tw,(p.getPosition().y+.5)*th);
+			//at.translate(5.5*tw,5.5*th);
+			at.scale(tw/(float)2/tile.getWidth(null),th/(float)2/tile.getHeight(null));
+			//at.translate(tw/2,th/2);
+			//at.translate(-.5*tw,-.5*th);
+			at.rotate(Math.atan2(direction.x,-direction.y));
+			//at.rotate(-Math.PI/4);
+			//at.translate(-tw/4,-th/4);
+			at.translate(-tw/2,-th/2);
+
+			
+			//
+			//g.drawImage(tile, (int)((p.getPosition().x+.25)*tw), (int)((p.getPosition().y+.25)*th), (int)(.5*tw), (int)(.5*th), null);
+			g.drawImage(tile, at, null);
 		}
+		g.setColor(new Color(0x00FF00));
 		if(selectedField.x>=0&&selectedField.y>=0&&selectedField.x<width&&selectedField.y<height){
-			g.drawRect(selectedField.x*tw, selectedField.y*th, tw, th);
+			g.drawRect(selectedField.x*tw, selectedField.y*th, tw-1, th-1);
 		}
 		/*float t2=(System.nanoTime()-t1)/(float)100;
 		if(t2>1000)

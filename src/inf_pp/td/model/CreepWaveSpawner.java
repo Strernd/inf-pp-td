@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 public class CreepWaveSpawner implements java.io.Serializable {
-	private static class CreepWave {
+	private static class CreepWave implements java.io.Serializable {
 		final int health;
 		final float moveSpeed;
 		final int gold;

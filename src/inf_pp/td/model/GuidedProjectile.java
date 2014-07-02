@@ -28,7 +28,7 @@ public class GuidedProjectile extends BaseProjectile {
 	}
 
 	@Override
-	public boolean move(TimeSource time, Game game) {
+	protected boolean doMove(TimeSource time, Game game) {
 		List<Point2D.Float> t=new ArrayList<Point2D.Float>();
 		t.add(target.getPosition());
 		//hit?

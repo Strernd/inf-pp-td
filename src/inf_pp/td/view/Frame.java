@@ -5,6 +5,7 @@ import inf_pp.td.intercom.TdState;
 import inf_pp.td.model.Game;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseListener;
 import java.util.Observable;
 
 import javax.swing.JButton;
@@ -13,6 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
@@ -83,7 +85,7 @@ public class Frame extends JFrame {
 	}
 
 	public void update(TdState state) {
-		Game game=state.getGame();
+		//Game game=state.getGame();
 		// TODO Auto-generated method stub
 		playArea.updateState(state);
 		sidebar.updateState(state);
@@ -102,6 +104,7 @@ public class Frame extends JFrame {
 	 * @param l a ListenerContainer to get the listers from.
 	 */
 	public void addListener(ListenerContainer l) {
+		//TODO: make this better? this is very ugly
 		playArea.addMouseListener(l.getFieldSelectListener());
 		sidebar.addActionListener(l.getActionListener());
 		this.addWindowListener(l.getWindowListener());
@@ -117,11 +120,24 @@ public class Frame extends JFrame {
 		
 	}
 	
-	public void newGame(Game game) {
-		//TODO: adjust parameters instead of new-generation?
-		mainPanel.remove(playArea);
-		playArea=new PlayArea(game.getPlayArea());
-		mainPanel.add(playArea,BorderLayout.CENTER);
+	public void newGame(final Game game) {
+		//TODO: adjust parameters instead of new object? rebinding the handler is very ugly
+		SwingUtilities.invokeLater(new Runnable(){
+
+		@Override
+		public void run() {
+			mainPanel.remove(playArea);
+			MouseListener listeners[]=playArea.getListeners(MouseListener.class);
+			playArea=new PlayArea(game.getPlayArea());
+			for(MouseListener l: listeners) {
+				playArea.addMouseListener(l);
+			}
+			mainPanel.add(playArea,BorderLayout.CENTER);
+			mainPanel.revalidate();
+			mainPanel.repaint();
+		}
+		
+		});
 	}
 
 }
