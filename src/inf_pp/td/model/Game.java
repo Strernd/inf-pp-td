@@ -46,7 +46,7 @@ public class Game implements java.io.Serializable{
 	/**
 	 * the amount of gold that the player currently has
 	 */
-	private int gold=100000; //TODO: Just for debug
+	private int gold=300; //TODO: Just for debug
 	/**
 	 * the remaining lives the player has
 	 */
@@ -190,10 +190,10 @@ public class Game implements java.io.Serializable{
 	
 	private long lastIncome=0;
 	private void addBasicIncome(TimeSource time) {
-		if(lastIncome+1000<time.getMillisSinceStart()){
+		if(lastIncome+5000<time.getMillisSinceStart()){
 			lastIncome=time.getMillisSinceStart();
 			float now=lastIncome/30000; //Half-Minutes since Start
-			gold+=(int)(Math.pow(1.5f,now)*5);
+			gold+=(int)(Math.pow(1.5f,now));
 			//TODO: tweak this formula
 		}
 	}

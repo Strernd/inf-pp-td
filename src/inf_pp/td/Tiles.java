@@ -12,7 +12,7 @@ public final class Tiles {
 	
 	public static enum TileId{
 		TOWER_DD,TOWER_AE,TOWER_SL,TOWER_P,
-		CREEP_SMILEY, CREEP_ZOMBIE,
+		CREEP_SMILEY, CREEP_ZOMBIE, CREEP_PORING, CREEP_REAPER, CREEP_STONEGIANT, CREEP_SKELETON,
 		WORLD, PROJECTILE,
 		WINDOW_ICON
 	}
@@ -28,6 +28,10 @@ public final class Tiles {
 		paths.put(TileId.TOWER_P,"assets/graphics/tower/p.png");
 		paths.put(TileId.CREEP_SMILEY,"assets/graphics/creeps/smiley1.png");
 		paths.put(TileId.CREEP_ZOMBIE,"assets/graphics/creeps/zombie.png");
+		paths.put(TileId.CREEP_PORING,"assets/graphics/creeps/poring.png");
+		paths.put(TileId.CREEP_REAPER,"assets/graphics/creeps/reaper.png");
+		paths.put(TileId.CREEP_STONEGIANT,"assets/graphics/creeps/stonegiant.png");
+		paths.put(TileId.CREEP_SKELETON,"assets/graphics/creeps/skeleton.png");
 		paths.put(TileId.PROJECTILE,"assets/graphics/misc/projectile.png");
 		paths.put(TileId.WINDOW_ICON,"assets/graphics/misc/tdicon.png");
 		for(Map.Entry<TileId,String> e: paths.entrySet()){
