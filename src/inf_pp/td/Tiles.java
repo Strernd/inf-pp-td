@@ -26,7 +26,7 @@ public final class Tiles {
 		paths.put(TileId.TOWER_AE,"assets/graphics/tower/ae.png");
 		paths.put(TileId.TOWER_SL,"assets/graphics/tower/sl.png");
 		paths.put(TileId.TOWER_P,"assets/graphics/tower/p.png");
-		paths.put(TileId.CREEP_SMILEY,"assets/graphics/creeps/smiley1.png");
+		paths.put(TileId.CREEP_SMILEY,"assets/graphics/creeps/creep.png");
 		paths.put(TileId.PROJECTILE,"assets/graphics/misc/projectile.png");
 		paths.put(TileId.WINDOW_ICON,"assets/graphics/misc/tdicon.png");
 		for(Map.Entry<TileId,String> e: paths.entrySet()){
