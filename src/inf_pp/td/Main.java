@@ -1,5 +1,6 @@
 package inf_pp.td;
 
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -36,7 +37,9 @@ public class Main {
 				@Override
 				public void run() {
 					frame[0]=new Frame(game);
-					frame[0].setSize(640, 480);
+					//frame[0].setSize(660, 560);
+					frame[0].getContentPane().setPreferredSize(new Dimension(640,480));
+					frame[0].pack();
 					frame[0].setVisible(true);
 					frame[0].setTitle("Inf-PP Tower Defense Bernd Strehl/Marc André Wittorf");
 					frame[0].setIconImage(Tiles.get(Tiles.TileId.WINDOW_ICON));
