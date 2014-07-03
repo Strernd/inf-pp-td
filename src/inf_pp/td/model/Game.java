@@ -120,7 +120,7 @@ public class Game implements java.io.Serializable{
 			throw new NoGoldException();
 		}
 		if(position.x<0||position.y<0||position.x>=field.getWidth()||position.y>=field.getHeight())
-			throw new InvalidParameterException();
+			throw new InvalidFieldException();
 		for (BaseTower t: towers){
 			if(t.getPosition().equals(position))
 				throw new InvalidFieldException();

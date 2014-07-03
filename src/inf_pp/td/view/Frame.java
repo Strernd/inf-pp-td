@@ -5,18 +5,25 @@ import inf_pp.td.intercom.TdState;
 import inf_pp.td.model.Game;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.Observable;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.BevelBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
@@ -39,6 +46,8 @@ public class Frame extends JFrame {
 	 */
 	private SideBar sidebar;
 	
+	private JLabel statusLabel;
+	
 	private JMenuBar menuBar;
 	
 	private static final long serialVersionUID = 8781344923489487475L;
@@ -59,6 +68,12 @@ public class Frame extends JFrame {
 		
 		sidebar=new SideBar();
 		mainPanel.add(sidebar,BorderLayout.EAST);
+		
+		statusLabel=new JLabel();
+		statusLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+		statusLabel.setPreferredSize(new Dimension(0,20));
+		statusLabel.setMinimumSize(new Dimension(0,20));
+		mainPanel.add(statusLabel,BorderLayout.SOUTH);
 		
 		menuBar=new JMenuBar();
 		JMenu gameMenu=new JMenu("Spiel");
@@ -82,6 +97,8 @@ public class Frame extends JFrame {
 		//men.setActionCommand("pause");
 		//menuBar.add(men);
 		this.setJMenuBar(menuBar);
+		
+		this.pack();
 	}
 
 	public void update(TdState state) {
@@ -143,6 +160,33 @@ public class Frame extends JFrame {
 		}
 		
 		});
+	}
+	
+	Timer warningTimer=new Timer(0,null);
+	public void putWarning(final String warning) {
+		if(warningTimer!=null)
+			warningTimer.stop();
+		warningTimer=new Timer(33,null);
+		warningTimer.addActionListener(new ActionListener(){
+			private int aniNum=-1;
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				if(++aniNum<31){
+					statusLabel.setText(warning);
+					statusLabel.setForeground(new Color(1.0f*(1-(float)aniNum/30),0,0));
+				}
+				else if(aniNum>60) {
+					warningTimer.stop();
+					statusLabel.setText("");
+				}
+			}
+			
+		});
+		warningTimer.setDelay(33);
+		warningTimer.setRepeats(true);
+		warningTimer.start();
 	}
 
 }

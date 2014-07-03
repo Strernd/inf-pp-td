@@ -239,7 +239,9 @@ public class Controller implements ListenerContainer {
 					try{
 						game.buildTower(type, selectedField);
 					} catch(InvalidFieldException e){
+						frame.putWarning("Bitte ein freies Feld auswählen.");
 					} catch(NoGoldException e) {
+						frame.putWarning("Nicht genug Gold.");
 					}
 				}
 			}
@@ -260,7 +262,9 @@ public class Controller implements ListenerContainer {
 					try {
 						game.upgradeTower(type,selectedField);
 					} catch (InvalidFieldException e) {
+						frame.putWarning("Bitte einen Turm auswählen.");
 					} catch (NoGoldException e) {
+						frame.putWarning("Nicht genug Gold.");
 					}
 				}
 			}
@@ -268,6 +272,7 @@ public class Controller implements ListenerContainer {
 				try {
 					game.sellTower(selectedField);
 				} catch(InvalidFieldException e) {
+					frame.putWarning("Bitte einen Turm auswählen.");
 				}
 			}
 			else if(ac.equals("pause")) {
