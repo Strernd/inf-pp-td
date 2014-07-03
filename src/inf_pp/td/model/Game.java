@@ -1,10 +1,13 @@
 package inf_pp.td.model;
 
+import inf_pp.td.InvalidFieldException;
+import inf_pp.td.NoGoldException;
 import inf_pp.td.TimeSource;
 import inf_pp.td.intercom.PlayAreaWayHolder;
 import inf_pp.td.intercom.TowerType;
 
 import java.awt.Point;
+import java.security.InvalidParameterException;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -111,20 +114,20 @@ public class Game implements java.io.Serializable{
 	 * @param position where to build the tower
 	 * @throws ArrayIndexOutOfBoundsException if the tower is to be placed outside the playing field
 	 */
-	public void buildTower(TowerType type, Point position) throws ArrayIndexOutOfBoundsException{
+	public void buildTower(TowerType type, Point position) {
 		int price=PriceProvider.getTowerPrice(type);
-		if(price>gold)
-			return;
-		//TODO: different exception?
+		if(price>gold) {
+			throw new NoGoldException();
+		}
 		if(position.x<0||position.y<0||position.x>=field.getWidth()||position.y>=field.getHeight())
-			throw new ArrayIndexOutOfBoundsException();
+			throw new InvalidParameterException();
 		for (BaseTower t: towers){
 			if(t.getPosition().equals(position))
-				return;
+				throw new InvalidFieldException();
 		}
 		for (Point p : field.getWaypoints()){
 			if(p.equals(position))
-				return;
+				throw new InvalidFieldException();
 		}
 		gold-=price;
 		towers.add(TowerFactory.buildTower(type, new Point(position)));
@@ -158,13 +161,11 @@ public class Game implements java.io.Serializable{
 				break;
 			}
 		}
-		//TODO: Exception?
 		if(t==null)
-			return;
-		//TODO: Exception
+			throw new InvalidFieldException();
 		int price=PriceProvider.getUpgradePrice(t,type);
 		if(price>gold)
-			return;
+			throw new NoGoldException();
 		gold-=price;
 		t.upgrade(type);
 	}
@@ -178,7 +179,7 @@ public class Game implements java.io.Serializable{
 			}
 		}
 		if(t==null)
-			return;
+			throw new InvalidFieldException();
 		TowerType type = t.getType();
 		//TODO: Better Sell price
 		int price=PriceProvider.getTowerPrice(type);

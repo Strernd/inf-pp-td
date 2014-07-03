@@ -1,5 +1,7 @@
 package inf_pp.td.control;
 
+import inf_pp.td.InvalidFieldException;
+import inf_pp.td.NoGoldException;
 import inf_pp.td.TimeSource;
 import inf_pp.td.intercom.ListenerContainer;
 import inf_pp.td.intercom.TdState;
@@ -236,7 +238,8 @@ public class Controller implements ListenerContainer {
 				if(type!=null){
 					try{
 						game.buildTower(type, selectedField);
-					}catch(ArrayIndexOutOfBoundsException e){
+					} catch(InvalidFieldException e){
+					} catch(NoGoldException e) {
 					}
 				}
 			}
@@ -253,11 +256,19 @@ public class Controller implements ListenerContainer {
 					type=UpgradeType.FIRERATE;
 					break;
 				}
-				if(type!=null)
-					game.upgradeTower(type,selectedField);
+				if(type!=null) {
+					try {
+						game.upgradeTower(type,selectedField);
+					} catch (InvalidFieldException e) {
+					} catch (NoGoldException e) {
+					}
+				}
 			}
 			else if(ac.equals("sell_tower")) {
-				game.sellTower(selectedField);
+				try {
+					game.sellTower(selectedField);
+				} catch(InvalidFieldException e) {
+				}
 			}
 			else if(ac.equals("pause")) {
 				togglePause();
