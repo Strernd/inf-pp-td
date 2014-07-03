@@ -213,4 +213,13 @@ public class Game implements java.io.Serializable{
 	public boolean hasLost() {
 		return lives<=0;
 	}
+	public int getCurrentWaveIndex() {
+		return spawner.getCurrentWaveIndex();
+	}
+	public String getCurrentWaveName() {
+		return spawner.getCurrentWaveName();
+	}
+	public int getWaveCount() {
+		return spawner.getWaveCount();
+	}
 }

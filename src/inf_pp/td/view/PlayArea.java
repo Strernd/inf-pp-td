@@ -144,6 +144,8 @@ public class PlayArea extends JPanel {
 			case "smiley":
 				t=Tiles.TileId.CREEP_SMILEY;
 				break;
+			case "zombie":
+				t=Tiles.TileId.CREEP_ZOMBIE;
 			}
 			//TODO: fallback/exception?
 			if(t==null)

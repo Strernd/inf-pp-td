@@ -25,10 +25,10 @@ public class SlowTower extends BaseTower {
 				creeps.remove(((Slowjectile)p).target);
 			}
 		}
-		do {
+		while(minCreep!=null && minCreep.hasBuff("SlowjectileSlow")){
 			creeps.remove(minCreep);
 			minCreep=Util.nearestCreep(Util.pointToFloat(position), creeps, (float)upgradePolicy.getValue(UpgradeType.RANGE));
-		}while(minCreep!=null && minCreep.hasBuff("SlowjectileSlow"));
+		}
 		if(minCreep==null)
 			minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
 		if(minCreep==null)

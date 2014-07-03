@@ -43,8 +43,9 @@ public class CreepWaveSpawner implements java.io.Serializable {
 	private long lastCreep;
 	
 	public CreepWaveSpawner() {
-		waves.add(new CreepWave(10,0.0008f,100,BaseCreep.class,"smiley",10,2000,"Smileys (I)",1000));
-		waves.add(new CreepWave(30,0.001f,100,BaseCreep.class,"smiley",15,1500,"Smileys (II)",5000));
+		waves.add(new CreepWave(10,0.0008f,10,BaseCreep.class,"smiley",10,2000,"Smileys (I)",1000));
+		waves.add(new CreepWave(25,0.001f,50,BaseCreep.class,"smiley",15,1500,"Smileys (II)",5000));
+		waves.add(new CreepWave(50,0.001f,100,BaseCreep.class,"zombie",15,1500,"Zombies (II)",5000));
 		lastCreep+=waves.get(waveIndex).waitBefore;
 	}
 	
@@ -72,6 +73,7 @@ public class CreepWaveSpawner implements java.io.Serializable {
 		}
 		if(cNum>=w.count) {
 			++waveIndex;
+			cNum=0;
 			if(waveIndex<waves.size())
 				lastCreep+=waves.get(waveIndex).waitBefore;
 		}
@@ -82,7 +84,10 @@ public class CreepWaveSpawner implements java.io.Serializable {
 		return waveIndex;
 	}
 	public String getCurrentWaveName() {
-		return waves.get(waveIndex).waveName;
+		if(waveIndex<waves.size())
+			return waves.get(waveIndex).waveName;
+		else
+			return "";
 	}
 	public int getWaveCount() {
 		return waves.size();

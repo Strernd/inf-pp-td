@@ -131,6 +131,8 @@ public class SideBar extends JPanel {
 			public void run() {
 				livesLabel.setText("Lives: "+state.getGame().getLives());
 				goldLabel.setText("Gold: "+state.getGame().getGold());
+				waveLabel.setText("Wave: "+(state.getGame().getCurrentWaveIndex()+1)+"/"+state.getGame().getWaveCount()
+						+" "+state.getGame().getCurrentWaveName());
 			}
 		});
 	}
