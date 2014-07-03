@@ -39,18 +39,22 @@ public class SideBar extends JPanel {
 		twrPane.setLayout(new GridLayout(2,2,4,4));
 		JButton b=new JButton();
 		b.setActionCommand("build_dd");
+		b.setToolTipText("Direct Damage Tower: Does single target damage");
 		b.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_DD)));
 		twrPane.add(b);
 		b=new JButton("");
 		b.setActionCommand("build_ae");
+		b.setToolTipText("Area of Effect: Deals damage to all creeps in range");
 		b.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_AE)));
 		twrPane.add(b);
 		b=new JButton("");
 		b.setActionCommand("build_sl");
+		b.setToolTipText("Slow Tower: Slows creeps");
 		b.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_SL)));
 		twrPane.add(b);
 		b=new JButton("");
 		b.setActionCommand("build_p");
+		b.setToolTipText("Poison Tower: Afflicts poision to creeps and damages them over time");
 		b.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_P)));
 		twrPane.add(b);
 		
