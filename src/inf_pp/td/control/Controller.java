@@ -104,20 +104,25 @@ public class Controller implements ListenerContainer {
 	 * call this once each tick
 	 */
 	public void tick(){
+		
 		if(!paused){
-			time.tick();
-			game.tick(time);
-			//TODO: put this somewhere else (View?)
-			if(game.hasLost()){
-				JOptionPane.showMessageDialog(frame, "Leider verloren!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
-				pause(true);
-			}
-			else if(game.hasWon()){
-				JOptionPane.showMessageDialog(frame, "Gewonnen!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
-				pause(true);
+			synchronized(game) {
+				time.tick();
+				game.tick(time);
+				//TODO: put this somewhere else (View?)
+				if(game.hasLost()){
+					JOptionPane.showMessageDialog(frame, "Leider verloren!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
+					pause(true);
+				}
+				else if(game.hasWon()){
+					JOptionPane.showMessageDialog(frame, "Gewonnen!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
+					pause(true);
+				}
 			}
 		}
-		frame.update(new TdState(game,selectedField));
+		synchronized(game) {
+			frame.update(new TdState(game,selectedField));
+		}
 	}
 	
 	public void newGame(){
@@ -133,8 +138,10 @@ public class Controller implements ListenerContainer {
 		try {
 			FileOutputStream file=new FileOutputStream(path);
 			ObjectOutputStream oout=new ObjectOutputStream(file);
-			oout.writeObject(game);
-			oout.writeObject(time);
+			synchronized(game) {
+				oout.writeObject(game);
+				oout.writeObject(time);
+			}
 			oout.close();
 		}
 		catch(IOException e) {
@@ -147,20 +154,23 @@ public class Controller implements ListenerContainer {
 		try {
 			file = new FileInputStream(path);
 			ObjectInputStream oin = new ObjectInputStream(file);
-			game=(Game) oin.readObject();
-			time=(TimeSource) oin.readObject();
+			Game tempG=(Game) oin.readObject();
+			synchronized(tempG) {
+				game=tempG;
+				time=(TimeSource) oin.readObject();
+			}
 			oin.close();
 			file.close();
 			//game.addObserver(frame);
 			time.skipTick();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			// TODO Show to user
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Show to user
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			// TODO Show To user
 			e.printStackTrace();
 		}
 	}
@@ -189,8 +199,10 @@ public class Controller implements ListenerContainer {
 	public void pause(boolean p) {
 		if(p==paused)
 			return;
-		if(!p&&(game.hasWon()||game.hasLost()))
-			return;
+		synchronized(game) {
+			if(!p&&(game.hasWon()||game.hasLost()))
+				return;
+		}
 		paused=p;
 		if(!paused)
 			time.skipTick();
