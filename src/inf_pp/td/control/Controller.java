@@ -3,6 +3,7 @@ package inf_pp.td.control;
 import inf_pp.td.InvalidFieldException;
 import inf_pp.td.NoGoldException;
 import inf_pp.td.TimeSource;
+import inf_pp.td.intercom.GameInterface;
 import inf_pp.td.intercom.ListenerContainer;
 import inf_pp.td.intercom.TdState;
 import inf_pp.td.intercom.TowerType;
@@ -44,7 +45,7 @@ public class Controller implements ListenerContainer {
 	
 	//TODO: interface?
 	//Only to be modified under lock
-	Game game;
+	GameInterface game;
 	
 	//Only to be modified under lock(game)
 	TimeSource time=new TimeSource();
@@ -82,7 +83,7 @@ public class Controller implements ListenerContainer {
 	 * set the model to use
 	 * @param game an instance of a game to use
 	 */
-	public void setModel(Game game) {
+	public void setModel(GameInterface game) {
 		this.game=game;
 		/*if(frame!=null)
 			game.addObserver(frame);*/
@@ -126,7 +127,7 @@ public class Controller implements ListenerContainer {
 	public void newGame(){
 		pause(true);
 		synchronized(game) {
-			Game tempG=new Game(20);
+			GameInterface tempG=new Game(20);
 			synchronized(tempG) {
 				game=tempG;
 				time=new TimeSource();
@@ -157,7 +158,7 @@ public class Controller implements ListenerContainer {
 		try {
 			file = new FileInputStream(path);
 			ObjectInputStream oin = new ObjectInputStream(file);
-			Game tempG=(Game) oin.readObject();
+			GameInterface tempG=(GameInterface) oin.readObject();
 			synchronized(game){
 				synchronized(tempG) {
 					game=tempG;

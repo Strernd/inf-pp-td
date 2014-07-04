@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.lang.reflect.InvocationTargetException;
 
 import inf_pp.td.control.Controller;
+import inf_pp.td.intercom.GameInterface;
 import inf_pp.td.model.Game;
 import inf_pp.td.view.Frame;
 
@@ -23,7 +24,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		final Game game=new Game(20);
+		final GameInterface game=new Game(20);
 		final Controller ctrl=new Controller();
 		
 		//this is needed to assign
@@ -35,7 +36,7 @@ public class Main {
 				public void run() {
 					frame[0]=new Frame(game);
 					//frame[0].setSize(660, 560);
-					frame[0].getContentPane().setPreferredSize(new Dimension(640,480));
+					frame[0].getContentPane().setPreferredSize(new Dimension(680,480));
 					frame[0].pack();
 					frame[0].setVisible(true);
 					frame[0].setTitle("Inf-PP Tower Defense Bernd Strehl/Marc André Wittorf");

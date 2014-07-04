@@ -1,8 +1,8 @@
 package inf_pp.td.view;
 
+import inf_pp.td.intercom.GameInterface;
 import inf_pp.td.intercom.ListenerContainer;
 import inf_pp.td.intercom.TdState;
-import inf_pp.td.model.Game;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,9 +10,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-import java.util.Observable;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -21,11 +19,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.BevelBorder;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 
 
 /**
@@ -54,7 +48,7 @@ public class Frame extends JFrame {
 	
 	//private Game game;
 	
-	public Frame(Game game){
+	public Frame(GameInterface game){
 		//this.game=game;
 		//Game pa=game;
 
@@ -142,7 +136,7 @@ public class Frame extends JFrame {
 		});
 	}
 	
-	public void newGame(final Game game) {
+	public void newGame(final GameInterface game) {
 		//TODO: adjust parameters instead of new object? rebinding the handler is very ugly
 		SwingUtilities.invokeLater(new Runnable(){
 

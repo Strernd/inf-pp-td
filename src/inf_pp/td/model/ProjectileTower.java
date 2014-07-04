@@ -24,7 +24,7 @@ public class ProjectileTower extends BaseTower {
 
 	@Override
 	public int doFire(Game game){
-		BaseCreep minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
+		BaseCreep minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getBaseCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
 		//System.out.println((float)upgradePolicy.getValue(UpgradeType.RANGE));
 
 		//System.out.println((int)Math.round((float)upgradePolicy.getValue(UpgradeType.DAMAGE)));

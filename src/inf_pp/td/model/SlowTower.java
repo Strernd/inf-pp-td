@@ -24,7 +24,7 @@ public class SlowTower extends BaseTower {
 	@Override
 	public int doFire(Game game){
 		BaseCreep minCreep=null;
-		HashSet<BaseCreep> creeps=new HashSet<BaseCreep>(game.getCreeps());
+		HashSet<BaseCreep> creeps=new HashSet<BaseCreep>(game.getBaseCreeps());
 		for (BaseProjectile p: game.getProjectiles()) {
 			if(p instanceof Slowjectile) {
 				creeps.remove(((Slowjectile)p).target);
@@ -35,7 +35,7 @@ public class SlowTower extends BaseTower {
 			minCreep=Util.nearestCreep(Util.pointToFloat(position), creeps, (float)upgradePolicy.getValue(UpgradeType.RANGE));
 		}
 		if(minCreep==null)
-			minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
+			minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getBaseCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
 		if(minCreep==null)
 			return 0;
 		

@@ -16,12 +16,13 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - ~~Einheitlicher Zeitgeber~~
 - ~~Pausieren~~
 - Threads?
-- Model und View stärker durch Interfaces trennen
+- ~~Model und View stärker durch Interfaces trennen~~
 - ~~``instanceof`` vermeiden wenn möglich~~
-- Creeps und Tower identifizieren
+- ~~Creeps und Tower identifizieren~~
 - ~~Grafiken für Projektile?~~
 - Übergabe des Game-Objektes vermeiden?
 - ~~BALANCING!!!~~
 - ~~Synchronisieren zwischen Game- und GUI-Thread~~
 - ~~Menupunkt Neues Spiel~~
 - ~~Buff Wirkdauer~~
+- Usability, Accelerators und sowas

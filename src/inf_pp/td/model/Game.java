@@ -3,6 +3,8 @@ package inf_pp.td.model;
 import inf_pp.td.InvalidFieldException;
 import inf_pp.td.NoGoldException;
 import inf_pp.td.TimeSource;
+import inf_pp.td.intercom.CreepInterface;
+import inf_pp.td.intercom.GameInterface;
 import inf_pp.td.intercom.PlayAreaWayHolder;
 import inf_pp.td.intercom.TowerType;
 import inf_pp.td.intercom.UpgradeType;
@@ -12,7 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 
-public class Game implements java.io.Serializable{
+public class Game implements java.io.Serializable, GameInterface{
 	
 	/**
 	 * 
@@ -65,11 +67,10 @@ public class Game implements java.io.Serializable{
 	
 	
 	//private long lastGold=System.currentTimeMillis();
-	/**
-	 * the game's "tick"-method, call once each tick to
-	 * let the model do all its stuff and notify the view about changes
-	 * @param time a TimeSource-Object to get the current time from
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#tick(inf_pp.td.TimeSource)
 	 */
+	@Override
 	public void tick(TimeSource time){
 		addBasicIncome(time);
 		
@@ -94,23 +95,30 @@ public class Game implements java.io.Serializable{
 	}
 
 
-	/**
-	 * @return the play area used in this game
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#getPlayArea()
 	 */
+	@Override
 	public PlayAreaWayHolder getPlayArea() {
 		return field;
 	}
 
-	/**
-	 * @return get a list of all towers in this game
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#getTowers()
 	 */
+	@Override
 	public HashSet<BaseTower> getTowers() {
 		return towers;
 	}
-	/**
-	 * @return get a list of all towers in this game
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#getCreeps()
 	 */
-	public HashSet<BaseCreep> getCreeps() {
+	@Override
+	public HashSet<? extends CreepInterface> getCreeps() {
+		return creeps;
+	}
+	
+	HashSet<BaseCreep> getBaseCreeps() {
 		return creeps;
 	}
 	
@@ -122,11 +130,10 @@ public class Game implements java.io.Serializable{
 		return null;
 	}
 	
-	/**
-	 * @param type which tower to build, single target, aoe...
-	 * @param position where to build the tower
-	 * @throws ArrayIndexOutOfBoundsException if the tower is to be placed outside the playing field
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#buildTower(inf_pp.td.intercom.TowerType, java.awt.Point)
 	 */
+	@Override
 	public void buildTower(TowerType type, Point position) {
 		int price=PriceProvider.getTowerPrice(type);
 		if(price>gold) {
@@ -149,10 +156,18 @@ public class Game implements java.io.Serializable{
 	}
 
 
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#getProjectiles()
+	 */
+	@Override
 	public HashSet<BaseProjectile> getProjectiles() {
 		return projectiles;
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#getLives()
+	 */
+	@Override
 	public int getLives(){
 		return lives;
 	}
@@ -164,6 +179,10 @@ public class Game implements java.io.Serializable{
 		takeLife(1);
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#upgradeTower(inf_pp.td.intercom.UpgradeType, java.awt.Point)
+	 */
+	@Override
 	public void upgradeTower(UpgradeType type, Point position){
 		BaseTower t=getTowerAtPosition(position);
 		if(t==null)
@@ -175,6 +194,10 @@ public class Game implements java.io.Serializable{
 		t.upgrade(type);
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#sellTower(java.awt.Point)
+	 */
+	@Override
 	public void sellTower(Point position){
 		BaseTower t=getTowerAtPosition(position);
 		if(t==null)
@@ -201,33 +224,65 @@ public class Game implements java.io.Serializable{
 		gold+=amount;
 	}
 
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#getGold()
+	 */
+	@Override
 	public int getGold() {
 		return gold;
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#hasWon()
+	 */
+	@Override
 	public boolean hasWon() {
 		return !spawner.hasMoreCreeps() && creeps.size()==0 && !hasLost();
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#hasLost()
+	 */
+	@Override
 	public boolean hasLost() {
 		return lives<=0;
 	}
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#getCurrentWaveIndex()
+	 */
+	@Override
 	public int getCurrentWaveIndex() {
 		return spawner.getCurrentWaveIndex();
 	}
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#getCurrentWaveName()
+	 */
+	@Override
 	public String getCurrentWaveName() {
 		return spawner.getCurrentWaveName();
 	}
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#getWaveCount()
+	 */
+	@Override
 	public int getWaveCount() {
 		return spawner.getWaveCount();
 	}
 
 
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#getPrice(inf_pp.td.intercom.TowerType)
+	 */
+	@Override
 	public int getPrice(TowerType type) {
 		return PriceProvider.getTowerPrice(type);
 	}
 
 
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.GameInterface#getTowerUpgradePrice(java.awt.Point, inf_pp.td.intercom.UpgradeType)
+	 */
+	@Override
 	public int getTowerUpgradePrice(Point position, UpgradeType type) {
 		BaseTower t=getTowerAtPosition(position);
 		if(t==null)

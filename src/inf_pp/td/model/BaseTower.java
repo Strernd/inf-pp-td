@@ -1,13 +1,14 @@
 package inf_pp.td.model;
 
 import inf_pp.td.TimeSource;
+import inf_pp.td.intercom.TowerInterface;
 import inf_pp.td.intercom.TowerType;
 import inf_pp.td.intercom.UpgradeType;
 
 import java.awt.Point;
 import java.util.Iterator;
 
-public abstract class BaseTower implements java.io.Serializable {
+public abstract class BaseTower implements java.io.Serializable, TowerInterface {
 	/**
 	 * 
 	 */
@@ -23,45 +24,35 @@ public abstract class BaseTower implements java.io.Serializable {
 	protected int fireRate;
 	
 	protected UpgradePolicy upgradePolicy;
-	
-	
-	
-	/**
-	 * check if this tower is able to fire at the moment
-	 * @return true if tower can fire
-	 * @return false if tower can not fire
-	 */
-	@Deprecated
-	public boolean canFire(){
-		//TODO: remove?
-		return cooldown<System.currentTimeMillis();
-	}
-	
+
+
 	/**
 	 * fires (a projectile), does damage
 	 */
-	public int doFire(Game game){
+	int doFire(Game game){
 		//System.out.println(range);
 		return 0;
 	}
 	
-	public void fire(Game game, TimeSource time){
+	final void fire(Game game, TimeSource time){
 		if(time.getMillisSinceStart()>cooldown){
 			cooldown=time.getMillisSinceStart()+doFire(game);
 		}
 	}
 	
-	public void remove(Game game){
+	void remove(Game game){
 		for(Iterator<BaseTower> it=game.getTowers().iterator();it.hasNext();){
 			if(it.next().equals(this)){
 				it.remove();
+				return;
 			}
 		}
 	}
 	
-	/**
-	 * @return this towers position
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.TowerInterface#getPosition()
 	 */
+	@Override
 	public Point getPosition() {
 		return position;
 	}
@@ -70,22 +61,26 @@ public abstract class BaseTower implements java.io.Serializable {
 	 * sets the position of this tower
 	 * @param position the new position
 	 */
-	public void setPosition(Point position) {
+	void setPosition(Point position) {
 		this.position=position;
 	}
 
-	public void upgrade(UpgradeType type) {
+	void upgrade(UpgradeType type) {
 		if(upgradePolicy!=null)
 			upgradePolicy.upgrade(type);
 	}
 	
-	public int getLevel(UpgradeType type) {
+	int getLevel(UpgradeType type) {
 		if(upgradePolicy!=null)
 			return upgradePolicy.getLevel(type);
 		else
 			return 0;
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.TowerInterface#getType()
+	 */
+	@Override
 	public TowerType getType() {
 		return towerType;
 	}

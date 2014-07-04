@@ -1,6 +1,7 @@
 package inf_pp.td.model;
 
 import inf_pp.td.TimeSource;
+import inf_pp.td.intercom.CreepInterface;
 import inf_pp.td.model.Buff.Type;
 
 import java.awt.Point;
@@ -8,7 +9,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BaseCreep implements java.io.Serializable {
+public class BaseCreep implements java.io.Serializable, CreepInterface {
 	/**
 	 * 
 	 */
@@ -39,7 +40,7 @@ public class BaseCreep implements java.io.Serializable {
 		this.type=type;
 	}
 	
-	public float getMoveSpeed(TimeSource time) {
+	protected float getMoveSpeed(TimeSource time) {
 		//TODO: set parameter time to some valid variable
 		return (float) Util.getBuffedValue(baseMoveSpeed,Type.MOVE_SPEED,buffs,time);
 	}
@@ -51,7 +52,7 @@ public class BaseCreep implements java.io.Serializable {
 	 * @param time
 	 * @param game Instance of the Game
 	 */
-	public void move(TimeSource time, Game game) {
+	void move(TimeSource time, Game game) {
 		//this.health=(int)Util.getBuffedValue(this.health, Buff.Type.DOT, buffs, time);
 		Util.getBuffedValue(this,Buff.Type.DOT,buffs,time);
 		nextWp+=Util.moveI(getMoveSpeed(time)*time.getMillisSinceLastTick(),position,waypoints.subList(nextWp, waypoints.size()));
@@ -62,11 +63,10 @@ public class BaseCreep implements java.io.Serializable {
 		//return nextWp>=waypoints.size();
 	}
 	
-	/**
-	 * Returns the current position of a creep
-	 * 
-	 * @return position
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.CreepInterface#getPosition()
 	 */
+	@Override
 	public Point2D.Float getPosition(){
 		return position;
 	}
@@ -76,27 +76,25 @@ public class BaseCreep implements java.io.Serializable {
 	 * 
 	 * @param dmg Amount Damage dealt
 	 */
-	public void doDamage(int dmg, Game game) {
+	void doDamage(int dmg, Game game) {
 		this.health-=dmg;
 		if(isDead()){ //Did we just kill it?
 			game.addGold(gold);
 		}
 	}
 	
-	/**
-	 * Returns if the creep is dead or not
-	 * 
-	 * @return is the creep dead?
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.CreepInterface#isDead()
 	 */
+	@Override
 	public boolean isDead(){
 		return this.health<=0;
 	}
 	
-	/**
-	 * Returns the health in absolute value
-	 * 
-	 * @return Health in Factor of maximum health
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.CreepInterface#getHealthPercentage()
 	 */
+	@Override
 	public float getHealthPercentage(){
 		return  Math.max((float)(health)/(float)maxHealth,0);
 	}
@@ -114,7 +112,7 @@ public class BaseCreep implements java.io.Serializable {
 	 * @param id
 	 * @param b
 	 */
-	public void addBuff(String id,Buff b){
+	void addBuff(String id,Buff b){
 		buffs.put(id,b);
 	}
 	
@@ -124,10 +122,14 @@ public class BaseCreep implements java.io.Serializable {
 	 * @param id
 	 * @return
 	 */
-	public boolean hasBuff(String id){
+	boolean hasBuff(String id){
 		return buffs.containsKey(id);
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.CreepInterface#getType()
+	 */
+	@Override
 	public String getType() {
 		return type;
 	}

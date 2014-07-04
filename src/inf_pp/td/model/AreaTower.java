@@ -21,7 +21,7 @@ public class AreaTower extends BaseTower {
 	@Override
 	public int doFire(Game game) {
 		boolean hasFired=false;
-		for (BaseCreep c : game.getCreeps()) {
+		for (BaseCreep c : game.getBaseCreeps()) {
 			if(c.getPosition().distance(this.position)<(float)upgradePolicy.getValue(UpgradeType.RANGE)) {
 				c.doDamage(((Float)upgradePolicy.getValue(UpgradeType.DAMAGE)).intValue(),game);
 				hasFired=true;

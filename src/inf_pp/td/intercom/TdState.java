@@ -1,15 +1,13 @@
 package inf_pp.td.intercom;
 
-import inf_pp.td.model.Game;
-
 import java.awt.Point;
 
 public class TdState {
 
 	private final Point selectedField;
-	private final Game game;
+	private final GameInterface game;
 	
-	public TdState(Game game, Point selectedField) {
+	public TdState(GameInterface game, Point selectedField) {
 		super();
 		this.selectedField = selectedField;
 		this.game = game;
@@ -19,7 +17,7 @@ public class TdState {
 		return selectedField;
 	}
 
-	public Game getGame() {
+	public GameInterface getGame() {
 		return game;
 	}
 }

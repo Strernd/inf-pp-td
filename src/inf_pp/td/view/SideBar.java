@@ -2,10 +2,10 @@ package inf_pp.td.view;
 
 import inf_pp.td.InvalidFieldException;
 import inf_pp.td.Tiles;
+import inf_pp.td.intercom.GameInterface;
 import inf_pp.td.intercom.TdState;
 import inf_pp.td.intercom.TowerType;
 import inf_pp.td.intercom.UpgradeType;
-import inf_pp.td.model.Game;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -143,7 +143,7 @@ public class SideBar extends JPanel {
 	}
 	
 	void updateState(final TdState state){
-		Game game=state.getGame();
+		GameInterface game=state.getGame();
 		//We need to save these variables as we update the UI from the UI thread whereas updateState is called by our view-thread
 		final int lives=game.getLives();
 		final int gold=game.getGold();
