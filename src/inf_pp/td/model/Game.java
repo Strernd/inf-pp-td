@@ -200,7 +200,6 @@ public class Game implements java.io.Serializable{
 	
 	void addGold(int amount) {
 		gold+=amount;
-		System.out.println("Gold added");
 	}
 
 	public int getGold() {

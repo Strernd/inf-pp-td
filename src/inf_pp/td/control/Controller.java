@@ -43,17 +43,23 @@ public class Controller implements ListenerContainer {
 	private FieldSelectListener fieldListener;
 	private SidebarListener sbListener;
 	private WindowListener wListener=new TDWindowListener();
+	
+	//Only to be accessed under lock
 	private Point selectedField=new Point(-1,-1);
 	private Frame frame;
 	private JFileChooser fc;
 	
-	int tickrate;
-	
 	//TODO: interface?
+	//Only to be modified under lock
 	Game game;
 	
+	//Only to be modified under lock(game)
 	TimeSource time=new TimeSource();
 	
+	//TODO: prevent pause-abuse
+	//Only to be modified under lock(pausedLock)
+	private boolean paused=true;
+	private Object pausedLock=new Object();
 
 	@Override
 	public MouseInputListener getFieldSelectListener() {
@@ -98,14 +104,11 @@ public class Controller implements ListenerContainer {
 	}
 	
 	
-	//TODO: prevent pause-abuse
-	private boolean paused=true;
 	/**
 	 * call this once each tick
 	 */
 	public void tick(){
-		
-		if(!paused){
+		if(!isPaused()){
 			synchronized(game) {
 				time.tick();
 				game.tick(time);
@@ -121,16 +124,23 @@ public class Controller implements ListenerContainer {
 			}
 		}
 		synchronized(game) {
-			frame.update(new TdState(game,selectedField));
+			synchronized(selectedField) {
+				frame.update(new TdState(game,selectedField));
+			}
 		}
 	}
 	
 	public void newGame(){
 		pause(true);
-		game=new Game(20);
-		time=new TimeSource();
-		if(frame!=null) {
-			frame.newGame(game);
+		synchronized(game) {
+			Game tempG=new Game(20);
+			synchronized(tempG) {
+				game=tempG;
+				time=new TimeSource();
+				if(frame!=null) {
+					frame.newGame(game);
+				}
+			}
 		}
 	}
 	
@@ -155,9 +165,11 @@ public class Controller implements ListenerContainer {
 			file = new FileInputStream(path);
 			ObjectInputStream oin = new ObjectInputStream(file);
 			Game tempG=(Game) oin.readObject();
-			synchronized(tempG) {
-				game=tempG;
-				time=(TimeSource) oin.readObject();
+			synchronized(game){
+				synchronized(tempG) {
+					game=tempG;
+					time=(TimeSource) oin.readObject();
+				}
 			}
 			oin.close();
 			file.close();
@@ -176,40 +188,49 @@ public class Controller implements ListenerContainer {
 	}
 	
 	private void saveWithDialog() {
-		boolean p=isPaused();
-		pause(true);
-		if(fc.showSaveDialog(null)==JFileChooser.APPROVE_OPTION) {
-			String path=fc.getSelectedFile().getAbsolutePath();
-			if(!path.endsWith(".tdsv"))
-				path=path.concat(".tdsv");
-			saveGame(path);
+		synchronized(pausedLock) {
+			boolean p=isPaused();
+			pause(true);
+			if(fc.showSaveDialog(null)==JFileChooser.APPROVE_OPTION) {
+				String path=fc.getSelectedFile().getAbsolutePath();
+				if(!path.endsWith(".tdsv"))
+					path=path.concat(".tdsv");
+				saveGame(path);
+			}
+			pause(p);
 		}
-		pause(p);
 	}
 	
 	private void loadWithDialog() {
-		boolean p=isPaused();
-		pause(true);
-		if(fc.showOpenDialog(null)==JFileChooser.APPROVE_OPTION)
-			loadGame(fc.getSelectedFile().getAbsolutePath());
-		else
-			pause(p);
+		synchronized(pausedLock) {
+			boolean p=isPaused();
+			pause(true);
+			if(fc.showOpenDialog(null)==JFileChooser.APPROVE_OPTION)
+				loadGame(fc.getSelectedFile().getAbsolutePath());
+			else
+				pause(p);
+		}
 	}
 	
 	public void pause(boolean p) {
-		if(p==paused)
-			return;
-		synchronized(game) {
-			if(!p&&(game.hasWon()||game.hasLost()))
+		synchronized(pausedLock){
+			if(p==paused)
 				return;
+			synchronized(game) {
+				if(!p&&(game.hasWon()||game.hasLost()))
+					return;
+			}
+			paused=p;
+			if(!paused) {
+				time.skipTick();
+			}
 		}
-		paused=p;
-		if(!paused)
-			time.skipTick();
 	}
 	
 	public void togglePause() {
-		pause(!paused);
+		synchronized(pausedLock){
+			pause(!isPaused());
+		}
 	}
 	
 	public boolean isPaused() {
@@ -217,12 +238,14 @@ public class Controller implements ListenerContainer {
 	}
 	
 	public void askExit() {
-		boolean p=isPaused();
-		pause(true);
-		if(JOptionPane.showConfirmDialog(null,"Wirklich Beenden?","test",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
-			System.exit(0);
-		else
-			pause(p);
+		synchronized(pausedLock) {
+			boolean p=isPaused();
+			pause(true);
+			if(JOptionPane.showConfirmDialog(null,"Wirklich Beenden?","test",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
+				System.exit(0);
+			else
+				pause(p);
+		}
 	}
 
 	
@@ -249,7 +272,11 @@ public class Controller implements ListenerContainer {
 				}
 				if(type!=null){
 					try{
-						game.buildTower(type, selectedField);
+						synchronized(game) {
+							synchronized(selectedField) {
+								game.buildTower(type, selectedField);
+							}
+						}
 					} catch(InvalidFieldException e){
 						frame.putWarning("Bitte ein freies Feld auswählen.");
 					} catch(NoGoldException e) {
@@ -272,7 +299,11 @@ public class Controller implements ListenerContainer {
 				}
 				if(type!=null) {
 					try {
-						game.upgradeTower(type,selectedField);
+						synchronized(game) {
+							synchronized(selectedField){
+								game.upgradeTower(type,selectedField);
+							}
+						}
 					} catch (InvalidFieldException e) {
 						frame.putWarning("Bitte einen Turm auswählen.");
 					} catch (NoGoldException e) {
@@ -282,7 +313,11 @@ public class Controller implements ListenerContainer {
 			}
 			else if(ac.equals("sell_tower")) {
 				try {
-					game.sellTower(selectedField);
+					synchronized(game) {
+						synchronized(selectedField) {
+							game.sellTower(selectedField);
+						}
+					}
 				} catch(InvalidFieldException e) {
 					frame.putWarning("Bitte einen Turm auswählen.");
 				}
@@ -313,8 +348,10 @@ public class Controller implements ListenerContainer {
 		public void mousePressed(MouseEvent ev) {
 			int x=ev.getX()*game.getPlayArea().getWidth()/((JPanel)ev.getSource()).getWidth();
 			int y=ev.getY()*game.getPlayArea().getHeight()/((JPanel)ev.getSource()).getHeight();
-			selectedField.x=x;
-			selectedField.y=y;
+			synchronized(selectedField){
+				selectedField.x=x;
+				selectedField.y=y;
+			}
 			super.mousePressed(ev);
 		}		
 	}

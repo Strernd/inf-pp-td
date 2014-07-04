@@ -12,7 +12,7 @@ public class PoisonTower extends BaseTower {
 		upgradePolicy=up;
 		up.setFunction(UpgradeType.DAMAGE,new ExponentialUpgrade.ExpFun(0,0.9f,1500));
 		up.setFunction(UpgradeType.RANGE,new ExponentialUpgrade.ExpFun(.2f,1.1f,1));
-		up.setFunction(UpgradeType.FIRERATE,new ExponentialUpgrade.ExpFun(333,0.75f,667));
+		up.setFunction(UpgradeType.FIRERATE,new ExponentialUpgrade.ExpFun(33,0.75f,967));
 		towerType=TowerType.POISON;
 	}
 

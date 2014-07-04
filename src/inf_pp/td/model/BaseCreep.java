@@ -55,7 +55,8 @@ public class BaseCreep implements java.io.Serializable {
 	 * @param game Instance of the Game
 	 */
 	public void move(TimeSource time, Game game) {
-		this.health=(int)Util.getBuffedValue(this.health, Buff.Type.DOT, buffs, time);
+		//this.health=(int)Util.getBuffedValue(this.health, Buff.Type.DOT, buffs, time);
+		Util.getBuffedValue(this,Buff.Type.DOT,buffs,time);
 		nextWp+=Util.moveI(getMoveSpeed()*time.getMillisSinceLastTick(),position,waypoints.subList(nextWp, waypoints.size()));
 		if(nextWp>=waypoints.size()){
 			game.takeLife();
