@@ -26,8 +26,6 @@ public class Game implements java.io.Serializable, GameInterface{
 	 */
 	private PlayArea field;
 	
-	//TODO: put in PlayArea?
-	//TODO: change to map<>?
 	/**
 	 * a list of all towers in the game
 	 */
@@ -42,12 +40,7 @@ public class Game implements java.io.Serializable, GameInterface{
 	 * a list of all creeps in the game
 	 */
 	private HashSet<BaseCreep> creeps=new HashSet<BaseCreep>();
-	
-	/**
-	 * if the game is running
-	 */
-	
-	//TODO: add parameter?
+
 	private CreepWaveSpawner spawner = new CreepWaveSpawner();
 	
 	/**
@@ -61,7 +54,7 @@ public class Game implements java.io.Serializable, GameInterface{
 	
 	public Game(int lives) {
 		this.lives=lives;
-		field=new PlayArea(10,10);
+		field=new PlayArea();
 		spawner.setWaypoints(field.getWaypoints());
 	}
 	

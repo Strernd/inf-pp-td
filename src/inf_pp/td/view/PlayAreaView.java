@@ -22,7 +22,7 @@ import java.util.HashSet;
 
 import javax.swing.JPanel;
 
-public class PlayArea extends JPanel {
+public class PlayAreaView extends JPanel {
 	
 	private final Object frameLock=new Object();
 	private BufferedImage currentFrame;
@@ -34,7 +34,7 @@ public class PlayArea extends JPanel {
 
 	private static final long serialVersionUID = -6607180777510972878L;
 
-	PlayArea(PlayAreaWayHolder pa) {
+	PlayAreaView(PlayAreaWayHolder pa) {
 //		width=pa.getWidth();
 //		height=pa.getHeight();
 	}

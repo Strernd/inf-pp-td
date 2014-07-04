@@ -15,7 +15,7 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - ~~Creepwaves organisieren~~
 - ~~Einheitlicher Zeitgeber~~
 - ~~Pausieren~~
-- Threads?
+- ~~Threads?~~
 - ~~Model und View stärker durch Interfaces trennen~~
 - ~~``instanceof`` vermeiden wenn möglich~~
 - ~~Creeps und Tower identifizieren~~

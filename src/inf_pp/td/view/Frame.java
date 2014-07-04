@@ -33,7 +33,7 @@ public class Frame extends JFrame {
 	/**
 	 * a panel to display the playing area, draws all towers, waypoints, creeps, projectiles...
 	 */
-	private PlayArea playArea;
+	private PlayAreaView playArea;
 	
 	/**
 	 * a panel to hold all buttons and labels in the sidebar
@@ -57,7 +57,7 @@ public class Frame extends JFrame {
 		BorderLayout layout=new BorderLayout();
 		mainPanel.setLayout(layout);
 		
-		playArea=new PlayArea(game.getPlayArea());
+		playArea=new PlayAreaView(game.getPlayArea());
 		mainPanel.add(playArea,BorderLayout.CENTER);
 		
 		sidebar=new SideBar();
@@ -144,7 +144,7 @@ public class Frame extends JFrame {
 		public void run() {
 			mainPanel.remove(playArea);
 			MouseListener listeners[]=playArea.getListeners(MouseListener.class);
-			playArea=new PlayArea(game.getPlayArea());
+			playArea=new PlayAreaView(game.getPlayArea());
 			for(MouseListener l: listeners) {
 				playArea.addMouseListener(l);
 			}

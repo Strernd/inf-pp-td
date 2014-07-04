@@ -27,11 +27,10 @@ public class PlayArea implements PlayAreaWayHolder, java.io.Serializable{
 	 */
 	private ArrayList<Point> waypoints;
 	
-	public PlayArea(int width, int height) {
-		this.width=width;
-		this.height=height;
+	public PlayArea() {
+		this.width=10;
+		this.height=10;
 		
-		//TODO: remove tehse, load from somewhere (c)
 		waypoints=new ArrayList<Point>();
 		waypoints.add(new Point(0,1));
 		waypoints.add(new Point(1,1));
@@ -71,22 +70,6 @@ public class PlayArea implements PlayAreaWayHolder, java.io.Serializable{
 		waypoints.add(new Point(1,7));
 		waypoints.add(new Point(1,8));
 		waypoints.add(new Point(1,9));
-		
-/*		waypoints.add(new Point(2,0));
-		waypoints.add(new Point(2,1));
-		waypoints.add(new Point(2,2));
-		waypoints.add(new Point(3,2));
-		waypoints.add(new Point(4,2));
-		waypoints.add(new Point(5,2));
-		waypoints.add(new Point(6,2));
-		waypoints.add(new Point(7,2));
-		waypoints.add(new Point(7,3));
-		waypoints.add(new Point(7,4));
-		waypoints.add(new Point(7,5));
-		waypoints.add(new Point(7,6));
-		waypoints.add(new Point(7,7));
-		waypoints.add(new Point(7,8));
-		waypoints.add(new Point(7,9));*/
 	}
 
 	public ArrayList<Point> getWaypoints() {

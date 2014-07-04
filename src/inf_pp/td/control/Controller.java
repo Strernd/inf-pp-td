@@ -117,11 +117,6 @@ public class Controller implements ListenerContainer {
 				}
 			}
 		}
-		synchronized(game) {
-			synchronized(selectedField) {
-				frame.update(new TdState(game,selectedField));
-			}
-		}
 	}
 	
 	public void newGame(){
@@ -231,7 +226,7 @@ public class Controller implements ListenerContainer {
 		return paused;
 	}
 	
-	public void askExit() {
+	void askExit() {
 		synchronized(pausedLock) {
 			boolean p=isPaused();
 			pause(true);
@@ -240,6 +235,44 @@ public class Controller implements ListenerContainer {
 			else
 				pause(p);
 		}
+	}
+	
+	public void startGameThread() {
+		Thread t=new Thread(){
+			long last=System.currentTimeMillis();
+			public void run(){
+				while(true){
+					try {
+						Thread.sleep(last-System.currentTimeMillis()+25);
+					} catch (InterruptedException e) {
+					}
+					tick();
+					last=System.currentTimeMillis();
+				}
+			}
+		};
+		t.start();
+	}
+	
+	public void startRenderingThread() {
+		Thread t=new Thread(){
+			public void run(){
+				long last=System.currentTimeMillis();
+				while(true){
+					try {
+						Thread.sleep(last-System.currentTimeMillis()+25);
+					} catch (InterruptedException e) {
+					}
+					synchronized(game) {
+						synchronized(selectedField) {
+							frame.update(new TdState(game,selectedField));
+						}
+					}
+					last=System.currentTimeMillis();
+				}
+			}
+		};
+		t.start();
 	}
 
 	
@@ -266,9 +299,13 @@ public class Controller implements ListenerContainer {
 				}
 				if(type!=null){
 					try{
-						synchronized(game) {
-							synchronized(selectedField) {
-								game.buildTower(type, selectedField);
+						synchronized(pausedLock) {
+							if(!isPaused()) {
+								synchronized(game) {
+									synchronized(selectedField) {
+										game.buildTower(type, selectedField);
+									}
+								}
 							}
 						}
 					} catch(InvalidFieldException e){
@@ -293,9 +330,13 @@ public class Controller implements ListenerContainer {
 				}
 				if(type!=null) {
 					try {
-						synchronized(game) {
-							synchronized(selectedField){
-								game.upgradeTower(type,selectedField);
+						synchronized(pausedLock) {
+							if(!isPaused()) {
+								synchronized(game) {
+									synchronized(selectedField){
+										game.upgradeTower(type,selectedField);
+									}
+								}
 							}
 						}
 					} catch (InvalidFieldException e) {
@@ -307,9 +348,13 @@ public class Controller implements ListenerContainer {
 			}
 			else if(ac.equals("sell_tower")) {
 				try {
-					synchronized(game) {
-						synchronized(selectedField) {
-							game.sellTower(selectedField);
+					synchronized(pausedLock) {
+						if(!isPaused()) {
+							synchronized(game) {
+								synchronized(selectedField) {
+									game.sellTower(selectedField);
+								}
+							}
 						}
 					}
 				} catch(InvalidFieldException e) {

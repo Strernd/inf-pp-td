@@ -61,23 +61,9 @@ public class Main {
 		//TODO: threads?
 		//ctrl.setTickrate(64);
 		//ctrl.start();
-		
-		//TODO: better jitter performance
-		//TODO: move to own file
-		Thread t=new Thread(){
-			public void run(){
-				while(true){
-					try {
-						Thread.sleep(25);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					ctrl.tick();
-				}
-			}
-		};
-		t.start();
+
+		ctrl.startGameThread();
+		ctrl.startRenderingThread();
 	}
 
 }
