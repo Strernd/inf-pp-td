@@ -6,12 +6,18 @@ import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ListIterator;
 
 public class CreepWaveSpawner implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4498283748257706525L;
 	private static class CreepWave implements java.io.Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -9042045034217633411L;
 		final int health;
 		final float moveSpeed;
 		final int gold;

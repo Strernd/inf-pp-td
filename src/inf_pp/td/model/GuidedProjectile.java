@@ -3,13 +3,15 @@ package inf_pp.td.model;
 import inf_pp.td.TimeSource;
 import inf_pp.td.Util;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Float;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuidedProjectile extends BaseProjectile {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6307662759652027476L;
 	protected BaseCreep target;
 	
 	//TODO: subclass damage?

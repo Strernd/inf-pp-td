@@ -7,12 +7,10 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.AbstractList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 public final class Util {
 	private static class PointListWrapper extends AbstractList<Point2D.Float> {

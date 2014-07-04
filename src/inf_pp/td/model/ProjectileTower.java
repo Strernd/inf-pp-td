@@ -7,6 +7,11 @@ import java.awt.geom.Point2D;
 
 public class ProjectileTower extends BaseTower {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 450440427807527071L;
+
 	public ProjectileTower(){
 		//range=2.5f;
 		ExponentialUpgrade up=new ExponentialUpgrade();

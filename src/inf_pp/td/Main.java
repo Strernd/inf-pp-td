@@ -1,15 +1,12 @@
 package inf_pp.td;
 
 import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
 
 import inf_pp.td.control.Controller;
 import inf_pp.td.model.Game;
 import inf_pp.td.view.Frame;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -75,7 +72,6 @@ public class Main {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					long t2=System.nanoTime();
 					ctrl.tick();
 				}
 			}

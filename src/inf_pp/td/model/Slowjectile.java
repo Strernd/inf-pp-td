@@ -6,6 +6,10 @@ import java.awt.geom.Point2D;
 
 public class Slowjectile extends GuidedProjectile{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7387943865012730255L;
 	final private float slowFactor;
 
 	/**
@@ -21,6 +25,11 @@ public class Slowjectile extends GuidedProjectile{
 	@Override
 	protected void hit(Game game) {
 		Buff b=new Buff(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -5710203032661040403L;
 
 			@Override
 			public Object apply(Object arg0, Type type, TimeSource time) {

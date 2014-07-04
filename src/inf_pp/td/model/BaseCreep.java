@@ -8,9 +8,12 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class BaseCreep implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -672727195568844754L;
 	private Point2D.Float position;
 	private ArrayList<Point> waypoints;
 	private int nextWp;

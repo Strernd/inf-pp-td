@@ -12,7 +12,16 @@ import java.util.Map;
  */
 public class ExponentialUpgrade implements UpgradePolicy {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3530294941604608880L;
+
 	public static class ExpFun implements java.io.Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -883109936244651951L;
 		private final float constant;
 		private final float base;
 		private final float factor;

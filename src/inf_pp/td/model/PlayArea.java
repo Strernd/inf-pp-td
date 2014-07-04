@@ -8,6 +8,11 @@ import java.util.ArrayList;
 public class PlayArea implements PlayAreaWayHolder, java.io.Serializable{
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 385283719813143223L;
+
+	/**
 	 * the number of columns this playing field has
 	 */
 	private int width;

@@ -7,6 +7,11 @@ import java.awt.Point;
 import java.util.Iterator;
 
 public abstract class BaseTower implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -270158376536766467L;
+
 	protected TowerType towerType=null;
 	
 	protected Point position;

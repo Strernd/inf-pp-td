@@ -7,6 +7,11 @@ import java.awt.geom.Point2D;
 import java.util.HashSet;
 
 public class PoisonTower extends BaseTower {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4675002579136994099L;
+
 	public PoisonTower(){
 		ExponentialUpgrade up=new ExponentialUpgrade();
 		upgradePolicy=up;

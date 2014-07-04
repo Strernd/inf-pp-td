@@ -7,13 +7,17 @@ import inf_pp.td.intercom.PlayAreaWayHolder;
 import inf_pp.td.intercom.TowerType;
 
 import java.awt.Point;
-import java.security.InvalidParameterException;
 import java.util.HashSet;
 import java.util.Iterator;
 
 
 public class Game implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4531113116980902426L;
+
 	/**
 	 * the playing area with dimensions and all teh waypoints 
 	 */

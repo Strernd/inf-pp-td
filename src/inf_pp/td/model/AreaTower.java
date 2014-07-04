@@ -1,11 +1,13 @@
 package inf_pp.td.model;
 
-import java.util.LinkedList;
-
-import inf_pp.td.Util;
 import inf_pp.td.intercom.TowerType;
 
 public class AreaTower extends BaseTower {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4110046028129614203L;
+
 	public AreaTower(){
 		ExponentialUpgrade up=new ExponentialUpgrade();
 		upgradePolicy=up;

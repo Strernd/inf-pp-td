@@ -7,6 +7,11 @@ import java.awt.geom.Point2D;
 import java.util.HashSet;
 
 public class SlowTower extends BaseTower {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5703318639305833649L;
+
 	public SlowTower(){
 		ExponentialUpgrade up=new ExponentialUpgrade();
 		upgradePolicy=up;

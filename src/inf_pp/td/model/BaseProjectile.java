@@ -3,9 +3,12 @@ package inf_pp.td.model;
 import inf_pp.td.TimeSource;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Float;
 
 public abstract class BaseProjectile implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1262381424454347467L;
 	protected float moveSpeed;
 	protected Point2D.Float position;
 	protected int damage;
