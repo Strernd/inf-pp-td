@@ -1,7 +1,6 @@
 package inf_pp.td.model;
 
 import inf_pp.td.TimeSource;
-import inf_pp.td.Util;
 import inf_pp.td.model.Buff.Type;
 
 import java.awt.Point;
@@ -40,14 +39,9 @@ public class BaseCreep implements java.io.Serializable {
 		this.type=type;
 	}
 	
-	/**
-	 * Retrieves the moving speed of a creep
-	 * 
-	 * @return Moving Speed
-	 */
-	public float getMoveSpeed() {
+	public float getMoveSpeed(TimeSource time) {
 		//TODO: set parameter time to some valid variable
-		return (float) Util.getBuffedValue(baseMoveSpeed,Type.MOVE_SPEED,buffs,null);
+		return (float) Util.getBuffedValue(baseMoveSpeed,Type.MOVE_SPEED,buffs,time);
 	}
 	
 
@@ -60,7 +54,7 @@ public class BaseCreep implements java.io.Serializable {
 	public void move(TimeSource time, Game game) {
 		//this.health=(int)Util.getBuffedValue(this.health, Buff.Type.DOT, buffs, time);
 		Util.getBuffedValue(this,Buff.Type.DOT,buffs,time);
-		nextWp+=Util.moveI(getMoveSpeed()*time.getMillisSinceLastTick(),position,waypoints.subList(nextWp, waypoints.size()));
+		nextWp+=Util.moveI(getMoveSpeed(time)*time.getMillisSinceLastTick(),position,waypoints.subList(nextWp, waypoints.size()));
 		if(nextWp>=waypoints.size()){
 			game.takeLife();
 			kill();

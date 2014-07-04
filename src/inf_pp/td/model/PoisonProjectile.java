@@ -25,7 +25,7 @@ public class PoisonProjectile extends GuidedProjectile{
 	}
 
 	@Override
-	protected void hit(final Game game) {
+	protected void hit(final Game game, TimeSource time) {
 		Buff b=new Buff(){
 			
 			/**
@@ -52,7 +52,7 @@ public class PoisonProjectile extends GuidedProjectile{
 			}
 
 			@Override
-			public boolean canRemove() {
+			public boolean canRemove(TimeSource time) {
 				// TODO Auto-generated method stub
 				return false;
 			}

@@ -1,7 +1,6 @@
-package inf_pp.td;
+package inf_pp.td.model;
 
-import inf_pp.td.model.BaseCreep;
-import inf_pp.td.model.Buff;
+import inf_pp.td.TimeSource;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
@@ -102,7 +101,7 @@ public final class Util {
 	public static Object getBuffedValue(Object val, Buff.Type type, Map<String,Buff> buffs, TimeSource time) {
 		for(Iterator<Entry<String, Buff> > it= buffs.entrySet().iterator();it.hasNext();) {
 			Entry<String,Buff> e=it.next();
-			if(e.getValue().canRemove()) {
+			if(e.getValue().canRemove(time)) {
 				it.remove();
 			}
 			else {
@@ -110,9 +109,6 @@ public final class Util {
 			}
 			
 		}
-		/*for (Buff b : buffs){
-			val=b.apply(val,type);
-		}*/
 		return val;
 	}
 }

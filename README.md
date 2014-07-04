@@ -5,7 +5,7 @@ Tower Defense Game in Java for "Inf-PP"-2014
 
 ## Todos
 
-- Information Messages
+- ~~Information Messages~~
 - Tower anders organisieren?
 - ~~Speichern und Laden~~
 - ~~Menu einbauen~~
@@ -21,7 +21,7 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - Creeps und Tower identifizieren
 - ~~Grafiken für Projektile?~~
 - Übergabe des Game-Objektes vermeiden?
-- BALANCING!!!
-- Synchronisieren zwischen Game- und GUI-Thread
+- ~~BALANCING!!!~~
+- ~~Synchronisieren zwischen Game- und GUI-Thread~~
 - ~~Menupunkt Neues Spiel~~
-- Buff Wirkdauer
+- ~~Buff Wirkdauer~~

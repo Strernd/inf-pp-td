@@ -1,6 +1,5 @@
 package inf_pp.td.model;
 
-import inf_pp.td.Util;
 import inf_pp.td.intercom.TowerType;
 
 import java.awt.geom.Point2D;

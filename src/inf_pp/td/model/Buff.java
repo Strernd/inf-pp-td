@@ -10,5 +10,5 @@ public interface Buff extends java.io.Serializable{
 	
 	Object apply (Object arg0, Type type, TimeSource time);
 	
-	boolean canRemove();
+	boolean canRemove(TimeSource time);
 }

@@ -1,7 +1,6 @@
 package inf_pp.td.model;
 
 import inf_pp.td.TimeSource;
-import inf_pp.td.Util;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class GuidedProjectile extends BaseProjectile {
 		t.add(target.getPosition());
 		//hit?
 		if(Util.move(moveSpeed*time.getMillisSinceLastTick(),position,t)>0){
-			hit(game);
+			hit(game, time);
 			return true;
 		}
 		else
@@ -43,7 +42,7 @@ public class GuidedProjectile extends BaseProjectile {
 		//return Util.move(moveSpeed*deltaT,position,t)>0;
 	}
 	
-	protected void hit(Game game){
+	protected void hit(Game game, TimeSource time){
 		target.doDamage(damage,game);
 	}
 }

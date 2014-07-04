@@ -23,13 +23,15 @@ public class Slowjectile extends GuidedProjectile{
 	}
 	
 	@Override
-	protected void hit(Game game) {
+	protected void hit(Game game, final TimeSource time) {
 		Buff b=new Buff(){
 
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = -5710203032661040403L;
+			
+			private final long expireTime=time.getMillisSinceStart()+5000;
 
 			@Override
 			public Object apply(Object arg0, Type type, TimeSource time) {
@@ -40,9 +42,8 @@ public class Slowjectile extends GuidedProjectile{
 			}
 
 			@Override
-			public boolean canRemove() {
-				// TODO Auto-generated method stub
-				return false;
+			public boolean canRemove(TimeSource time) {
+				return time.getMillisSinceStart()>expireTime;
 			}
 			
 		};
