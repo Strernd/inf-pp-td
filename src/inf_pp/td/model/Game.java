@@ -5,6 +5,7 @@ import inf_pp.td.NoGoldException;
 import inf_pp.td.TimeSource;
 import inf_pp.td.intercom.PlayAreaWayHolder;
 import inf_pp.td.intercom.TowerType;
+import inf_pp.td.intercom.UpgradeType;
 
 import java.awt.Point;
 import java.util.HashSet;
@@ -113,6 +114,14 @@ public class Game implements java.io.Serializable{
 		return creeps;
 	}
 	
+	private BaseTower getTowerAtPosition(Point pos) {
+		for (BaseTower t: towers){
+			if(t.getPosition().equals(pos))
+				return t;
+		}
+		return null;
+	}
+	
 	/**
 	 * @param type which tower to build, single target, aoe...
 	 * @param position where to build the tower
@@ -125,10 +134,8 @@ public class Game implements java.io.Serializable{
 		}
 		if(position.x<0||position.y<0||position.x>=field.getWidth()||position.y>=field.getHeight())
 			throw new InvalidFieldException();
-		for (BaseTower t: towers){
-			if(t.getPosition().equals(position))
-				throw new InvalidFieldException();
-		}
+		if(getTowerAtPosition(position)!=null)
+			throw new InvalidFieldException();
 		for (Point p : field.getWaypoints()){
 			if(p.equals(position))
 				throw new InvalidFieldException();
@@ -158,13 +165,7 @@ public class Game implements java.io.Serializable{
 	}
 	
 	public void upgradeTower(UpgradeType type, Point position){
-		BaseTower t=null;
-		for (BaseTower ti: towers){
-			if(ti.getPosition().equals(position)){
-				t=ti;
-				break;
-			}
-		}
+		BaseTower t=getTowerAtPosition(position);
 		if(t==null)
 			throw new InvalidFieldException();
 		int price=PriceProvider.getUpgradePrice(t,type);
@@ -175,13 +176,7 @@ public class Game implements java.io.Serializable{
 	}
 	
 	public void sellTower(Point position){
-		BaseTower t=null;
-		for (BaseTower ti: towers){
-			if(ti.getPosition().equals(position)){
-				t=ti;
-				break;
-			}
-		}
+		BaseTower t=getTowerAtPosition(position);
 		if(t==null)
 			throw new InvalidFieldException();
 		TowerType type = t.getType();
@@ -225,5 +220,18 @@ public class Game implements java.io.Serializable{
 	}
 	public int getWaveCount() {
 		return spawner.getWaveCount();
+	}
+
+
+	public int getPrice(TowerType type) {
+		return PriceProvider.getTowerPrice(type);
+	}
+
+
+	public int getTowerUpgradePrice(Point position, UpgradeType type) {
+		BaseTower t=getTowerAtPosition(position);
+		if(t==null)
+			throw new InvalidFieldException();
+		return PriceProvider.getUpgradePrice(t, type);
 	}
 }

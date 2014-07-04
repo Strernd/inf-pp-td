@@ -2,6 +2,7 @@ package inf_pp.td.model;
 
 import inf_pp.td.TimeSource;
 import inf_pp.td.intercom.TowerType;
+import inf_pp.td.intercom.UpgradeType;
 
 import java.awt.Point;
 import java.util.Iterator;

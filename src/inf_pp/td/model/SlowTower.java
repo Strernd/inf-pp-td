@@ -1,6 +1,7 @@
 package inf_pp.td.model;
 
 import inf_pp.td.intercom.TowerType;
+import inf_pp.td.intercom.UpgradeType;
 
 import java.awt.geom.Point2D;
 import java.util.HashSet;

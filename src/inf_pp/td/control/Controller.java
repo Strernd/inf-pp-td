@@ -6,8 +6,8 @@ import inf_pp.td.TimeSource;
 import inf_pp.td.intercom.ListenerContainer;
 import inf_pp.td.intercom.TdState;
 import inf_pp.td.intercom.TowerType;
+import inf_pp.td.intercom.UpgradeType;
 import inf_pp.td.model.Game;
-import inf_pp.td.model.UpgradeType;
 import inf_pp.td.view.Frame;
 
 import java.awt.Point;

@@ -1,7 +1,10 @@
 package inf_pp.td.view;
 
+import inf_pp.td.InvalidFieldException;
 import inf_pp.td.Tiles;
 import inf_pp.td.intercom.TdState;
+import inf_pp.td.intercom.TowerType;
+import inf_pp.td.intercom.UpgradeType;
 import inf_pp.td.model.Game;
 
 import java.awt.Color;
@@ -16,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 public class SideBar extends JPanel {
@@ -28,58 +32,71 @@ public class SideBar extends JPanel {
 	JLabel livesLabel;
 	JLabel goldLabel;
 	JLabel waveLabel;
+	
+	JButton buildDD,buildAE,buildSL,buildP;
+	JButton upgradeDmg,upgradeRange,upgradeFirerate;
 
 	public SideBar() {
 		this.setBackground(new Color(0xCCCCCC));
-		this.setPreferredSize(new Dimension(160,0));
-		this.setMinimumSize(new Dimension(160,0));
+		this.setPreferredSize(new Dimension(200,0));
+		this.setMinimumSize(new Dimension(200,0));
 		BoxLayout layout = new BoxLayout(this,BoxLayout.Y_AXIS);
 		this.setLayout(layout);
 		JPanel twrPane=new JPanel();
 		twrPane.setLayout(new GridLayout(2,2,4,4));
-		JButton b=new JButton();
-		b.setActionCommand("build_dd");
-		b.setToolTipText("Direct Damage Tower: Does single target damage");
-		b.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_DD)));
-		twrPane.add(b);
-		b=new JButton("");
-		b.setActionCommand("build_ae");
-		b.setToolTipText("Area of Effect: Deals damage to all creeps in range");
-		b.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_AE)));
-		twrPane.add(b);
-		b=new JButton("");
-		b.setActionCommand("build_sl");
-		b.setToolTipText("Slow Tower: Slows creeps");
-		b.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_SL)));
-		twrPane.add(b);
-		b=new JButton("");
-		b.setActionCommand("build_p");
-		b.setToolTipText("Poison Tower: Afflicts poision to creeps and damages them over time");
-		b.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_P)));
-		twrPane.add(b);
+		//JButton b=new JButton();
+		buildDD=new JButton();
+		buildDD.setActionCommand("build_dd");
+		buildDD.setToolTipText("Feuert auf einen Creep");
+		buildDD.setVerticalTextPosition(SwingConstants.BOTTOM);
+		buildDD.setHorizontalTextPosition(SwingConstants.CENTER);
+		buildDD.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_DD)));
+		twrPane.add(buildDD);
+		buildAE=new JButton();
+		buildAE.setActionCommand("build_ae");
+		buildAE.setToolTipText("Fügt allen Creeps in Reichweite Schaden zu");
+		buildAE.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_AE)));
+		buildAE.setVerticalTextPosition(SwingConstants.BOTTOM);
+		buildAE.setHorizontalTextPosition(SwingConstants.CENTER);
+		twrPane.add(buildAE);
+		buildSL=new JButton();
+		buildSL.setActionCommand("build_sl");
+		buildSL.setToolTipText("Verlangsamt Creeps");
+		buildSL.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_SL)));
+		buildSL.setVerticalTextPosition(SwingConstants.BOTTOM);
+		buildSL.setHorizontalTextPosition(SwingConstants.CENTER);
+		twrPane.add(buildSL);
+		buildP=new JButton();
+		buildP.setActionCommand("build_p");
+		buildP.setToolTipText("Vergiftet Creeps");
+		buildP.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_P)));
+		buildP.setVerticalTextPosition(SwingConstants.BOTTOM);
+		buildP.setHorizontalTextPosition(SwingConstants.CENTER);
+		twrPane.add(buildP);
 		
-		twrPane.setPreferredSize(new Dimension(160,160));
-		twrPane.setMaximumSize(new Dimension(160,160));
+		twrPane.setPreferredSize(new Dimension(200,160));
+		twrPane.setMaximumSize(new Dimension(200,160));
 		this.add(twrPane);
 		
 		this.add(Box.createVerticalGlue());
 		
 		JPanel uPane=new JPanel();
 		uPane.setLayout(new GridLayout(2,2,4,4));
-		b=new JButton("Damage");
-		b.setActionCommand("upgrade_damage");
-		uPane.add(b);
-		b=new JButton("Range");
-		b.setActionCommand("upgrade_range");
-		uPane.add(b);
-		b=new JButton("Fire Rate");
-		b.setActionCommand("upgrade_firerate");
-		uPane.add(b);
-		b=new JButton("Sell");
+		//JButton b;
+		upgradeDmg=new JButton();
+		upgradeDmg.setActionCommand("upgrade_damage");
+		uPane.add(upgradeDmg);
+		upgradeRange=new JButton();
+		upgradeRange.setActionCommand("upgrade_range");
+		uPane.add(upgradeRange);
+		upgradeFirerate=new JButton();
+		upgradeFirerate.setActionCommand("upgrade_firerate");
+		uPane.add(upgradeFirerate);
+		JButton b=new JButton("Verkaufen");
 		b.setActionCommand("sell_tower");
 		uPane.add(b);
-		uPane.setPreferredSize(new Dimension(160,160));
-		uPane.setMaximumSize(new Dimension(160,160));
+		uPane.setPreferredSize(new Dimension(200,160));
+		uPane.setMaximumSize(new Dimension(200,160));
 		this.add(uPane);
 		
 		this.add(Box.createVerticalGlue());
@@ -88,14 +105,14 @@ public class SideBar extends JPanel {
 		//iPane.setBackground(new Color(0x0000FF));
 		iPane.setOpaque(false);
 		iPane.setLayout(new GridLayout(0,1));
-		iPane.setPreferredSize(new Dimension(160,80));
-		iPane.setMinimumSize(new Dimension(160,80));
-		iPane.setMaximumSize(new Dimension(160,80));
-		goldLabel=new JLabel("Gold:");
+		iPane.setPreferredSize(new Dimension(200,80));
+		iPane.setMinimumSize(new Dimension(200,80));
+		iPane.setMaximumSize(new Dimension(200,80));
+		goldLabel=new JLabel();
 		iPane.add(goldLabel);
-		livesLabel=new JLabel("Lives:");
+		livesLabel=new JLabel();
 		iPane.add(livesLabel);
-		waveLabel=new JLabel("Wave:");
+		waveLabel=new JLabel();
 		iPane.add(waveLabel);
 		this.add(iPane);
 	}
@@ -126,13 +143,54 @@ public class SideBar extends JPanel {
 	}
 	
 	void updateState(final TdState state){
+		Game game=state.getGame();
+		//We need to save these variables as we update the UI from the UI thread whereas updateState is called by our view-thread
+		final int lives=game.getLives();
+		final int gold=game.getGold();
+		final int waveIndex=game.getCurrentWaveIndex()+1;
+		final int waveCount=game.getWaveCount();
+		final String waveName=game.getCurrentWaveName();
+		
+		final String ddText="Price: "+game.getPrice(TowerType.DIRECT_DMG);
+		final String aeText="Price: "+game.getPrice(TowerType.AREA_OF_EFFECT);
+		final String slText="Price: "+game.getPrice(TowerType.SLOW);
+		final String pText ="Price: "+game.getPrice(TowerType.POISON);
+		
+		final String dmgLabel,rngLabel,frLabel;
+		String tdmgLabel,trngLabel,tfrLabel;
+		
+		try{
+			int dmgUPrice=game.getTowerUpgradePrice(state.getSelectedField(),UpgradeType.DAMAGE);
+			int rangeUPrice=game.getTowerUpgradePrice(state.getSelectedField(),UpgradeType.RANGE);
+			int rateUPrice=game.getTowerUpgradePrice(state.getSelectedField(),UpgradeType.FIRERATE);
+			tdmgLabel="<html><p style=\"text-align:center\">Schaden<br /><br />Preis: "+dmgUPrice+"</p></html>";
+			trngLabel="<html><p style=\"\">Reichweite<br /><br />Preis: "+rangeUPrice+"</p></html>";
+			tfrLabel="<html><p style=\"text-align:center\">Feuerrate<br /><br />Preis: "+rateUPrice+"</p></html>";
+		} catch (InvalidFieldException e) {
+			//dmgUPrice=rangeUPrice=rateUPrice=-1;
+			tdmgLabel="Schaden";
+			trngLabel="Reichweite";
+			tfrLabel="Feuerrate";
+		}
+		dmgLabel=tdmgLabel;
+		rngLabel=trngLabel;
+		frLabel=tfrLabel;
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				livesLabel.setText("Lives: "+state.getGame().getLives());
-				goldLabel.setText("Gold: "+state.getGame().getGold());
-				waveLabel.setText("Wave: "+(state.getGame().getCurrentWaveIndex()+1)+"/"+state.getGame().getWaveCount()
-						+" "+state.getGame().getCurrentWaveName());
+				livesLabel.setText("Leben: "+lives);
+				goldLabel.setText("Gold: "+gold);
+				waveLabel.setText("Welle: "+waveIndex+"/"+waveCount+" "+waveName);
+				
+				buildDD.setText(ddText);
+				buildAE.setText(aeText);
+				buildSL.setText(slText);
+				buildP.setText(pText);
+				
+				upgradeDmg.setText(dmgLabel);
+				upgradeRange.setText(rngLabel);
+				upgradeFirerate.setText(frLabel);
 			}
 		});
 	}

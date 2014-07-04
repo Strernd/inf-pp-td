@@ -1,6 +1,7 @@
 package inf_pp.td.model;
 
 import inf_pp.td.intercom.TowerType;
+import inf_pp.td.intercom.UpgradeType;
 
 public class AreaTower extends BaseTower {
 	/**
