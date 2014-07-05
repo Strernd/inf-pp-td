@@ -3,9 +3,11 @@ package inf_pp.td.view;
 import inf_pp.td.intercom.GameInterface;
 import inf_pp.td.intercom.ListenerContainer;
 import inf_pp.td.intercom.TdState;
+import inf_pp.td.intercom.ViewInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +30,7 @@ import javax.swing.border.BevelBorder;
 /**
  * The main view class
  */
-public class Frame extends JFrame {
+public class Frame extends JFrame implements ViewInterface {
 	private static final long serialVersionUID = 8781344923489487475L;
 	
 	/**
@@ -130,20 +132,20 @@ public class Frame extends JFrame {
 		this.pack();
 	}
 
-	/**
-	 * Update the view
-	 * @param state the TdState object to get the game's current state from
+	/* (non-Javadoc)
+	 * @see inf_pp.td.view.ViewInterface#updateState(inf_pp.td.intercom.TdState)
 	 */
+	@Override
 	public void updateState(TdState state) {
 		playArea.updateState(state);
 		sidebar.updateState(state);
 	}
 	
 	
-	/**
-	 * set the listeners for the playing field and the sidebar
-	 * @param l a ListenerContainer to get the listers from.
+	/* (non-Javadoc)
+	 * @see inf_pp.td.view.ViewInterface#addListener(inf_pp.td.intercom.ListenerContainer)
 	 */
+	@Override
 	public void addListener(final ListenerContainer l) {
 		final Frame savedThis=this;
 		//TODO: make this better? this is very ugly
@@ -166,6 +168,10 @@ public class Frame extends JFrame {
 		});
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.view.ViewInterface#newGame(inf_pp.td.intercom.GameInterface)
+	 */
+	@Override
 	public void newGame(final GameInterface game) {
 		//TODO: adjust parameters instead of new object? rebinding the handler is very ugly
 		SwingUtilities.invokeLater(new Runnable(){
@@ -186,7 +192,15 @@ public class Frame extends JFrame {
 		});
 	}
 	
+	/**
+	 * this timer handles the animation of the warning label
+	 */
 	Timer warningTimer=new Timer(0,null);
+	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.view.ViewInterface#putWarning(java.lang.String)
+	 */
+	@Override
 	public void putWarning(final String warning) {
 		if(warningTimer!=null)
 			warningTimer.stop();
@@ -211,6 +225,14 @@ public class Frame extends JFrame {
 		warningTimer.setDelay(33);
 		warningTimer.setRepeats(true);
 		warningTimer.start();
+	}
+
+	/* (non-Javadoc)
+	 * @see inf_pp.td.intercom.ViewInterface#getComponent()
+	 */
+	@Override
+	public Component getComponent() {
+		return this;
 	}
 
 }

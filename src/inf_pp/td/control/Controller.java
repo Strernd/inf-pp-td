@@ -8,6 +8,7 @@ import inf_pp.td.intercom.ListenerContainer;
 import inf_pp.td.intercom.TdState;
 import inf_pp.td.intercom.TowerType;
 import inf_pp.td.intercom.UpgradeType;
+import inf_pp.td.intercom.ViewInterface;
 import inf_pp.td.model.Game;
 import inf_pp.td.view.Frame;
 
@@ -57,7 +58,7 @@ public class Controller implements ListenerContainer {
 	/**
 	 * The View
 	 */
-	private Frame frame;
+	private ViewInterface view;
 	/**
 	 * A JFileChooser that is used whenever the user wants to save or load the game
 	 */
@@ -134,7 +135,7 @@ public class Controller implements ListenerContainer {
 	 * @param frame an instance of the model
 	 */
 	public void setView(Frame frame) {
-		this.frame=frame;
+		this.view=frame;
 		frame.addListener(this);
 		frame.setDefaultCloseOperation(Frame.DO_NOTHING_ON_CLOSE);
 	}
@@ -157,9 +158,9 @@ public class Controller implements ListenerContainer {
 			}
 		}
 		if(lost)
-			JOptionPane.showMessageDialog(frame, "Leider verloren!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(view.getComponent(), "Leider verloren!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
 		else if(won)
-			JOptionPane.showMessageDialog(frame, "Gewonnen!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(view.getComponent(), "Gewonnen!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	/**
@@ -179,8 +180,8 @@ public class Controller implements ListenerContainer {
 				synchronized(tempG) {
 					game=tempG;
 					time=new TimeSource();
-					if(frame!=null) {
-						frame.newGame(game);
+					if(view!=null) {
+						view.newGame(game);
 					}
 				}
 			}
@@ -202,7 +203,7 @@ public class Controller implements ListenerContainer {
 			oout.close();
 		}
 		catch(IOException e) {
-			frame.putWarning("Konnte den Spielstand nicht speichern.");
+			view.putWarning("Konnte den Spielstand nicht speichern.");
 		}
 	}
 	
@@ -227,7 +228,7 @@ public class Controller implements ListenerContainer {
 			file.close();
 			time.skipTick();
 		} catch (IOException | ClassNotFoundException e) {
-			frame.putWarning("Konnte den Spielstand nicht laden.");
+			view.putWarning("Konnte den Spielstand nicht laden.");
 		}
 	}
 	
@@ -345,7 +346,7 @@ public class Controller implements ListenerContainer {
 					}
 					synchronized(game) {
 						synchronized(selectedField) {
-							frame.updateState(new TdState(game,selectedField));
+							view.updateState(new TdState(game,selectedField));
 						}
 					}
 					last=System.currentTimeMillis();
@@ -392,9 +393,9 @@ public class Controller implements ListenerContainer {
 							}
 						}
 					} catch(InvalidFieldException e){
-						frame.putWarning("Bitte ein freies Feld auswählen.");
+						view.putWarning("Bitte ein freies Feld auswählen.");
 					} catch(NoGoldException e) {
-						frame.putWarning("Nicht genug Gold.");
+						view.putWarning("Nicht genug Gold.");
 					}
 				}
 			}
@@ -423,9 +424,9 @@ public class Controller implements ListenerContainer {
 							}
 						}
 					} catch (InvalidFieldException e) {
-						frame.putWarning("Bitte einen Turm auswählen.");
+						view.putWarning("Bitte einen Turm auswählen.");
 					} catch (NoGoldException e) {
-						frame.putWarning("Nicht genug Gold.");
+						view.putWarning("Nicht genug Gold.");
 					}
 				}
 			}
@@ -441,7 +442,7 @@ public class Controller implements ListenerContainer {
 						}
 					}
 				} catch(InvalidFieldException e) {
-					frame.putWarning("Bitte einen Turm auswählen.");
+					view.putWarning("Bitte einen Turm auswählen.");
 				}
 			}
 			else if(ac.equals("pause")) {
