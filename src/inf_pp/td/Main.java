@@ -38,7 +38,7 @@ public class Main {
 
 				@Override
 				public void run() {
-					frame[0]=new Frame(game);
+					frame[0]=new Frame();
 					frame[0].getContentPane().setPreferredSize(new Dimension(680,480));
 					frame[0].pack();
 					frame[0].setVisible(true);

@@ -26,11 +26,14 @@ import javax.swing.border.BevelBorder;
 
 
 /**
- * @author marc
- *
+ * The main view class
  */
 public class Frame extends JFrame {
+	private static final long serialVersionUID = 8781344923489487475L;
 	
+	/**
+	 * The main panel, everything is descendant of this panel
+	 */
 	JPanel mainPanel;
 
 	/**
@@ -43,24 +46,28 @@ public class Frame extends JFrame {
 	 */
 	private SideBar sidebar;
 	
+	/**
+	 * a label to show warnings to the user
+	 */
 	private JLabel statusLabel;
 	
+	/**
+	 * The menu bar
+	 */
 	private JMenuBar menuBar;
 	
-	private static final long serialVersionUID = 8781344923489487475L;
 	
-	//private Game game;
-	
-	public Frame(GameInterface game){
-		//this.game=game;
-		//Game pa=game;
-
+	/**
+	 * Construct a new Frame
+	 * @param game the GameInterface to get parameters from the model
+	 */
+	public Frame(){
 		mainPanel= new JPanel();
 		this.add(mainPanel);
 		BorderLayout layout=new BorderLayout();
 		mainPanel.setLayout(layout);
 		
-		playArea=new PlayAreaView(game.getPlayArea());
+		playArea=new PlayAreaView();
 		mainPanel.add(playArea,BorderLayout.CENTER);
 		
 		sidebar=new SideBar();
@@ -123,20 +130,15 @@ public class Frame extends JFrame {
 		this.pack();
 	}
 
-	public void update(TdState state) {
-		//Game game=state.getGame();
-		// TODO Auto-generated method stub
+	/**
+	 * Update the view
+	 * @param state the TdState object to get the game's current state from
+	 */
+	public void updateState(TdState state) {
 		playArea.updateState(state);
 		sidebar.updateState(state);
 	}
 	
-	/**
-	 * @param set the model to get data from
-	 */
-	/*public void setModel(Game game) {
-		this.game=game;
-	}*/
-
 	
 	/**
 	 * set the listeners for the playing field and the sidebar
@@ -172,7 +174,7 @@ public class Frame extends JFrame {
 		public void run() {
 			mainPanel.remove(playArea);
 			MouseListener listeners[]=playArea.getListeners(MouseListener.class);
-			playArea=new PlayAreaView(game.getPlayArea());
+			playArea=new PlayAreaView();
 			for(MouseListener l: listeners) {
 				playArea.addMouseListener(l);
 			}

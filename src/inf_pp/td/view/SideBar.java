@@ -28,20 +28,29 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 public class SideBar extends JPanel {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2976601330037398908L;
 	
-	JLabel livesLabel;
-	JLabel goldLabel;
-	JLabel waveLabel;
+	/**
+	 * labels to display the player's lives, gold and the current wave
+	 */
+	private JLabel livesLabel, goldLabel, waveLabel;
 	
-	JButton buildDD,buildAE,buildSL,buildP;
-	JButton upgradeDmg,upgradeRange,upgradeFirerate;
-	JButton sellTower;
+	/**
+	 * buttons to build different towers
+	 */
+	private JButton buildDD, buildAE, buildSL, buildP;
+	/**
+	 * buttons to upgrade towers
+	 */
+	private JButton upgradeDmg, upgradeRange, upgradeFirerate;
+	/**
+	 * button to sell a tower
+	 */
+	private JButton sellTower;
 
+	/**
+	 * Construct a SideBar
+	 */
 	public SideBar() {
 		this.setBackground(new Color(0xCCCCCC));
 		this.setPreferredSize(new Dimension(200,0));
@@ -50,7 +59,6 @@ public class SideBar extends JPanel {
 		this.setLayout(layout);
 		JPanel twrPane=new JPanel();
 		twrPane.setLayout(new GridLayout(2,2,4,4));
-		//JButton b=new JButton();
 		
 		Action acceleratingAction=new AbstractAction(){
 			private static final long serialVersionUID = -3185980796146069261L;
@@ -166,24 +174,6 @@ public class SideBar extends JPanel {
 	 * @param l the listener to use
 	 */
 	void addActionListener(ActionListener l) {
-//		synchronized(this.getTreeLock()) {
-//			for(Component c: this.getComponents())
-//			{
-//				//TODO: make better
-//				if(c instanceof JButton) {
-//					((JButton)c).addActionListener(l);
-//				}
-//				else if(c instanceof JPanel) {
-//					synchronized(c.getTreeLock()) {
-//						for(Component d: ((JPanel)c).getComponents()) {
-//							if(d instanceof JButton) {
-//								((JButton)d).addActionListener(l);
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
 		buildDD.addActionListener(l);
 		buildAE.addActionListener(l);
 		buildSL.addActionListener(l);
@@ -195,6 +185,10 @@ public class SideBar extends JPanel {
 		sellTower.addActionListener(l);
 	}
 	
+	/**
+	 * Update the view's state
+	 * @param state a TdState to get the model's state from
+	 */
 	void updateState(final TdState state){
 		GameInterface game=state.getGame();
 		//We need to save these variables as we update the UI from the UI thread whereas updateState is called by our view-thread
@@ -229,7 +223,6 @@ public class SideBar extends JPanel {
 			tfrLabel="<html><p style=\"text-align:center\">Feuerrate<br /><br />Preis: "+rateUPrice+"</p></html>";
 			tenableUpgrade=true;
 		} catch (InvalidFieldException e) {
-			//dmgUPrice=rangeUPrice=rateUPrice=-1;
 			tdmgLabel="Schaden";
 			trngLabel="Reichweite";
 			tfrLabel="Feuerrate";

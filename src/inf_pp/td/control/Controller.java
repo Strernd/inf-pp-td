@@ -345,7 +345,7 @@ public class Controller implements ListenerContainer {
 					}
 					synchronized(game) {
 						synchronized(selectedField) {
-							frame.update(new TdState(game,selectedField));
+							frame.updateState(new TdState(game,selectedField));
 						}
 					}
 					last=System.currentTimeMillis();

@@ -4,7 +4,6 @@ import inf_pp.td.Tiles;
 import inf_pp.td.Tiles.TileId;
 import inf_pp.td.intercom.CreepInterface;
 import inf_pp.td.intercom.GameInterface;
-import inf_pp.td.intercom.PlayAreaWayHolder;
 import inf_pp.td.intercom.ProjectileInterface;
 import inf_pp.td.intercom.TdState;
 import inf_pp.td.intercom.TowerInterface;
@@ -22,26 +21,33 @@ import java.util.HashSet;
 
 import javax.swing.JPanel;
 
+/**
+ * The view class to display the PlayArea with the way, towers, creeps, projectiles...
+ */
 public class PlayAreaView extends JPanel {
-	
-	private final Object frameLock=new Object();
-	private BufferedImage currentFrame;
+	private static final long serialVersionUID = -6607180777510972878L;
 	
 	/**
-	 * the dimensions of the playing grid, how many rows and columns
+	 * Locking object to concurrently access {@link #currentFrame}
 	 */
-	//private int width,height;
+	private final Object frameLock=new Object();
+	/**
+	 * The frame to draw
+	 * Only to be modified/read under lock of {@link #frameLock}.
+	 * We update the reference with a new object instead of reusing the old one as the dimensions could have changed
+	 */
+	private BufferedImage currentFrame;
 
-	private static final long serialVersionUID = -6607180777510972878L;
-
-	PlayAreaView(PlayAreaWayHolder pa) {
-//		width=pa.getWidth();
-//		height=pa.getHeight();
+	/**
+	 * Construct a PlayAreaView
+	 */
+	PlayAreaView() {
 	}
 	
 	/**
-	 * refresh the view. has to be called if anything in the model changes
-	 * @param game the Model to get all data from
+	 * re-renders the current frame. has to be called if anything in the model changes
+	 * The new frame is scheduled for repaint.
+	 * @param state A TdState object to get the model's current state from
 	 */
 	void updateState(TdState state){
 		GameInterface game=state.getGame();
@@ -134,7 +140,7 @@ public class PlayAreaView extends JPanel {
 		}
 		
 		for(ProjectileInterface p: projectiles){
-			//g.fillRect((int)((p.getPosition().x+.3333)*tw), (int)((p.getPosition().y+.3333)*th), (int)(.3333*tw), (int)(.3333*th));
+			//Damn transformations...
 			AffineTransform at=new AffineTransform();
 			Image tile=Tiles.get(Tiles.TileId.PROJECTILE);
 			Point2D.Float direction=p.getMoveVector();
@@ -154,6 +160,9 @@ public class PlayAreaView extends JPanel {
 		this.repaint();
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	@Override
 	public void paintComponent(Graphics gs) {
 		super.paintComponent(gs);
