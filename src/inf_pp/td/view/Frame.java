@@ -61,7 +61,6 @@ public class Frame extends JFrame implements ViewInterface {
 	
 	/**
 	 * Construct a new Frame
-	 * @param game the GameInterface to get parameters from the model
 	 */
 	public Frame(){
 		mainPanel= new JPanel();

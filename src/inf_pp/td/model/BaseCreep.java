@@ -148,8 +148,8 @@ public class BaseCreep implements java.io.Serializable, CreepInterface {
 	/**
 	 * Adds buff to the creep 
 	 * 
-	 * @param id
-	 * @param b
+	 * @param id the buff's name
+	 * @param b the buff
 	 */
 	void addBuff(String id,Buff b){
 		buffs.put(id,b);
@@ -158,8 +158,8 @@ public class BaseCreep implements java.io.Serializable, CreepInterface {
 	/**
 	 * Returns whether the creep has a certain buff or not
 	 * 
-	 * @param id
-	 * @return
+	 * @param id the buff's name
+	 * @return true if the creep has this buff, false otherwise
 	 */
 	boolean hasBuff(String id){
 		return buffs.containsKey(id);

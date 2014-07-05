@@ -26,7 +26,7 @@ public interface Buff extends java.io.Serializable{
 	
 	/**
 	 * Checks if a buff is finished and can be removed.
-	 * @param time
+	 * @param time the current time
 	 * @return true if the buff has expired and can be removed, false otherwise
 	 */
 	boolean canRemove(TimeSource time);

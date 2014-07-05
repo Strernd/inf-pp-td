@@ -537,7 +537,7 @@ public class Controller implements ListenerContainer {
 	
 	
 	/**
-	 * Listens to clicks in the {@link PlayArea} to select a field
+	 * Listens to clicks in the view to select a field
 	 *
 	 */
 	private class FieldSelectListener extends MouseInputAdapter {		

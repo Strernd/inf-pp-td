@@ -61,9 +61,6 @@ public final class Tiles {
 		 */
 		TOWER_P,
 		
-		/**
-		 * Tiles for all creeps, names are self-explainatory
-		 */
 		CREEP_SMILEY, CREEP_ZOMBIE, CREEP_PORING, CREEP_REAPER, CREEP_STONEGIANT, CREEP_SKELETON,
 		
 		/**
