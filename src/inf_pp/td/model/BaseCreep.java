@@ -93,9 +93,11 @@ public class BaseCreep implements java.io.Serializable, CreepInterface {
 	 * @param game Instance of the Game
 	 */
 	void move(TimeSource time, Game game) {
+		//apply the DOT-debuff. we pass this creep as parameter, the buff will call doDamage
 		Util.getBuffedValue(this,Buff.Type.DOT,buffs,time);
 		nextWp+=Util.moveI(getMoveSpeed(time)*time.getMillisSinceLastTick(),position,waypoints.subList(nextWp, waypoints.size()));
 		if(nextWp>=waypoints.size()){
+			//are we there yet? take a life
 			game.takeLife();
 			kill();
 		}
@@ -117,7 +119,8 @@ public class BaseCreep implements java.io.Serializable, CreepInterface {
 	 */
 	void doDamage(int dmg, Game game) {
 		this.health-=dmg;
-		if(isDead()){
+		if(isDead()) {
+			//doDamage is player-inflicted damage, let's add gold
 			game.addGold(gold);
 		}
 	}

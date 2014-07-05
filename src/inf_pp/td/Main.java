@@ -31,6 +31,7 @@ public class Main {
 		}
 		showNativeError=tshowNativeError;
 		
+		//Create a model and a controller instance
 		final GameInterface game=new Game(20);
 		final Controller ctrl=new Controller();
 		
@@ -41,6 +42,7 @@ public class Main {
 
 				@Override
 				public void run() {
+					//Create and initialize the View
 					frame[0]=new Frame();
 					frame[0].getContentPane().setPreferredSize(new Dimension(680,480));
 					frame[0].pack();

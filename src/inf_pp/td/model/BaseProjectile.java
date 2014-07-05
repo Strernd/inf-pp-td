@@ -45,6 +45,7 @@ public abstract class BaseProjectile implements java.io.Serializable, Projectile
 	 * @return whether to remove this projectile or not after this call
 	 */
 	public final boolean move(TimeSource time, Game game){
+		//we track the old position to calculate movement
 		lastPosition=new Point2D.Float(position.x,position.y);
 		return doMove(time,game);
 	}

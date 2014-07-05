@@ -49,6 +49,7 @@ public abstract class BaseTower implements java.io.Serializable, TowerInterface 
 	 * @param time
 	 */
 	final void fire(Game game, TimeSource time){
+		//only fire if not on cooldown
 		if(time.getMillisSinceStart()>cooldown){
 			cooldown=time.getMillisSinceStart()+doFire(game);
 		}
@@ -59,6 +60,7 @@ public abstract class BaseTower implements java.io.Serializable, TowerInterface 
 	 * @param game the game that this tower belongs to
 	 */
 	void remove(Game game){
+		//loop through all towers and delete if found itself
 		for(Iterator<BaseTower> it=game.getTowers().iterator();it.hasNext();){
 			if(it.next().equals(this)){
 				it.remove();

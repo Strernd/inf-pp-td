@@ -129,7 +129,7 @@ public class Controller implements ListenerContainer {
 				}
 			});
 		} catch (InvocationTargetException|InterruptedException e) {
-			//Swing seems to have problems, we can't properly display the error
+			//Swing seems to have problems, we have no GUI to display the error
 			e.printStackTrace();
 		}
 		
@@ -150,6 +150,7 @@ public class Controller implements ListenerContainer {
 	public void setView(Frame frame) {
 		this.view=frame;
 		frame.addListener(this);
+		//We want to handle the X button ourselves
 		frame.setDefaultCloseOperation(Frame.DO_NOTHING_ON_CLOSE);
 	}
 	
@@ -161,9 +162,12 @@ public class Controller implements ListenerContainer {
 		boolean lost=false,won=false;
 		if(!isPaused()){
 			synchronized(game) {
+				//Advance the clock
 				time.tick();
 				try{
+					//And tick the game
 					game.tick(time);
+					//Check if game over
 					lost=game.hasLost();
 					won=game.hasWon();
 					if(lost || won){
@@ -174,6 +178,7 @@ public class Controller implements ListenerContainer {
 				}
 			}
 		}
+		//If game over show a messagebox, either won or lost
 		if(lost){
 			SwingUtilities.invokeLater(new Runnable(){
 				@Override
@@ -200,12 +205,14 @@ public class Controller implements ListenerContainer {
 		synchronized(pausedLock){
 			boolean p=isPaused();
 			pause(true);
+			//Ask the user
 			if(JOptionPane.showConfirmDialog(null,"Wollen Sie das Spiel neu starten?","Neustart?",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)!=JOptionPane.YES_OPTION)
 			{
 				pause(p);
 				return;
 			}
 			synchronized(game) {
+				//Just replace the model with a new instance
 				GameInterface tempG=new Game(20);
 				synchronized(tempG) {
 					game=tempG;
@@ -227,6 +234,7 @@ public class Controller implements ListenerContainer {
 			FileOutputStream file=new FileOutputStream(path);
 			ObjectOutputStream oout=new ObjectOutputStream(file);
 			synchronized(game) {
+				//Serialize the objects
 				oout.writeObject(game);
 				oout.writeObject(time);
 			}
@@ -250,12 +258,14 @@ public class Controller implements ListenerContainer {
 			TimeSource tempTS=(TimeSource) oin.readObject();
 			synchronized(game){
 				synchronized(tempG) {
+					//deserialize the objects
 					game=tempG;
 					time=tempTS;
 				}
 			}
 			oin.close();
 			file.close();
+			//save/load is like a huge pause, lets skip this time
 			time.skipTick();
 		} catch (IOException | ClassNotFoundException e) {
 			view.putWarning("Konnte den Spielstand nicht laden.");
@@ -271,6 +281,7 @@ public class Controller implements ListenerContainer {
 			pause(true);
 			if(fc.showSaveDialog(null)==JFileChooser.APPROVE_OPTION) {
 				String path=fc.getSelectedFile().getAbsolutePath();
+				//ensure correct ending
 				if(!path.endsWith(".tdsv"))
 					path=path.concat(".tdsv");
 				saveGame(path);
@@ -301,6 +312,7 @@ public class Controller implements ListenerContainer {
 		synchronized(pausedLock){
 			if(p==paused)
 				return;
+			//we don't want to be able to resume the game if the game is already over
 			synchronized(game) {
 				if(!p&&(game.hasWon()||game.hasLost()))
 					return;
@@ -351,6 +363,8 @@ public class Controller implements ListenerContainer {
 			public void run(){
 				while(true){
 					try {
+						//we don't use fix 25ms but instead only the amount of time that is left from 25ms after the last tick
+						//this way we will encounter less jitter
 						Thread.sleep(last-System.currentTimeMillis()+25);
 					} catch (InterruptedException e) {
 					}
@@ -371,6 +385,7 @@ public class Controller implements ListenerContainer {
 				long last=System.currentTimeMillis();
 				while(true){
 					try {
+						//same jitter-avoiding as in game thread
 						Thread.sleep(last-System.currentTimeMillis()+25);
 					} catch (InterruptedException e) {
 					}
@@ -395,7 +410,7 @@ public class Controller implements ListenerContainer {
 		@Override
 		public void actionPerformed(ActionEvent ev) {
 			String ac=ev.getActionCommand().toLowerCase();
-			if(ac.startsWith("build_")) {
+			if(ac.startsWith("build_")) { //We want to build a tower
 				TowerType type=null;
 				switch(ac.substring("build_".length())){
 				case "dd":
@@ -429,7 +444,7 @@ public class Controller implements ListenerContainer {
 					}
 				}
 			}
-			else if(ac.startsWith("upgrade_")){
+			else if(ac.startsWith("upgrade_")){ //We want to upgrade a tower
 				UpgradeType type=null;
 				switch(ac.substring("upgrade_".length())){
 				case "damage":
@@ -460,7 +475,7 @@ public class Controller implements ListenerContainer {
 					}
 				}
 			}
-			else if(ac.equals("sell_tower")) {
+			else if(ac.equals("sell_tower")) { //We want to sell a tower
 				try {
 					synchronized(pausedLock) {
 						if(!isPaused()) {
@@ -475,6 +490,7 @@ public class Controller implements ListenerContainer {
 					view.putWarning("Bitte einen Turm auswählen.");
 				}
 			}
+			//diverse controls
 			else if(ac.equals("pause")) {
 				togglePause();
 			}
@@ -494,6 +510,7 @@ public class Controller implements ListenerContainer {
 				synchronized(pausedLock){
 					boolean p=isPaused();
 					pause(true);
+					//HTML? this is ridiculously easy...
 					JOptionPane.showMessageDialog(null, "<html><div style=\"width: 480px\">"
 							+ "<h1 style=\"text-align:center\">Tower-Defense</h1>"
 							+ "<h2 style=\"text-align:center\">Hilfe</h2>"
@@ -543,8 +560,10 @@ public class Controller implements ListenerContainer {
 	private class FieldSelectListener extends MouseInputAdapter {		
 		@Override
 		public void mousePressed(MouseEvent ev) {
+			//get the view's pixel-coordinates and calculate our field-coordinates
 			int x=ev.getX()*game.getPlayArea().getWidth()/((JPanel)ev.getSource()).getWidth();
 			int y=ev.getY()*game.getPlayArea().getHeight()/((JPanel)ev.getSource()).getHeight();
+			//and assign to the selected field.
 			synchronized(selectedField){
 				selectedField.x=x;
 				selectedField.y=y;
@@ -561,6 +580,7 @@ public class Controller implements ListenerContainer {
 
 		@Override
 		public void windowClosing(WindowEvent e) {
+			//if the user presses the X on the window, ask for exit instead of just quitting
 			askExit();
 		}
 		

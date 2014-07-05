@@ -103,6 +103,7 @@ public final class Tiles {
 			try {
 				tiles.put(e.getKey(),ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(e.getValue())));
 			} catch (IOException ex) {
+				//We have no GUI to print the error to, do the usual handling
 				ex.printStackTrace();
 			}
 		}
