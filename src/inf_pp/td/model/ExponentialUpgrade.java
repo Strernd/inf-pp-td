@@ -69,7 +69,7 @@ public class ExponentialUpgrade implements UpgradePolicy {
 	/**
 	 * Holds all exponential functions to each attribute
 	 */
-	Map<UpgradeType,ExpFun> upgrader=new HashMap<>();
+	private Map<UpgradeType,ExpFun> upgrader=new HashMap<>();
 	
 	/**
 	 * Constructs an ExponentialUpgrade
