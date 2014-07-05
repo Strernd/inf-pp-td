@@ -156,6 +156,7 @@ public class CreepWaveSpawner implements java.io.Serializable {
 				c=w.creepClass.getDeclaredConstructor(ArrayList.class,int.class,float.class,int.class,String.class).newInstance(waypoints,w.health,w.moveSpeed,w.gold,w.type);
 				result.add(c);
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				throw new RuntimeException(e);
 			}
 			lastCreep=time.getMillisSinceStart();
 		}

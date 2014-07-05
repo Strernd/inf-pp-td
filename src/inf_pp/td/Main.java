@@ -19,14 +19,17 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Main {
 
 	public static void main(String[] args) {
+		boolean tshowNativeError=false;
+		final boolean showNativeError;
 		
 		//Let's look native
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
+			tshowNativeError=true;
 		}
+		showNativeError=tshowNativeError;
 		
 		final GameInterface game=new Game(20);
 		final Controller ctrl=new Controller();
@@ -45,11 +48,12 @@ public class Main {
 					frame[0].setTitle("Inf-PP Tower Defense Bernd Strehl/Marc André Wittorf");
 					frame[0].setIconImage(Tiles.get(Tiles.TileId.WINDOW_ICON));
 					frame[0].setLocationRelativeTo(null);
+					if(showNativeError)
+						frame[0].putWarning("Could not set native Look and Feel");
 				}
 				
 			});
 		} catch (InvocationTargetException | InterruptedException e) {
-			// TODO show error?
 			e.printStackTrace();
 			System.exit(1);
 		}

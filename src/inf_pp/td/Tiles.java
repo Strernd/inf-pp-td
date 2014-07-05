@@ -105,9 +105,8 @@ public final class Tiles {
 		for(Map.Entry<TileId,String> e: paths.entrySet()){
 			try {
 				tiles.put(e.getKey(),ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(e.getValue())));
-			} catch (IOException e1) {
-				// TODO Print error to user
-				//e1.printStackTrace();
+			} catch (IOException ex) {
+				ex.printStackTrace();
 			}
 		}
 		setWorldTile("world/background.jpg");

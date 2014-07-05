@@ -97,7 +97,6 @@ public class ExponentialUpgrade implements UpgradePolicy {
 		try{
 			return upgrader.get(type).getValue();
 		}catch(NullPointerException e){
-			//TODO: display Error?
 			return 0;
 		}
 	}

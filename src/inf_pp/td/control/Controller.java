@@ -24,10 +24,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -116,10 +118,21 @@ public class Controller implements ListenerContainer {
 	public Controller() {
 		fieldListener = new FieldSelectListener();
 		sbListener = new SidebarListener();
-		fc=new JFileChooser();
-		fc.setFileFilter(new FileNameExtensionFilter("Tower-Defense Speicherstände", "tdsv"));
-		fc.setAcceptAllFileFilterUsed(false);
-		//TODO: set directory?
+		try {
+			SwingUtilities.invokeAndWait(new Runnable(){
+				@Override
+				public void run() {
+					fc=new JFileChooser();
+					fc.setFileFilter(new FileNameExtensionFilter("Tower-Defense Speicherstände", "tdsv"));
+					fc.setAcceptAllFileFilterUsed(false);
+					//TODO: set directory?
+				}
+			});
+		} catch (InvocationTargetException|InterruptedException e) {
+			//Swing seems to have problems, we can't properly display the error
+			e.printStackTrace();
+		}
+		
 	}
 	
 	/**
@@ -149,18 +162,35 @@ public class Controller implements ListenerContainer {
 		if(!isPaused()){
 			synchronized(game) {
 				time.tick();
-				game.tick(time);
-				lost=game.hasLost();
-				won=game.hasWon();
-				if(lost || won){
-					pause(true);
+				try{
+					game.tick(time);
+					lost=game.hasLost();
+					won=game.hasWon();
+					if(lost || won){
+						pause(true);
+					}
+				} catch(RuntimeException e){
+					view.putWarning("Interner Fehler: "+e.getCause().getClass().getName()+" - "+e.getCause().getLocalizedMessage());
 				}
 			}
 		}
-		if(lost)
-			JOptionPane.showMessageDialog(view.getComponent(), "Leider verloren!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
+		if(lost){
+			SwingUtilities.invokeLater(new Runnable(){
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(view.getComponent(), "Leider verloren!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
+				}
+			});
+		}
 		else if(won)
-			JOptionPane.showMessageDialog(view.getComponent(), "Gewonnen!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
+		{
+			SwingUtilities.invokeLater(new Runnable(){
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(view.getComponent(), "Gewonnen!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
+				}
+			});	
+		}
 	}
 	
 	/**
@@ -233,7 +263,7 @@ public class Controller implements ListenerContainer {
 	}
 	
 	/**
-	 * Displays a FileChooser dialog and saves the game
+	 * Displays a FileChooser dialog and saves the game (Only to be called from EDT)
 	 */
 	private void saveWithDialog() {
 		synchronized(pausedLock) {
@@ -250,7 +280,7 @@ public class Controller implements ListenerContainer {
 	}
 	
 	/**
-	 * Displays a FileChooser dialog and loads the game
+	 * Displays a FileChooser dialog and loads the game (Only to be called from EDT)
 	 */
 	private void loadWithDialog() {
 		synchronized(pausedLock) {
@@ -299,7 +329,7 @@ public class Controller implements ListenerContainer {
 	}
 	
 	/**
-	 * Displays a ConfirmationDialog and terminates the program if the user confirms
+	 * Displays a ConfirmationDialog and terminates the program if the user confirms (Only to be called from EDT)
 	 */
 	void askExit() {
 		synchronized(pausedLock) {

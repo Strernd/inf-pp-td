@@ -26,6 +26,6 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - ~~Menupunkt Neues Spiel~~
 - ~~Buff Wirkdauer~~
 - ~~Usability, Accelerators und sowas~~
-- JOptionPane und JFileChooser nur aus AWT-Thread
-- Frame interface extrahieren?
-- interne fehler zum view bubblen lassen
+- ~~JOptionPane und JFileChooser nur aus AWT-Thread~~
+- ~~Frame interface extrahieren?~~
+- ~~interne fehler zum view bubblen lassen~~
