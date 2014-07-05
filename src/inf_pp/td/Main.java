@@ -27,7 +27,7 @@ public class Main {
 		final GameInterface game=new Game(20);
 		final Controller ctrl=new Controller();
 		
-		//this is needed to assign
+		//this is needed to assign the frame in invokeAndWait
 		final Frame[] frame=new Frame[1];
 		try {
 			SwingUtilities.invokeAndWait(new Runnable(){
@@ -35,12 +35,12 @@ public class Main {
 				@Override
 				public void run() {
 					frame[0]=new Frame(game);
-					//frame[0].setSize(660, 560);
 					frame[0].getContentPane().setPreferredSize(new Dimension(680,480));
 					frame[0].pack();
 					frame[0].setVisible(true);
 					frame[0].setTitle("Inf-PP Tower Defense Bernd Strehl/Marc André Wittorf");
 					frame[0].setIconImage(Tiles.get(Tiles.TileId.WINDOW_ICON));
+					frame[0].setLocationRelativeTo(null);
 				}
 				
 			});
@@ -50,17 +50,9 @@ public class Main {
 			System.exit(1);
 		}
 		
-		//TODO: do we need to do some cleanup?
-		//frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		//frame.setModel(game);
-		//frame.addListener(ctrl);
 		
-		//game.addObserver(frame);
 		ctrl.setModel(game);
 		ctrl.setView(frame[0]);
-		//TODO: threads?
-		//ctrl.setTickrate(64);
-		//ctrl.start();
 
 		ctrl.startGameThread();
 		ctrl.startRenderingThread();

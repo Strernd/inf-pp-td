@@ -132,14 +132,8 @@ public class Game implements java.io.Serializable, GameInterface{
 		if(price>gold) {
 			throw new NoGoldException();
 		}
-		if(position.x<0||position.y<0||position.x>=field.getWidth()||position.y>=field.getHeight())
+		if(!canBuildHere(position))
 			throw new InvalidFieldException();
-		if(getTowerAtPosition(position)!=null)
-			throw new InvalidFieldException();
-		for (Point p : field.getWaypoints()){
-			if(p.equals(position))
-				throw new InvalidFieldException();
-		}
 		gold-=price;
 		towers.add(TowerFactory.buildTower(type, new Point(position)));
 	}
@@ -281,5 +275,26 @@ public class Game implements java.io.Serializable, GameInterface{
 		if(t==null)
 			throw new InvalidFieldException();
 		return PriceProvider.getUpgradePrice(t, type);
+	}
+	
+	@Override
+	public TowerType getTowerType(Point position) {
+		BaseTower t=getTowerAtPosition(position);
+		if(t==null)
+			throw new InvalidFieldException();
+		return t.getType();
+	}
+	
+	@Override
+	public boolean canBuildHere(Point position) {
+		if(position.x<0||position.y<0||position.x>=field.getWidth()||position.y>=field.getHeight())
+			return false;
+		if(getTowerAtPosition(position)!=null)
+			return false;
+		for (Point p : field.getWaypoints()){
+			if(p.equals(position))
+				return false;
+		}
+		return true;
 	}
 }

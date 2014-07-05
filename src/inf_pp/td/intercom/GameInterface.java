@@ -61,4 +61,8 @@ public interface GameInterface {
 
 	public abstract int getTowerUpgradePrice(Point position, UpgradeType type);
 
+	public abstract TowerType getTowerType(Point position);
+	
+	public abstract boolean canBuildHere(Point position);
+
 }

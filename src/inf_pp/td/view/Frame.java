@@ -9,14 +9,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.BevelBorder;
@@ -73,23 +76,48 @@ public class Frame extends JFrame {
 		JMenu gameMenu=new JMenu("Spiel");
 		JMenuItem item=new JMenuItem("Neues Spiel");
 		item.setActionCommand("newgame");
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.CTRL_MASK));
 		gameMenu.add(item);
 		item=new JMenuItem("Pause/Weiter");
 		item.setActionCommand("pause");
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PAUSE,0));
+		final JMenuItem pauseItem=item;
+		//We want a second accelerator, so we need to use Actions
+		gameMenu.getInputMap(JMenu.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_P,0),"pause");
+		gameMenu.getActionMap().put("pause", new AbstractAction(){
+			private static final long serialVersionUID = 6027103533005126611L;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pauseItem.doClick();
+			}
+		});
 		gameMenu.add(item);
 		item=new JMenuItem("Speichern");
 		item.setActionCommand("save");
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,ActionEvent.CTRL_MASK));
 		gameMenu.add(item);
 		item=new JMenuItem("Laden");
 		item.setActionCommand("load");
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,ActionEvent.CTRL_MASK));
 		gameMenu.add(item);
 		item=new JMenuItem("Beenden");
 		item.setActionCommand("exit");
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,ActionEvent.CTRL_MASK));
 		gameMenu.add(item);
 		menuBar.add(gameMenu);
-		//JMenuItem men=new JMenuItem("Pause");
-		//men.setActionCommand("pause");
-		//menuBar.add(men);
+		
+		
+		JMenu helpMenu=new JMenu("Hilfe");
+		item=new JMenuItem("Anleitung");
+		item.setActionCommand("help");
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
+		helpMenu.add(item);
+		item=new JMenuItem("Über");
+		item.setActionCommand("about");
+		helpMenu.add(item);
+		
+		menuBar.add(helpMenu);
+		
 		this.setJMenuBar(menuBar);
 		
 		this.pack();

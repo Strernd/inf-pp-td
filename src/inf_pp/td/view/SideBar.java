@@ -7,18 +7,24 @@ import inf_pp.td.intercom.TdState;
 import inf_pp.td.intercom.TowerType;
 import inf_pp.td.intercom.UpgradeType;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -35,6 +41,7 @@ public class SideBar extends JPanel {
 	
 	JButton buildDD,buildAE,buildSL,buildP;
 	JButton upgradeDmg,upgradeRange,upgradeFirerate;
+	JButton sellTower;
 
 	public SideBar() {
 		this.setBackground(new Color(0xCCCCCC));
@@ -45,12 +52,24 @@ public class SideBar extends JPanel {
 		JPanel twrPane=new JPanel();
 		twrPane.setLayout(new GridLayout(2,2,4,4));
 		//JButton b=new JButton();
+		
+		Action acceleratingAction=new AbstractAction(){
+			private static final long serialVersionUID = -3185980796146069261L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((JButton)e.getSource()).doClick();
+			}
+		};
+		
 		buildDD=new JButton();
 		buildDD.setActionCommand("build_dd");
 		buildDD.setToolTipText("Feuert auf einen Creep");
 		buildDD.setVerticalTextPosition(SwingConstants.BOTTOM);
 		buildDD.setHorizontalTextPosition(SwingConstants.CENTER);
 		buildDD.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_DD)));
+		buildDD.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0), "build_accel");
+		buildDD.getActionMap().put("build_accel", acceleratingAction);
 		twrPane.add(buildDD);
 		buildAE=new JButton();
 		buildAE.setActionCommand("build_ae");
@@ -58,6 +77,8 @@ public class SideBar extends JPanel {
 		buildAE.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_AE)));
 		buildAE.setVerticalTextPosition(SwingConstants.BOTTOM);
 		buildAE.setHorizontalTextPosition(SwingConstants.CENTER);
+		buildAE.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "build_accel");
+		buildAE.getActionMap().put("build_accel", acceleratingAction);
 		twrPane.add(buildAE);
 		buildSL=new JButton();
 		buildSL.setActionCommand("build_sl");
@@ -65,6 +86,8 @@ public class SideBar extends JPanel {
 		buildSL.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_SL)));
 		buildSL.setVerticalTextPosition(SwingConstants.BOTTOM);
 		buildSL.setHorizontalTextPosition(SwingConstants.CENTER);
+		buildSL.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "build_accel");
+		buildSL.getActionMap().put("build_accel", acceleratingAction);
 		twrPane.add(buildSL);
 		buildP=new JButton();
 		buildP.setActionCommand("build_p");
@@ -72,11 +95,19 @@ public class SideBar extends JPanel {
 		buildP.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_P)));
 		buildP.setVerticalTextPosition(SwingConstants.BOTTOM);
 		buildP.setHorizontalTextPosition(SwingConstants.CENTER);
+		buildP.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "build_accel");
+		buildP.getActionMap().put("build_accel", acceleratingAction);
 		twrPane.add(buildP);
 		
-		twrPane.setPreferredSize(new Dimension(200,160));
-		twrPane.setMaximumSize(new Dimension(200,160));
-		this.add(twrPane);
+		JPanel twrWrapper=new JPanel();
+		twrWrapper.setPreferredSize(new Dimension(200,160));
+		twrWrapper.setMaximumSize(new Dimension(200,160));
+		twrWrapper.setLayout(new BorderLayout());
+		twrWrapper.add(twrPane,BorderLayout.CENTER);
+		twrWrapper.add(new JLabel("Bauen"),BorderLayout.NORTH);
+		this.add(twrWrapper);
+		twrPane.setOpaque(false);
+		twrWrapper.setOpaque(false);
 		
 		this.add(Box.createVerticalGlue());
 		
@@ -85,19 +116,33 @@ public class SideBar extends JPanel {
 		//JButton b;
 		upgradeDmg=new JButton();
 		upgradeDmg.setActionCommand("upgrade_damage");
+		upgradeDmg.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "build_accel");
+		upgradeDmg.getActionMap().put("build_accel", acceleratingAction);
 		uPane.add(upgradeDmg);
 		upgradeRange=new JButton();
 		upgradeRange.setActionCommand("upgrade_range");
+		upgradeRange.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), "build_accel");
+		upgradeRange.getActionMap().put("build_accel", acceleratingAction);
 		uPane.add(upgradeRange);
 		upgradeFirerate=new JButton();
 		upgradeFirerate.setActionCommand("upgrade_firerate");
+		upgradeFirerate.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "build_accel");
+		upgradeFirerate.getActionMap().put("build_accel", acceleratingAction);
 		uPane.add(upgradeFirerate);
-		JButton b=new JButton("Verkaufen");
-		b.setActionCommand("sell_tower");
-		uPane.add(b);
-		uPane.setPreferredSize(new Dimension(200,160));
-		uPane.setMaximumSize(new Dimension(200,160));
-		this.add(uPane);
+		sellTower=new JButton("Verkaufen");
+		sellTower.setActionCommand("sell_tower");
+		uPane.add(sellTower);
+		
+		JPanel uWrapper=new JPanel();
+		uWrapper.setPreferredSize(new Dimension(200,160));
+		uWrapper.setMaximumSize(new Dimension(200,160));
+		uWrapper.setLayout(new BorderLayout());
+		uWrapper.add(uPane,BorderLayout.CENTER);
+		uWrapper.add(new JLabel("Upgraden"),BorderLayout.NORTH);
+		this.add(uWrapper);
+		uPane.setOpaque(false);
+		uWrapper.setOpaque(false);
+		
 		
 		this.add(Box.createVerticalGlue());
 		
@@ -122,24 +167,33 @@ public class SideBar extends JPanel {
 	 * @param l the listener to use
 	 */
 	void addActionListener(ActionListener l) {
-		synchronized(this.getTreeLock()) {
-			for(Component c: this.getComponents())
-			{
-				//TODO: make better
-				if(c instanceof JButton) {
-					((JButton)c).addActionListener(l);
-				}
-				else if(c instanceof JPanel) {
-					synchronized(c.getTreeLock()) {
-						for(Component d: ((JPanel)c).getComponents()) {
-							if(d instanceof JButton) {
-								((JButton)d).addActionListener(l);
-							}
-						}
-					}
-				}
-			}
-		}
+//		synchronized(this.getTreeLock()) {
+//			for(Component c: this.getComponents())
+//			{
+//				//TODO: make better
+//				if(c instanceof JButton) {
+//					((JButton)c).addActionListener(l);
+//				}
+//				else if(c instanceof JPanel) {
+//					synchronized(c.getTreeLock()) {
+//						for(Component d: ((JPanel)c).getComponents()) {
+//							if(d instanceof JButton) {
+//								((JButton)d).addActionListener(l);
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+		buildDD.addActionListener(l);
+		buildAE.addActionListener(l);
+		buildSL.addActionListener(l);
+		buildP.addActionListener(l);
+		
+		upgradeDmg.addActionListener(l);
+		upgradeRange.addActionListener(l);
+		upgradeFirerate.addActionListener(l);
+		sellTower.addActionListener(l);
 	}
 	
 	void updateState(final TdState state){
@@ -151,30 +205,43 @@ public class SideBar extends JPanel {
 		final int waveCount=game.getWaveCount();
 		final String waveName=game.getCurrentWaveName();
 		
-		final String ddText="Price: "+game.getPrice(TowerType.DIRECT_DMG);
-		final String aeText="Price: "+game.getPrice(TowerType.AREA_OF_EFFECT);
-		final String slText="Price: "+game.getPrice(TowerType.SLOW);
-		final String pText ="Price: "+game.getPrice(TowerType.POISON);
+		final String ddText="Preis: "+game.getPrice(TowerType.DIRECT_DMG);
+		final String aeText="Preis: "+game.getPrice(TowerType.AREA_OF_EFFECT);
+		final String slText="Preis: "+game.getPrice(TowerType.SLOW);
+		final String pText ="Preis: "+game.getPrice(TowerType.POISON);
 		
 		final String dmgLabel,rngLabel,frLabel;
 		String tdmgLabel,trngLabel,tfrLabel;
+		
+		boolean tenableUpgrade;
+		final boolean enableBuild,enableUpgrade;
 		
 		try{
 			int dmgUPrice=game.getTowerUpgradePrice(state.getSelectedField(),UpgradeType.DAMAGE);
 			int rangeUPrice=game.getTowerUpgradePrice(state.getSelectedField(),UpgradeType.RANGE);
 			int rateUPrice=game.getTowerUpgradePrice(state.getSelectedField(),UpgradeType.FIRERATE);
-			tdmgLabel="<html><p style=\"text-align:center\">Schaden<br /><br />Preis: "+dmgUPrice+"</p></html>";
+			if(game.getTowerType(state.getSelectedField())==TowerType.SLOW){
+				tdmgLabel="<html><p style=\"text-align:center\">Verlangsamung<br /><br />Preis: "+dmgUPrice+"</p></html>";
+			}
+			else {
+				tdmgLabel="<html><p style=\"text-align:center\">Schaden<br /><br />Preis: "+dmgUPrice+"</p></html>";
+			}
 			trngLabel="<html><p style=\"\">Reichweite<br /><br />Preis: "+rangeUPrice+"</p></html>";
 			tfrLabel="<html><p style=\"text-align:center\">Feuerrate<br /><br />Preis: "+rateUPrice+"</p></html>";
+			tenableUpgrade=true;
 		} catch (InvalidFieldException e) {
 			//dmgUPrice=rangeUPrice=rateUPrice=-1;
 			tdmgLabel="Schaden";
 			trngLabel="Reichweite";
 			tfrLabel="Feuerrate";
+			tenableUpgrade=false;
 		}
 		dmgLabel=tdmgLabel;
 		rngLabel=trngLabel;
 		frLabel=tfrLabel;
+		enableUpgrade=tenableUpgrade;
+		
+		enableBuild=game.canBuildHere(state.getSelectedField());
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -184,13 +251,21 @@ public class SideBar extends JPanel {
 				waveLabel.setText("Welle: "+waveIndex+"/"+waveCount+" "+waveName);
 				
 				buildDD.setText(ddText);
+				buildDD.setEnabled(enableBuild);
 				buildAE.setText(aeText);
+				buildAE.setEnabled(enableBuild);
 				buildSL.setText(slText);
+				buildSL.setEnabled(enableBuild);
 				buildP.setText(pText);
+				buildP.setEnabled(enableBuild);
 				
 				upgradeDmg.setText(dmgLabel);
+				upgradeDmg.setEnabled(enableUpgrade);
 				upgradeRange.setText(rngLabel);
+				upgradeRange.setEnabled(enableUpgrade);
 				upgradeFirerate.setText(frLabel);
+				upgradeFirerate.setEnabled(enableUpgrade);
+				sellTower.setEnabled(enableUpgrade);
 			}
 		});
 	}

@@ -102,32 +102,41 @@ public class Controller implements ListenerContainer {
 	 * call this once each tick
 	 */
 	public void tick(){
+		boolean lost=false,won=false;
 		if(!isPaused()){
 			synchronized(game) {
 				time.tick();
 				game.tick(time);
-				//TODO: put this somewhere else (View?)
-				if(game.hasLost()){
-					JOptionPane.showMessageDialog(frame, "Leider verloren!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
-					pause(true);
-				}
-				else if(game.hasWon()){
-					JOptionPane.showMessageDialog(frame, "Gewonnen!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
+				lost=game.hasLost();
+				won=game.hasWon();
+				if(lost || won){
 					pause(true);
 				}
 			}
 		}
+		if(lost)
+			JOptionPane.showMessageDialog(frame, "Leider verloren!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
+		else if(won)
+			JOptionPane.showMessageDialog(frame, "Gewonnen!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void newGame(){
-		pause(true);
-		synchronized(game) {
-			GameInterface tempG=new Game(20);
-			synchronized(tempG) {
-				game=tempG;
-				time=new TimeSource();
-				if(frame!=null) {
-					frame.newGame(game);
+		synchronized(pausedLock){
+			boolean p=isPaused();
+			pause(true);
+			if(JOptionPane.showConfirmDialog(null,"Wollen Sie das Spiel neu starten?","Neustart?",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)!=JOptionPane.YES_OPTION)
+			{
+				pause(p);
+				return;
+			}
+			synchronized(game) {
+				GameInterface tempG=new Game(20);
+				synchronized(tempG) {
+					game=tempG;
+					time=new TimeSource();
+					if(frame!=null) {
+						frame.newGame(game);
+					}
 				}
 			}
 		}
@@ -230,7 +239,7 @@ public class Controller implements ListenerContainer {
 		synchronized(pausedLock) {
 			boolean p=isPaused();
 			pause(true);
-			if(JOptionPane.showConfirmDialog(null,"Wirklich Beenden?","test",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
+			if(JOptionPane.showConfirmDialog(null,"Wollen Sie wirklich Beenden?","Beenden?",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==JOptionPane.YES_OPTION)
 				System.exit(0);
 			else
 				pause(p);
@@ -375,6 +384,46 @@ public class Controller implements ListenerContainer {
 			}
 			else if(ac.equals("newgame")) {
 				newGame();
+			}
+			else if(ac.equals("help")) {
+				synchronized(pausedLock){
+					boolean p=isPaused();
+					pause(true);
+					JOptionPane.showMessageDialog(null, "<html><div style=\"width: 480px\">"
+							+ "<h1 style=\"text-align:center\">Tower-Defense</h1>"
+							+ "<h2 style=\"text-align:center\">Hilfe</h2>"
+							+ "<p>Das Ziel des Spieles ist es, möglichst wenige Creeps durch den Parkour zu lassen.<br />"
+							+ "Sie können dafür verschiedene Türme auf dem Spielfeld platzieren, indem Sie ein freies Feld anklicken und dann den entsprechenden Knopf "
+							+ "drücken. Diese Türme haben verschiedene Fähigkeiten:"
+							+ "<ul>"
+							+ "<li>Gelb: Schießt auf Creeps und verursacht Schaden</li>"
+							+ "<li>Rot: Verursacht gleichzeitig Schaden an allen Creeps in Reichweite</li>"
+							+ "<li>Blau: Verlangsamt Creeps</li>"
+							+ "<li>Grün: Vergiftet Creeps, sodass sie kontinuierlich Schaden nehmen</li>"
+							+ "</ul>"
+							+ "Auch kosten die Türme unterschiedlich viel.<br /><br />"
+							+ "Sie können den Verursachten Schaden (bzw. Verlangsamung des blauen Turms), die Reichweite und die Feuerrate ihrer Türme aufwerten.<br /><br />"
+							+ "Haben Sie einen Turm an die falsche Stelle gesetzt, können Sie ihn verkaufen. Ihnen wird ein Teil des Kaufpreises erstattet.<br /><br />"
+							+ "Viel Spaß!</p>"
+							+ "</div></html>", "Hilfe", JOptionPane.PLAIN_MESSAGE);
+					pause(p);
+				}
+			}
+			else if(ac.equals("about")) {
+				synchronized(pausedLock){
+					boolean p=isPaused();
+					pause(true);
+					JOptionPane.showMessageDialog(null, "<html>"
+							+ "<h1 style=\"text-align:center\">Tower-Defense</h1>"
+							+ "<p style=\"text-align:center\">Version: 0.9 Beta</p>"
+							+ "<h2 style=\"text-align:center\">Ein Projekt für das Modul 'Programmierpraktikum'</h2>"
+							+ "<p>Dozent: Prof. Dr. Thomas Slawig</p>"
+							+ "<p>Übungsleiter: Corvin Hagemeister</p>"
+							+ "<table><tr><td>Projektverantwortliche (alphabetisch):</td><td>Bernd Strehl</td></tr><tr><td></td><td>Marc André Wittorf</td></tr></table>"
+							+ "<br /><p>Prüfung: 8. Juli 2014</p>"
+							+ "</html>", "Über", JOptionPane.PLAIN_MESSAGE);
+					pause(p);
+				}
 			}
 		}
 
