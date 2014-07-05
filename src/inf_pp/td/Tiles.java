@@ -7,16 +7,84 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+/**
+ * This class holds all tiles to be used by the GUI.
+ * It features an enum to identify a specific tile
+ * and a method to get the tile as an image
+ *
+ */
+/**
+ * @author Marc
+ *
+ */
+/**
+ * @author Marc
+ *
+ */
+/**
+ * @author Marc
+ *
+ */
+/**
+ * @author Marc
+ *
+ */
+/**
+ * @author Marc
+ *
+ */
 public final class Tiles {
+	/**
+	 * This class is not to be instantiated
+	 */
 	private Tiles(){}
 	
+	/**
+	 * This enum holds the identifiers of all available tiles
+	 *
+	 */
 	public static enum TileId{
-		TOWER_DD,TOWER_AE,TOWER_SL,TOWER_P,
+		/**
+		 * A tile for the DirectDamage Tower
+		 */
+		TOWER_DD,
+		/**
+		 * A tile for the AreaOfEffect Tower 
+		 */
+		TOWER_AE,
+		/**
+		 * A tile for the Slowing Tower
+		 */
+		TOWER_SL,
+		/**
+		 * A tile for the Poison Tower
+		 */
+		TOWER_P,
+		
+		/**
+		 * Tiles for all creeps, names are self-explainatory
+		 */
 		CREEP_SMILEY, CREEP_ZOMBIE, CREEP_PORING, CREEP_REAPER, CREEP_STONEGIANT, CREEP_SKELETON,
-		WORLD, PROJECTILE,
+		
+		/**
+		 * A tile for the world, ie. the background of the PlayArea
+		 */
+		WORLD,
+		/**
+		 * A tile for a projectile
+		 */
+		PROJECTILE,
+		
+		/**
+		 * The Window's icon
+		 */
 		WINDOW_ICON
 	}
 	
+	/**
+	 * This maps all of the TileId values to actual images
+	 * @see TileId
+	 */
 	private static final Map<TileId, Image> tiles;
 	
 	static {
@@ -45,15 +113,22 @@ public final class Tiles {
 		setWorldTile("world/background.jpg");
 	}
 	
+	/**
+	 * Select a world tile
+	 * @param filename the tile's filename. Must be in assets/graphics/ directory
+	 */
 	static void setWorldTile(String filename) {
 		try {
 			tiles.put(TileId.WORLD,ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("assets/graphics/"+filename)));
 		} catch (IOException e) {
-			// TODO Print Error To User
-			//e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Get the tile from its TileId
+	 * @param id which tile to get
+	 * @return the tile as Image
+	 */
 	public static Image get(TileId id){
 		return tiles.get(id);
 	}

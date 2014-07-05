@@ -19,7 +19,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -34,42 +33,85 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Controller implements ListenerContainer {
 	
+	/**
+	 * This listens for clicks in the PlayArea to select a field to use
+	 */
 	private FieldSelectListener fieldListener;
+	
+	/**
+	 * This listens to Button clicks in the sidebar and Menu selections
+	 */
 	private SidebarListener sbListener;
+	
+	/**
+	 * This listens if the window-close-icon is clicked and asks if the program should terminate
+	 */
 	private WindowListener wListener=new TDWindowListener();
 	
-	//Only to be accessed under lock
+	/**
+	 * The currently selected position
+	 * Only to be modified under lock.
+	 */
 	private Point selectedField=new Point(-1,-1);
+	
+	/**
+	 * The View
+	 */
 	private Frame frame;
+	/**
+	 * A JFileChooser that is used whenever the user wants to save or load the game
+	 */
 	private JFileChooser fc;
 	
-	//TODO: interface?
-	//Only to be modified under lock
+	/**
+	 * The model object
+	 * Only to be modified under lock
+	 */
 	GameInterface game;
 	
-	//Only to be modified under lock(game)
+	/**
+	 * The Time Source that the controller uses to pass the time to the model
+	 * Only to be modified under lock (use synchronized(game){...})
+	 */
 	TimeSource time=new TimeSource();
 	
-	//TODO: prevent pause-abuse
-	//Only to be modified under lock(pausedLock)
+	/**
+	 * If the game is paused or not
+	 * Only to be modified under lock (use synchronized(pausedLock){...}) if accessed non-atomar
+	 */
 	private boolean paused=true;
+	/**
+	 * The lock object for {@link #paused}
+	 */
 	private Object pausedLock=new Object();
 
+	/* (non-Javadoc)
+	 * @see inf_pp.td.intercom.ListenerContainer#getFieldSelectListener()
+	 */
 	@Override
 	public MouseInputListener getFieldSelectListener() {
 		return fieldListener;
 	}
 
+	/* (non-Javadoc)
+	 * @see inf_pp.td.intercom.ListenerContainer#getActionListener()
+	 */
 	@Override
 	public ActionListener getActionListener() {
 		return sbListener;
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.intercom.ListenerContainer#getWindowListener()
+	 */
 	@Override
 	public WindowListener getWindowListener() {
 		return wListener;
 	}
 
+	/**
+	 * Constructs a controller
+	 */
 	public Controller() {
 		fieldListener = new FieldSelectListener();
 		sbListener = new SidebarListener();
@@ -80,26 +122,26 @@ public class Controller implements ListenerContainer {
 	}
 	
 	/**
-	 * set the model to use
-	 * @param game an instance of a game to use
+	 * Set the model to use
+	 * @param game an instance of a {@link GameInterface} to use
 	 */
 	public void setModel(GameInterface game) {
 		this.game=game;
-		/*if(frame!=null)
-			game.addObserver(frame);*/
 	}
 	
+	/**
+	 * Set the model to use 
+	 * @param frame an instance of the model
+	 */
 	public void setView(Frame frame) {
 		this.frame=frame;
 		frame.addListener(this);
 		frame.setDefaultCloseOperation(Frame.DO_NOTHING_ON_CLOSE);
-		/*if(game!=null)
-			game.addObserver(frame);*/
 	}
 	
 	
 	/**
-	 * call this once each tick
+	 * This method is called each tick (only to be called from 'ticking' Game-Thread)
 	 */
 	public void tick(){
 		boolean lost=false,won=false;
@@ -120,6 +162,9 @@ public class Controller implements ListenerContainer {
 			JOptionPane.showMessageDialog(frame, "Gewonnen!", "Game over!",JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	/**
+	 * Ask the user to start a new game (only to be called from EDT)
+	 */
 	public void newGame(){
 		synchronized(pausedLock){
 			boolean p=isPaused();
@@ -142,6 +187,10 @@ public class Controller implements ListenerContainer {
 		}
 	}
 	
+	/**
+	 * Save the game to a file by serializing the whole model
+	 * @param path The file path to save to
+	 */
 	private void saveGame(String path) {
 		try {
 			FileOutputStream file=new FileOutputStream(path);
@@ -153,38 +202,38 @@ public class Controller implements ListenerContainer {
 			oout.close();
 		}
 		catch(IOException e) {
-			e.printStackTrace();
+			frame.putWarning("Konnte den Spielstand nicht speichern.");
 		}
 	}
 	
+	/**
+	 * Load the game from a file by deserializing the whole model
+	 * @param path the file path to load from
+	 */
 	private void loadGame(String path) {
 		FileInputStream file;
 		try {
 			file = new FileInputStream(path);
 			ObjectInputStream oin = new ObjectInputStream(file);
 			GameInterface tempG=(GameInterface) oin.readObject();
+			TimeSource tempTS=(TimeSource) oin.readObject();
 			synchronized(game){
 				synchronized(tempG) {
 					game=tempG;
-					time=(TimeSource) oin.readObject();
+					time=tempTS;
 				}
 			}
 			oin.close();
 			file.close();
-			//game.addObserver(frame);
 			time.skipTick();
-		} catch (FileNotFoundException e) {
-			// TODO Show to user
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Show to user
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Show To user
-			e.printStackTrace();
+		} catch (IOException | ClassNotFoundException e) {
+			frame.putWarning("Konnte den Spielstand nicht laden.");
 		}
 	}
 	
+	/**
+	 * Displays a FileChooser dialog and saves the game
+	 */
 	private void saveWithDialog() {
 		synchronized(pausedLock) {
 			boolean p=isPaused();
@@ -199,6 +248,9 @@ public class Controller implements ListenerContainer {
 		}
 	}
 	
+	/**
+	 * Displays a FileChooser dialog and loads the game
+	 */
 	private void loadWithDialog() {
 		synchronized(pausedLock) {
 			boolean p=isPaused();
@@ -210,6 +262,10 @@ public class Controller implements ListenerContainer {
 		}
 	}
 	
+	/**
+	 * Pauses/resumes the game
+	 * @param p true: pause the game; false: resume the game
+	 */
 	public void pause(boolean p) {
 		synchronized(pausedLock){
 			if(p==paused)
@@ -225,16 +281,25 @@ public class Controller implements ListenerContainer {
 		}
 	}
 	
+	/**
+	 * Toggles Paused/Resumed
+	 */
 	public void togglePause() {
 		synchronized(pausedLock){
 			pause(!isPaused());
 		}
 	}
 	
+	/**
+	 * @return true if game paused, false if game resumed
+	 */
 	public boolean isPaused() {
 		return paused;
 	}
 	
+	/**
+	 * Displays a ConfirmationDialog and terminates the program if the user confirms
+	 */
 	void askExit() {
 		synchronized(pausedLock) {
 			boolean p=isPaused();
@@ -246,6 +311,9 @@ public class Controller implements ListenerContainer {
 		}
 	}
 	
+	/**
+	 * Starts the 'ticking' game thread
+	 */
 	public void startGameThread() {
 		Thread t=new Thread(){
 			long last=System.currentTimeMillis();
@@ -263,6 +331,9 @@ public class Controller implements ListenerContainer {
 		t.start();
 	}
 	
+	/**
+	 * Starts the rendering thread that calls the views {@link Frame#updateState} method
+	 */
 	public void startRenderingThread() {
 		Thread t=new Thread(){
 			public void run(){
@@ -285,6 +356,9 @@ public class Controller implements ListenerContainer {
 	}
 
 	
+	/**
+	 * Listens to button presses and menu selections
+	 */
 	private class SidebarListener implements ActionListener {
 
 		@Override
@@ -431,6 +505,10 @@ public class Controller implements ListenerContainer {
 	
 	
 	
+	/**
+	 * Listens to clicks in the {@link PlayArea} to select a field
+	 *
+	 */
 	private class FieldSelectListener extends MouseInputAdapter {		
 		@Override
 		public void mousePressed(MouseEvent ev) {
@@ -444,6 +522,10 @@ public class Controller implements ListenerContainer {
 		}		
 	}
 
+	/**
+	 * Listens to the window-close event and asks the user if he/she wants to exit 
+	 *
+	 */
 	public class TDWindowListener extends WindowAdapter {
 
 		@Override

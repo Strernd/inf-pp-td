@@ -2,6 +2,9 @@ package inf_pp.td.intercom;
 
 import java.awt.geom.Point2D;
 
+/**
+ * Interface to access important attributes of a creep
+ */
 public interface CreepInterface {
 
 	/**

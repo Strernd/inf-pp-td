@@ -5,6 +5,9 @@ import java.awt.event.WindowListener;
 
 import javax.swing.event.MouseInputListener;
 
+/**
+ * Interface to hold all the listeners to connect to a view
+ */
 public interface ListenerContainer {
 	/**
 	 * @return a MouseInputListener-Instance to be used by the playing-field

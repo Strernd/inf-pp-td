@@ -25,4 +25,6 @@ Tower Defense Game in Java for "Inf-PP"-2014
 - ~~Synchronisieren zwischen Game- und GUI-Thread~~
 - ~~Menupunkt Neues Spiel~~
 - ~~Buff Wirkdauer~~
-- Usability, Accelerators und sowas
+- ~~Usability, Accelerators und sowas~~
+- JOptionPane und JFileChooser nur aus AWT-Thread
+- Frame interface extrahieren?
