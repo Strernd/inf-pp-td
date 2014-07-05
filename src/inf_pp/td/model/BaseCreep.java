@@ -9,21 +9,57 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This class represents any creep
+ */
 public class BaseCreep implements java.io.Serializable, CreepInterface {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -672727195568844754L;
+	
+	/**
+	 * This creep's position
+	 */
 	private Point2D.Float position;
+	/**
+	 * The waypoints that this creep follows
+	 */
 	private ArrayList<Point> waypoints;
+	/**
+	 * the index of the waypoint that this creep is heading
+	 */
 	private int nextWp;
-	private int health=100;
-	private int maxHealth=100;
+	/**
+	 * This creep's current health
+	 */
+	private int health;
+	/**
+	 * This creep's maximum health
+	 */
+	private int maxHealth;
+	/**
+	 * this creep's unmodified move speed
+	 */
 	private float baseMoveSpeed;
-	private int gold=1;
+	/**
+	 * the amount of gold the player is given if he/she kills this creep
+	 */
+	private int gold;
+	/**
+	 * this creep's type; used to select a tile to draw this creep
+	 */
 	private final String type;
+	/**
+	 * all (de-)buffs that are applied to this creep
+	 */
 	private HashMap<String,Buff> buffs=new HashMap<String,Buff>(); 
 	
+	/**
+	 * Construct a creep
+	 * @param waypoints the waypoints that this creep will follow
+	 * @param maxHealth the maximum/starting health this creep will have
+	 * @param baseMoveSpeed the speed that this creep moves at if is not (de-)buffed, in fields/ms
+	 * @param goldWorth the amount of gold this creep gives the player when he/she kills it
+	 * @param type the type of the creep, ie. the appearance
+	 */
 	BaseCreep(ArrayList<Point> waypoints, int maxHealth, float baseMoveSpeed, int goldWorth, String type){
 		if(waypoints==null)
 			throw new NullPointerException();
@@ -40,27 +76,29 @@ public class BaseCreep implements java.io.Serializable, CreepInterface {
 		this.type=type;
 	}
 	
+	/**
+	 * Gets the current move speed, all de/buffs are applied
+	 * @param time the current time
+	 * @return the move speed in fields/ms
+	 */
 	protected float getMoveSpeed(TimeSource time) {
-		//TODO: set parameter time to some valid variable
 		return (float) Util.getBuffedValue(baseMoveSpeed,Type.MOVE_SPEED,buffs,time);
 	}
 	
 
 	/**
-	 * moves the creep by its speed
-	 * 
+	 * moves the creep by its speed.
+	 * if the creeps reaches the last waypoint, it will despawn and take one of the player's lives
 	 * @param time
 	 * @param game Instance of the Game
 	 */
 	void move(TimeSource time, Game game) {
-		//this.health=(int)Util.getBuffedValue(this.health, Buff.Type.DOT, buffs, time);
 		Util.getBuffedValue(this,Buff.Type.DOT,buffs,time);
 		nextWp+=Util.moveI(getMoveSpeed(time)*time.getMillisSinceLastTick(),position,waypoints.subList(nextWp, waypoints.size()));
 		if(nextWp>=waypoints.size()){
 			game.takeLife();
 			kill();
 		}
-		//return nextWp>=waypoints.size();
 	}
 	
 	/* (non-Javadoc)
@@ -73,12 +111,13 @@ public class BaseCreep implements java.io.Serializable, CreepInterface {
 
 	/**
 	 * Substract damage from creeps health
+	 * Gives money to the player if dead
 	 * 
-	 * @param dmg Amount Damage dealt
+	 * @param dmg Amount of damage dealt
 	 */
 	void doDamage(int dmg, Game game) {
 		this.health-=dmg;
-		if(isDead()){ //Did we just kill it?
+		if(isDead()){
 			game.addGold(gold);
 		}
 	}
@@ -100,7 +139,7 @@ public class BaseCreep implements java.io.Serializable, CreepInterface {
 	}
 	
 	/**
-	 * Sets the creeps health to zero
+	 * Sets the creeps health to zero, does not give player any money
 	 */
 	protected void kill(){
 		health=0;

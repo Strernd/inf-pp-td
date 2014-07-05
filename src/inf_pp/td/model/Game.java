@@ -3,7 +3,6 @@ package inf_pp.td.model;
 import inf_pp.td.InvalidFieldException;
 import inf_pp.td.NoGoldException;
 import inf_pp.td.TimeSource;
-import inf_pp.td.intercom.CreepInterface;
 import inf_pp.td.intercom.GameInterface;
 import inf_pp.td.intercom.PlayAreaWayHolder;
 import inf_pp.td.intercom.TowerType;
@@ -15,43 +14,47 @@ import java.util.Iterator;
 
 
 public class Game implements java.io.Serializable, GameInterface{
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4531113116980902426L;
 
 	/**
-	 * the playing area with dimensions and all teh waypoints 
+	 * the playing area with dimensions and all the waypoints 
 	 */
 	private PlayArea field;
 	
 	/**
-	 * a list of all towers in the game
+	 * a set of all towers in the game
 	 */
 	private HashSet<BaseTower> towers=new HashSet<BaseTower>();
 	
 	/**
-	 * a list of all projectiles in the game
+	 * a set of all projectiles in the game
 	 */
 	private HashSet<BaseProjectile> projectiles=new HashSet<BaseProjectile>();
 	
 	/**
-	 * a list of all creeps in the game
+	 * a set of all creeps in the game
 	 */
 	private HashSet<BaseCreep> creeps=new HashSet<BaseCreep>();
 
+	/**
+	 * A CreepWaveSpawner to spawn our creeps
+	 */
 	private CreepWaveSpawner spawner = new CreepWaveSpawner();
 	
 	/**
 	 * the amount of gold that the player currently has
 	 */
-	private int gold=300; //TODO: Just for debug
+	private int gold=300;
+	
 	/**
 	 * the remaining lives the player has
 	 */
 	private int lives;
 	
+	/**
+	 * Construct a Game
+	 * @param lives the amount of lives the player starts with
+	 */
 	public Game(int lives) {
 		this.lives=lives;
 		field=new PlayArea();
@@ -59,9 +62,8 @@ public class Game implements java.io.Serializable, GameInterface{
 	}
 	
 	
-	//private long lastGold=System.currentTimeMillis();
 	/* (non-Javadoc)
-	 * @see inf_pp.td.model.GameInterface#tick(inf_pp.td.TimeSource)
+	 * @see inf_pp.td.intercom.GameInterface#tick(inf_pp.td.TimeSource)
 	 */
 	@Override
 	public void tick(TimeSource time){
@@ -83,13 +85,10 @@ public class Game implements java.io.Serializable, GameInterface{
 			}
 		}
 		creeps.addAll(spawner.spawnCreeps(time));
-		//this.setChanged();
-		//this.notifyObservers(this);
 	}
 
-
 	/* (non-Javadoc)
-	 * @see inf_pp.td.model.GameInterface#getPlayArea()
+	 * @see inf_pp.td.intercom.GameInterface#getPlayArea()
 	 */
 	@Override
 	public PlayAreaWayHolder getPlayArea() {
@@ -103,18 +102,20 @@ public class Game implements java.io.Serializable, GameInterface{
 	public HashSet<BaseTower> getTowers() {
 		return towers;
 	}
+	
 	/* (non-Javadoc)
 	 * @see inf_pp.td.model.GameInterface#getCreeps()
 	 */
 	@Override
-	public HashSet<? extends CreepInterface> getCreeps() {
+	public HashSet<BaseCreep> getCreeps() {
 		return creeps;
 	}
 	
-	HashSet<BaseCreep> getBaseCreeps() {
-		return creeps;
-	}
-	
+	/**
+	 * Gets a Tower at a specific position
+	 * @param pos the position to get the tower at
+	 * @return the tower at the position
+	 */
 	private BaseTower getTowerAtPosition(Point pos) {
 		for (BaseTower t: towers){
 			if(t.getPosition().equals(pos))
@@ -138,6 +139,10 @@ public class Game implements java.io.Serializable, GameInterface{
 		towers.add(TowerFactory.buildTower(type, new Point(position)));
 	}
 	
+	/**
+	 * Adds a projectile to the game
+	 * @param p the projectile to add
+	 */
 	void addProjectile(BaseProjectile p){
 		projectiles.add(p);
 	}
@@ -159,9 +164,17 @@ public class Game implements java.io.Serializable, GameInterface{
 		return lives;
 	}
 	
+	/**
+	 * Take any number of lives from the player
+	 * @param num the number of lives to take
+	 */
 	void takeLife(int num){
 		lives-=num;
 	}
+	
+	/**
+	 * Take one life from the player
+	 */
 	void takeLife(){
 		takeLife(1);
 	}
@@ -197,7 +210,15 @@ public class Game implements java.io.Serializable, GameInterface{
 	}
 
 	
+	/**
+	 * The last time we added basic income
+	 */
 	private long lastIncome=0;
+	/**
+	 * Add some basic income to the players funds
+	 * Call once each tick
+	 * @param time the current time
+	 */
 	private void addBasicIncome(TimeSource time) {
 		if(lastIncome+5000<time.getMillisSinceStart()){
 			lastIncome=time.getMillisSinceStart();
@@ -207,6 +228,10 @@ public class Game implements java.io.Serializable, GameInterface{
 		}
 	}
 	
+	/**
+	 * Add gold to the players funds
+	 * @param amount the amount to add
+	 */
 	void addGold(int amount) {
 		gold+=amount;
 	}
@@ -277,6 +302,9 @@ public class Game implements java.io.Serializable, GameInterface{
 		return PriceProvider.getUpgradePrice(t, type);
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.intercom.GameInterface#getTowerType(java.awt.Point)
+	 */
 	@Override
 	public TowerType getTowerType(Point position) {
 		BaseTower t=getTowerAtPosition(position);
@@ -285,6 +313,9 @@ public class Game implements java.io.Serializable, GameInterface{
 		return t.getType();
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.intercom.GameInterface#canBuildHere(java.awt.Point)
+	 */
 	@Override
 	public boolean canBuildHere(Point position) {
 		if(position.x<0||position.y<0||position.x>=field.getWidth()||position.y>=field.getHeight())

@@ -23,8 +23,8 @@ public class PoisonTower extends BaseTower {
 
 	@Override
 	public int doFire(Game game){
-		BaseCreep minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getBaseCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
-		HashSet<BaseCreep> creeps=new HashSet<BaseCreep>(game.getBaseCreeps());
+		BaseCreep minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
+		HashSet<BaseCreep> creeps=new HashSet<BaseCreep>(game.getCreeps());
 		for (BaseProjectile p: game.getProjectiles()) {
 			if(p instanceof PoisonProjectile) {
 				creeps.remove(((GuidedProjectile)p).target);

@@ -9,25 +9,40 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Marc
- *
+ * An upgradePolicy that uses exponential formulas to calculate attributes
  */
 public class ExponentialUpgrade implements UpgradePolicy {
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3530294941604608880L;
 
+	/**
+	 * an exponential function of form c+f*b^level
+	 */
 	public static class ExpFun implements java.io.Serializable {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = -883109936244651951L;
+		
+		/**
+		 * the constant c in c+f*b^level
+		 */
 		private final float constant;
+		/**
+		 * the base b in c+f*b^level
+		 */
 		private final float base;
+		/**
+		 * the factor f in c+f*b^level
+		 */
 		private final float factor;
+		/**
+		 * the level of this attribute
+		 */
 		private int level=0;
+		
+		/**
+		 * Construct an exponential formula
+		 * @param constant c in c+f*b^level
+		 * @param base b in c+f*b^level
+		 * @param factor f in c+f*b^level
+		 */
 		public ExpFun(float constant, float base, float factor) {
 			super();
 			this.constant = constant;
@@ -35,24 +50,31 @@ public class ExponentialUpgrade implements UpgradePolicy {
 			this.factor = factor;
 		}
 		
+		/**
+		 * Get the value with current level
+		 * @return c+f*b^level
+		 */
 		protected float getValue() {
 			return (float)(constant+factor*Math.pow(base, level));
 		}
 		
+		/**
+		 * Increase the level by one
+		 */
 		private void levelUp(){
 			++level;
 		}
 	}
 	
+	/**
+	 * Holds all exponential functions to each attribute
+	 */
 	Map<UpgradeType,ExpFun> upgrader=new HashMap<>();
 	
+	/**
+	 * Constructs an ExponentialUpgrade
+	 */
 	ExponentialUpgrade(){
-		/*ExpFun f=new ExpFun(-5,1.2f,9);
-		upgrader.put(UpgradeType.DAMAGE,f);
-		f=new ExpFun(.5f,1.1f,1);
-		upgrader.put(UpgradeType.RANGE,f);
-		f=new ExpFun(333,0.75f,667);
-		upgrader.put(UpgradeType.FIRERATE,f);*/
 	}
 
 	/* (non-Javadoc)
@@ -67,6 +89,9 @@ public class ExponentialUpgrade implements UpgradePolicy {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.UpgradePolicy#getValue(inf_pp.td.intercom.UpgradeType)
+	 */
 	@Override
 	public Object getValue(UpgradeType type){
 		try{
@@ -77,11 +102,19 @@ public class ExponentialUpgrade implements UpgradePolicy {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.UpgradePolicy#getLevel(inf_pp.td.intercom.UpgradeType)
+	 */
 	@Override
 	public int getLevel(UpgradeType type){
 		return upgrader.get(type).level;
 	}
 	
+	/**
+	 * Set the exponential function for a upgrade type
+	 * @param type the type
+	 * @param f the function to use for this type
+	 */
 	public void setFunction(UpgradeType type, ExpFun f) {
 		upgrader.put(type, f);
 	}

@@ -8,38 +8,56 @@ import inf_pp.td.intercom.UpgradeType;
 import java.awt.Point;
 import java.util.Iterator;
 
+/**
+ * This class represents a tower
+ */
 public abstract class BaseTower implements java.io.Serializable, TowerInterface {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -270158376536766467L;
 
+	/**
+	 * this tower's type. Extending classes should set this
+	 */
 	protected TowerType towerType=null;
 	
+	/**
+	 * this tower's position
+	 */
 	protected Point position;
+	/**
+	 * the next time that this tower can fire again
+	 */
 	protected long cooldown;
-	@Deprecated
-	protected float range;
-	@Deprecated
-	protected int fireRate;
 	
+	/**
+	 * an UpgradePolicy that handles leveling
+	 */
 	protected UpgradePolicy upgradePolicy;
 
 
 	/**
-	 * fires (a projectile), does damage
+	 * fires, does damage
+	 * @param game the game that this tower belongs to
+	 * @return the time in ms that this tower has to wait before firing again
 	 */
 	int doFire(Game game){
-		//System.out.println(range);
 		return 0;
 	}
 	
+	/**
+	 * calls doFire, handles the cooldown
+	 * @param game
+	 * @param time
+	 */
 	final void fire(Game game, TimeSource time){
 		if(time.getMillisSinceStart()>cooldown){
 			cooldown=time.getMillisSinceStart()+doFire(game);
 		}
 	}
 	
+	/**
+	 * Removes this tower from the game
+	 * @param game the game that this tower belongs to
+	 */
 	void remove(Game game){
 		for(Iterator<BaseTower> it=game.getTowers().iterator();it.hasNext();){
 			if(it.next().equals(this)){
@@ -65,11 +83,20 @@ public abstract class BaseTower implements java.io.Serializable, TowerInterface 
 		this.position=position;
 	}
 
+	/**
+	 * Upgrades an attribute of this tower by one level
+	 * @param type the type of the attribute to upgrade
+	 */
 	void upgrade(UpgradeType type) {
 		if(upgradePolicy!=null)
 			upgradePolicy.upgrade(type);
 	}
-	
+
+	/**
+	 * Get the level of an attribute of this tower's
+	 * @param type the attribute type.
+	 * @return the level
+	 */
 	int getLevel(UpgradeType type) {
 		if(upgradePolicy!=null)
 			return upgradePolicy.getLevel(type);

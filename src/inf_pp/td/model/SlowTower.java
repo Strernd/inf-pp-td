@@ -7,11 +7,11 @@ import java.awt.geom.Point2D;
 import java.util.HashSet;
 
 public class SlowTower extends BaseTower {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5703318639305833649L;
 
+	/**
+	 * Construct the SlowTower
+	 */
 	public SlowTower(){
 		ExponentialUpgrade up=new ExponentialUpgrade();
 		upgradePolicy=up;
@@ -21,10 +21,13 @@ public class SlowTower extends BaseTower {
 		towerType=TowerType.SLOW;
 	}
 
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.BaseTower#doFire(inf_pp.td.model.Game)
+	 */
 	@Override
 	public int doFire(Game game){
 		BaseCreep minCreep=null;
-		HashSet<BaseCreep> creeps=new HashSet<BaseCreep>(game.getBaseCreeps());
+		HashSet<BaseCreep> creeps=new HashSet<BaseCreep>(game.getCreeps());
 		for (BaseProjectile p: game.getProjectiles()) {
 			if(p instanceof Slowjectile) {
 				creeps.remove(((Slowjectile)p).target);
@@ -35,7 +38,7 @@ public class SlowTower extends BaseTower {
 			minCreep=Util.nearestCreep(Util.pointToFloat(position), creeps, (float)upgradePolicy.getValue(UpgradeType.RANGE));
 		}
 		if(minCreep==null)
-			minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getBaseCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
+			minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
 		if(minCreep==null)
 			return 0;
 		

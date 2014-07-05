@@ -15,7 +15,6 @@ public final class TowerFactory {
 	 */
 	static BaseTower buildTower(TowerType type, Point position){
 		BaseTower t;
-		//TODO: implement different towers
 		switch(type){
 		case AREA_OF_EFFECT:
 			t=new AreaTower();

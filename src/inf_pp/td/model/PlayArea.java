@@ -6,10 +6,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class PlayArea implements PlayAreaWayHolder, java.io.Serializable{
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 385283719813143223L;
 
 	/**
@@ -27,6 +23,10 @@ public class PlayArea implements PlayAreaWayHolder, java.io.Serializable{
 	 */
 	private ArrayList<Point> waypoints;
 	
+	/**
+	 * Construct a PlayArea
+	 * Set the size to 10x10, initialize the waypoints to a snakey way
+	 */
 	public PlayArea() {
 		this.width=10;
 		this.height=10;
@@ -72,14 +72,26 @@ public class PlayArea implements PlayAreaWayHolder, java.io.Serializable{
 		waypoints.add(new Point(1,9));
 	}
 
+	/* (non-Javadoc)
+	 * @see inf_pp.td.intercom.PlayAreaWayHolder#getWaypoints()
+	 */
+	@Override
 	public ArrayList<Point> getWaypoints() {
 		return waypoints;
 	}
 
+	/* (non-Javadoc)
+	 * @see inf_pp.td.intercom.PlayAreaWayHolder#getWidth()
+	 */
+	@Override
 	public int getWidth() {
 		return width;
 	}
 
+	/* (non-Javadoc)
+	 * @see inf_pp.td.intercom.PlayAreaWayHolder#getHeight()
+	 */
+	@Override
 	public int getHeight() {
 		return height;
 	}

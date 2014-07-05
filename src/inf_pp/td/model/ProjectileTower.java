@@ -6,14 +6,12 @@ import inf_pp.td.intercom.UpgradeType;
 import java.awt.geom.Point2D;
 
 public class ProjectileTower extends BaseTower {
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 450440427807527071L;
 
+	/**
+	 * Construct a ProjectileTower
+	 */
 	public ProjectileTower(){
-		//range=2.5f;
 		ExponentialUpgrade up=new ExponentialUpgrade();
 		upgradePolicy=up;
 		up.setFunction(UpgradeType.DAMAGE,new ExponentialUpgrade.ExpFun(-5,1.2f,9));
@@ -22,12 +20,12 @@ public class ProjectileTower extends BaseTower {
 		towerType=TowerType.DIRECT_DMG;
 	}
 
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.BaseTower#doFire(inf_pp.td.model.Game)
+	 */
 	@Override
 	public int doFire(Game game){
-		BaseCreep minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getBaseCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
-		//System.out.println((float)upgradePolicy.getValue(UpgradeType.RANGE));
-
-		//System.out.println((int)Math.round((float)upgradePolicy.getValue(UpgradeType.DAMAGE)));
+		BaseCreep minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
 		if(minCreep==null)
 			return 0;
 		GuidedProjectile p=new GuidedProjectile(new Point2D.Float(position.x,position.y),minCreep,0.002f,(int)Math.round((float)upgradePolicy.getValue(UpgradeType.DAMAGE)));

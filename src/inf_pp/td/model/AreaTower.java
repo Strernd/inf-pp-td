@@ -3,12 +3,15 @@ package inf_pp.td.model;
 import inf_pp.td.intercom.TowerType;
 import inf_pp.td.intercom.UpgradeType;
 
+/**
+ * A tower that does damage to all creeps in range periodically
+ */
 public class AreaTower extends BaseTower {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4110046028129614203L;
 
+	/**
+	 * Constructs an AreaTower
+	 */
 	public AreaTower(){
 		ExponentialUpgrade up=new ExponentialUpgrade();
 		upgradePolicy=up;
@@ -18,14 +21,16 @@ public class AreaTower extends BaseTower {
 		towerType=TowerType.AREA_OF_EFFECT;
 	}
 
+	/* (non-Javadoc)
+	 * @see inf_pp.td.model.BaseTower#doFire(inf_pp.td.model.Game)
+	 */
 	@Override
 	public int doFire(Game game) {
 		boolean hasFired=false;
-		for (BaseCreep c : game.getBaseCreeps()) {
+		for (BaseCreep c : game.getCreeps()) {
 			if(c.getPosition().distance(this.position)<(float)upgradePolicy.getValue(UpgradeType.RANGE)) {
 				c.doDamage(((Float)upgradePolicy.getValue(UpgradeType.DAMAGE)).intValue(),game);
 				hasFired=true;
-				//System.out.println(((Float)upgradePolicy.getValue(UpgradeType.DAMAGE)).intValue());
 			}
 		}
 		return hasFired?((Float)upgradePolicy.getValue(UpgradeType.FIRERATE)).intValue():0;
