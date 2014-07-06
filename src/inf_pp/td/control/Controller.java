@@ -542,6 +542,7 @@ public class Controller implements ListenerContainer {
 							+ "<p>Dozent: Prof. Dr. Thomas Slawig</p>"
 							+ "<p>Übungsleiter: Corvin Hagemeister</p>"
 							+ "<table><tr><td>Projektverantwortliche (alphabetisch):</td><td>Bernd Strehl</td></tr><tr><td></td><td>Marc André Wittorf</td></tr></table>"
+							+ "<p>Beta-Tester: Christian Strehl, Lukas Mann, Max Blaas</p>"
 							+ "<br /><p>Prüfung: 8. Juli 2014</p>"
 							+ "</html>", "Über", JOptionPane.PLAIN_MESSAGE);
 					pause(p);
