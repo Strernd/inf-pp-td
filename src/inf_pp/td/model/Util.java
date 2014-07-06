@@ -68,6 +68,7 @@ public final class Util {
 	static public int move(float distance, Point2D.Float position, List<Point2D.Float> points) {
 		int nextWp=0;
 		Point2D.Float next=points.get(nextWp);
+		//create a new instance to not mess with any waypoints coordinates
 		next=new Point2D.Float(next.x,next.y);
 		double dist=next.distance(position);
 		
@@ -75,24 +76,34 @@ public final class Util {
 			return nextWp;
 		
 		while(dist<=distance){
+			//as long as we can travel far enough to reach the next waypoint, set the position to the next waypoint's
 			position.x=next.x;
 			position.y=next.y;
+			//advance the waypoint
 			++nextWp;
+			//subtract the distance so we can go on with the rest distance
 			distance-=dist;
+			//we're done if there are no more waypoints
 			if(nextWp>=points.size())
 				return nextWp;
+			//set the new waypoint coordinates
 			next.x=points.get(nextWp).x;
 			next.y=points.get(nextWp).y;
-			next=new Point2D.Float(next.x,next.y);
+			//and get the new distance to the new next waypoint
 			dist=next.distance(position);
 		}
 		
+		//we can't travel to the next waypoint, we'll need some vector arithmetics
+		//we get the vector current_position->next_position
 		next.x-=position.x;
 		next.y-=position.y;
+		//make it length 1
 		next.x/=dist;
 		next.y/=dist;
+		//make it as long as we can travel
 		next.x*=distance;
 		next.y*=distance;
+		//and add the current_position again
 		position.x+=next.x;
 		position.y+=next.y;
 		return nextWp;
@@ -106,6 +117,7 @@ public final class Util {
 	 * @return the number of waypoints that the thing has passed
 	 */
 	public static int moveI(float distance, Point2D.Float position, List<Point> points) {
+		//we use our PointListWrapper instead of creating a whole bunch of new objects
 		List<Point2D.Float> list=new PointListWrapper(points);
 		return move(distance,position,list);
 	}
@@ -131,13 +143,16 @@ public final class Util {
 			return null;
 		double minDist=Double.POSITIVE_INFINITY;
 		BaseCreep minCreep=null;
+		//loop through all creeps
 		for(BaseCreep c : creeps){
 			double dist=c.getPosition().distance(position);
+			//if this one is nearer to our desired position, use this one
 			if(dist<minDist){
 				minDist=dist;
 				minCreep=c;
 			}
 		}
+		//return null if still too far away, quite convenient
 		if(minDist>maxDistance)
 			return null;
 		else
@@ -163,12 +178,15 @@ public final class Util {
 	 * @return the buffed value
 	 */
 	public static Object getBuffedValue(Object val, Buff.Type type, Map<String,Buff> buffs, TimeSource time) {
+		//loop through all buffs
 		for(Iterator<Entry<String, Buff> > it= buffs.entrySet().iterator();it.hasNext();) {
 			Entry<String,Buff> e=it.next();
+			//check if buff still applicable, remove if not
 			if(e.getValue().canRemove(time)) {
 				it.remove();
 			}
 			else {
+				//get the buffed value
 				val= e.getValue().apply(val, type, time);
 			}
 			

@@ -31,6 +31,7 @@ public class PlayArea implements PlayAreaWayHolder, java.io.Serializable{
 		this.width=10;
 		this.height=10;
 		
+		//TODO Future releases will load these from a resource instead of having hardcoded
 		waypoints=new ArrayList<Point>();
 		waypoints.add(new Point(0,1));
 		waypoints.add(new Point(1,1));

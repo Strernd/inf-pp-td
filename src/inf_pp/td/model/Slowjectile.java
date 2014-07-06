@@ -49,6 +49,7 @@ public class Slowjectile extends GuidedProjectile{
 			@Override
 			public Object apply(Object arg0, Type type, TimeSource time) {
 				if(type==Buff.Type.MOVE_SPEED){
+					//just multiply the move speed by the factor
 					return (float)arg0 * slowFactor;
 				}
 				return arg0;
@@ -59,6 +60,7 @@ public class Slowjectile extends GuidedProjectile{
 			 */
 			@Override
 			public boolean canRemove(TimeSource time) {
+				//slow-debuff expires (creeps 'thaw')
 				return time.getMillisSinceStart()>expireTime;
 			}
 			

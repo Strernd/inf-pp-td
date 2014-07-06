@@ -23,19 +23,23 @@ public class PoisonTower extends BaseTower {
 
 	@Override
 	public int doFire(Game game){
-		BaseCreep minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
+		//we want to prefer poisoning an unpoisoned creep, so ignore all creeps that are already being fired on by poison projectiels
 		HashSet<BaseCreep> creeps=new HashSet<BaseCreep>(game.getCreeps());
 		for (BaseProjectile p: game.getProjectiles()) {
 			if(p instanceof PoisonProjectile) {
 				creeps.remove(((GuidedProjectile)p).target);
 			}
 		}
+		//and those which already have the poison debuff
+		BaseCreep minCreep=Util.nearestCreep(Util.pointToFloat(position), creeps, (float)upgradePolicy.getValue(UpgradeType.RANGE));
 		while(minCreep!=null && minCreep.hasBuff("Poisoned")){
 			creeps.remove(minCreep);
 			minCreep=Util.nearestCreep(Util.pointToFloat(position), creeps, (float)upgradePolicy.getValue(UpgradeType.RANGE));
 		}
-		/*if(minCreep==null)
-			minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), this.range);*/
+		//but if there is no unpoisoned creep, just target any creep. better than not firing at all
+		if(minCreep==null)
+			minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
+		//there is absolutely no creep in range
 		if(minCreep==null)
 			return 0;
 		

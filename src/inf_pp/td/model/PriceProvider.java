@@ -18,6 +18,7 @@ final class PriceProvider {
 	 * @return the price of the tower
 	 */
 	public static int getTowerPrice(TowerType type) {
+		//get price based on tower type
 		switch(type){
 		case DIRECT_DMG:
 			return 100;
@@ -40,6 +41,7 @@ final class PriceProvider {
 	 * @return the price to upgrade the tower
 	 */
 	public static int getUpgradePrice(BaseTower tower, UpgradeType type) {
+		//use a formula to respect both tower type and upgraded level
 		return (tower.getLevel(type)+2)*(PriceProvider.getTowerPrice(tower.getType())/4);
 	}
 }

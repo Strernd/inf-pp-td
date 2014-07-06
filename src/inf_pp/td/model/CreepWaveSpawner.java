@@ -149,17 +149,21 @@ public class CreepWaveSpawner implements java.io.Serializable {
 		if(waves==null||waveIndex>=waves.size())
 			return result;
 		CreepWave w=waves.get(waveIndex);
+		//Check if we waited long enough
 		if(lastCreep+w.distanceMs<time.getMillisSinceStart()){
 			++cNum;
 			BaseCreep c=null;
 			try {
+				//Get a constructor with the same contract as the only BaseCreep constructor and use it to create a creep
 				c=w.creepClass.getDeclaredConstructor(ArrayList.class,int.class,float.class,int.class,String.class).newInstance(waypoints,w.health,w.moveSpeed,w.gold,w.type);
 				result.add(c);
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				//This dynamic stuff can fail in manifold ways, let's talk about the error
 				throw new RuntimeException(e);
 			}
 			lastCreep=time.getMillisSinceStart();
 		}
+		//If we spawned enough creeps, advance to the next wave
 		if(cNum>=w.count) {
 			++waveIndex;
 			cNum=0;

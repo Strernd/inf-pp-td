@@ -67,8 +67,10 @@ public class Game implements java.io.Serializable, GameInterface{
 	 */
 	@Override
 	public void tick(TimeSource time){
+		//first, add some gold
 		addBasicIncome(time);
 		
+		//move each creep and remove from field if necessary
 		for(Iterator<BaseCreep> it=creeps.iterator();it.hasNext();){
 			BaseCreep c=it.next();
 			c.move(time,this);
@@ -76,14 +78,17 @@ public class Game implements java.io.Serializable, GameInterface{
 				it.remove();
 			}
 		}
+		//now fire every tower
 		for(BaseTower t: towers){
 			t.fire(this,time);
 		}
+		//and move all projectiles, remove if necessary
 		for(Iterator<BaseProjectile> it=projectiles.iterator();it.hasNext();){
 			if(it.next().move(time, this)){
 				it.remove();
 			}
 		}
+		//and add new creeps
 		creeps.addAll(spawner.spawnCreeps(time));
 	}
 
@@ -130,11 +135,13 @@ public class Game implements java.io.Serializable, GameInterface{
 	@Override
 	public void buildTower(TowerType type, Point position) {
 		int price=PriceProvider.getTowerPrice(type);
+		//check if we can buy: enough gold and a valid position
 		if(price>gold) {
 			throw new NoGoldException();
 		}
 		if(!canBuildHere(position))
 			throw new InvalidFieldException();
+		//build the tower
 		gold-=price;
 		towers.add(TowerFactory.buildTower(type, new Point(position)));
 	}
@@ -184,12 +191,16 @@ public class Game implements java.io.Serializable, GameInterface{
 	 */
 	@Override
 	public void upgradeTower(UpgradeType type, Point position){
+		//get the tower
 		BaseTower t=getTowerAtPosition(position);
 		if(t==null)
 			throw new InvalidFieldException();
+		//get the price
 		int price=PriceProvider.getUpgradePrice(t,type);
+		//check if enough gold
 		if(price>gold)
 			throw new NoGoldException();
+		//and upgrade it
 		gold-=price;
 		t.upgrade(type);
 	}
@@ -203,8 +214,9 @@ public class Game implements java.io.Serializable, GameInterface{
 		if(t==null)
 			throw new InvalidFieldException();
 		TowerType type = t.getType();
-		//TODO: Better Sell price
+		//TODO: Better Sell price?
 		int price=PriceProvider.getTowerPrice(type);
+		//we don't need an exception here, we can't have too much gold
 		gold += price/2;
 		t.remove(this);
 	}
@@ -220,9 +232,11 @@ public class Game implements java.io.Serializable, GameInterface{
 	 * @param time the current time
 	 */
 	private void addBasicIncome(TimeSource time) {
+		//add some gold, every fifth second
 		if(lastIncome+5000<time.getMillisSinceStart()){
 			lastIncome=time.getMillisSinceStart();
 			float now=lastIncome/30000; //Half-Minutes since Start
+			//we use an exponential formula
 			gold+=(int)(Math.pow(1.5f,now));
 			//TODO: tweak this formula
 		}
@@ -249,6 +263,7 @@ public class Game implements java.io.Serializable, GameInterface{
 	 */
 	@Override
 	public boolean hasWon() {
+		//when the spawner is empty, the field is empty and we have not lost, we have won
 		return !spawner.hasMoreCreeps() && creeps.size()==0 && !hasLost();
 	}
 	
@@ -318,10 +333,13 @@ public class Game implements java.io.Serializable, GameInterface{
 	 */
 	@Override
 	public boolean canBuildHere(Point position) {
+		//field must be in range
 		if(position.x<0||position.y<0||position.x>=field.getWidth()||position.y>=field.getHeight())
 			return false;
+		//there may not be a tower already
 		if(getTowerAtPosition(position)!=null)
 			return false;
+		//we can't put towers on waypoints
 		for (Point p : field.getWaypoints()){
 			if(p.equals(position))
 				return false;

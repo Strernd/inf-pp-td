@@ -50,6 +50,7 @@ public class GuidedProjectile extends BaseProjectile {
 		t.add(target.getPosition());
 		//have we hit the creep?
 		if(Util.move(moveSpeed*time.getMillisSinceLastTick(),position,t)>0){
+			//if so, hit the creep and tell the game to remove this projectile
 			hit(game, time);
 			return true;
 		}

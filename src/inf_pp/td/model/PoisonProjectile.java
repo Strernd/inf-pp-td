@@ -30,6 +30,7 @@ public class PoisonProjectile extends GuidedProjectile{
 	 */
 	@Override
 	protected void hit(final Game game, TimeSource time) {
+		//Create a new debuff
 		Buff b=new Buff(){
 			private static final long serialVersionUID = -7153858387373125085L;
 			
@@ -43,8 +44,10 @@ public class PoisonProjectile extends GuidedProjectile{
 			 */
 			@Override
 			public Object apply(Object arg0, Type type, TimeSource time) {
+				//check for correct type
 				if(type==Buff.Type.DOT){
 					//TODO: much damage might skip ticks
+					//if enough time has passed, hurt the creep
 					if(lastTime+damageRate<time.getMillisSinceStart()){
 						((BaseCreep)arg0).doDamage(1, game);
 						lastTime=time.getMillisSinceStart();
@@ -59,7 +62,7 @@ public class PoisonProjectile extends GuidedProjectile{
 			 */
 			@Override
 			public boolean canRemove(TimeSource time) {
-				//Poison is fatal
+				//Poison can't be cured
 				return false;
 			}
 			

@@ -25,9 +25,12 @@ public class ProjectileTower extends BaseTower {
 	 */
 	@Override
 	public int doFire(Game game){
+		//this tower fires to the nearest creep in range
 		BaseCreep minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
+		//as long as there are any creeps in range
 		if(minCreep==null)
 			return 0;
+		
 		GuidedProjectile p=new GuidedProjectile(new Point2D.Float(position.x,position.y),minCreep,0.002f,(int)Math.round((float)upgradePolicy.getValue(UpgradeType.DAMAGE)));
 		game.addProjectile(p);
 		return (int)Math.round((float)upgradePolicy.getValue(UpgradeType.FIRERATE));

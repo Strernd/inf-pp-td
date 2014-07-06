@@ -26,19 +26,22 @@ public class SlowTower extends BaseTower {
 	 */
 	@Override
 	public int doFire(Game game){
-		BaseCreep minCreep=null;
+		//slow tower prefers firing to an unslowed creep, so remove all creeps that have a slowjectile flying to them
 		HashSet<BaseCreep> creeps=new HashSet<BaseCreep>(game.getCreeps());
 		for (BaseProjectile p: game.getProjectiles()) {
 			if(p instanceof Slowjectile) {
 				creeps.remove(((Slowjectile)p).target);
 			}
 		}
+		BaseCreep minCreep=Util.nearestCreep(Util.pointToFloat(position), creeps, (float)upgradePolicy.getValue(UpgradeType.RANGE));
+		//and all creeps that are already slowed
 		while(minCreep!=null && minCreep.hasBuff("SlowjectileSlow")){
 			creeps.remove(minCreep);
 			minCreep=Util.nearestCreep(Util.pointToFloat(position), creeps, (float)upgradePolicy.getValue(UpgradeType.RANGE));
 		}
-		if(minCreep==null)
-			minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
+		//SlowTower waits instead of instantly reslowing a creep, to keep cooldown low
+		//if(minCreep==null)
+		//	minCreep=Util.nearestCreep(Util.pointToFloat(position), game.getCreeps(), (float)upgradePolicy.getValue(UpgradeType.RANGE));
 		if(minCreep==null)
 			return 0;
 		

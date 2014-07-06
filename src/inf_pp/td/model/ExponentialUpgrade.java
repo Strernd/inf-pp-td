@@ -55,6 +55,7 @@ public class ExponentialUpgrade implements UpgradePolicy {
 		 * @return c+f*b^level
 		 */
 		protected float getValue() {
+			//pretty straightforward calculation of c+f*b^level
 			return (float)(constant+factor*Math.pow(base, level));
 		}
 		
@@ -85,7 +86,6 @@ public class ExponentialUpgrade implements UpgradePolicy {
 		try{
 			upgrader.get(type).levelUp();
 		} catch(NullPointerException e){
-			//e.printStackTrace();
 		}
 	}
 	
