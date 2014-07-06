@@ -13,26 +13,6 @@ import javax.imageio.ImageIO;
  * and a method to get the tile as an image
  *
  */
-/**
- * @author Marc
- *
- */
-/**
- * @author Marc
- *
- */
-/**
- * @author Marc
- *
- */
-/**
- * @author Marc
- *
- */
-/**
- * @author Marc
- *
- */
 public final class Tiles {
 	/**
 	 * This class is not to be instantiated

@@ -141,7 +141,7 @@ public class Frame extends JFrame implements ViewInterface {
 		helpMenu.add(item);
 		
 		//about
-		item=new JMenuItem("Über");
+		item=new JMenuItem("Ãœber");
 		item.setActionCommand("about");
 		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2,0));
 		helpMenu.add(item);

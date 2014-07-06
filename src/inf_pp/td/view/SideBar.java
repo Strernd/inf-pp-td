@@ -88,7 +88,7 @@ public class SideBar extends JPanel {
 		
 		buildAE=new JButton();
 		buildAE.setActionCommand("build_ae");
-		buildAE.setToolTipText("F�gt allen Creeps in Reichweite Schaden zu");
+		buildAE.setToolTipText("Fügt allen Creeps in Reichweite Schaden zu");
 		buildAE.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_AE)));
 		buildAE.setVerticalTextPosition(SwingConstants.BOTTOM);
 		buildAE.setHorizontalTextPosition(SwingConstants.CENTER);
