@@ -65,27 +65,38 @@ public class Frame extends JFrame implements ViewInterface {
 	public Frame(){
 		mainPanel= new JPanel();
 		this.add(mainPanel);
+		
+		//for the play-area, the sidebar and the warningLabel
 		BorderLayout layout=new BorderLayout();
 		mainPanel.setLayout(layout);
 		
+		//the playArea, in the center
 		playArea=new PlayAreaView();
 		mainPanel.add(playArea,BorderLayout.CENTER);
 		
+		//the sidebar, on the right side
 		sidebar=new SideBar();
 		mainPanel.add(sidebar,BorderLayout.EAST);
 		
+		//and the status label on the bottom
 		statusLabel=new JLabel();
 		statusLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		statusLabel.setPreferredSize(new Dimension(0,20));
 		statusLabel.setMinimumSize(new Dimension(0,20));
 		mainPanel.add(statusLabel,BorderLayout.SOUTH);
 		
+		//The menu
 		menuBar=new JMenuBar();
+		//The Game menu
 		JMenu gameMenu=new JMenu("Spiel");
+		
+		//New game
 		JMenuItem item=new JMenuItem("Neues Spiel");
 		item.setActionCommand("newgame");
-		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.CTRL_MASK));
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.CTRL_MASK)); //accelerator for quick keyboard usage
 		gameMenu.add(item);
+		
+		//Pause
 		item=new JMenuItem("Pause/Weiter");
 		item.setActionCommand("pause");
 		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PAUSE,0));
@@ -100,28 +111,39 @@ public class Frame extends JFrame implements ViewInterface {
 			}
 		});
 		gameMenu.add(item);
+		
+		//Save
 		item=new JMenuItem("Speichern");
 		item.setActionCommand("save");
 		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,ActionEvent.CTRL_MASK));
 		gameMenu.add(item);
+		
+		//Load
 		item=new JMenuItem("Laden");
 		item.setActionCommand("load");
 		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,ActionEvent.CTRL_MASK));
 		gameMenu.add(item);
+		
+		//Exit
 		item=new JMenuItem("Beenden");
 		item.setActionCommand("exit");
 		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,ActionEvent.CTRL_MASK));
 		gameMenu.add(item);
 		menuBar.add(gameMenu);
 		
-		
+		//The Help menu with manual and about section
 		JMenu helpMenu=new JMenu("Hilfe");
+		
+		//manual
 		item=new JMenuItem("Anleitung");
 		item.setActionCommand("help");
 		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
 		helpMenu.add(item);
+		
+		//about
 		item=new JMenuItem("Über");
 		item.setActionCommand("about");
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2,0));
 		helpMenu.add(item);
 		
 		menuBar.add(helpMenu);
@@ -151,9 +173,11 @@ public class Frame extends JFrame implements ViewInterface {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				//bind listeners to play area and sidebar
 				playArea.addMouseListener(l.getFieldSelectListener());
 				sidebar.addActionListener(l.getActionListener());
 				savedThis.addWindowListener(l.getWindowListener());
+				//bind all menu items
 				for(int i = 0; i<menuBar.getMenuCount();++i) {
 					JMenu m=menuBar.getMenu(i);
 					if(m==null)
@@ -174,9 +198,9 @@ public class Frame extends JFrame implements ViewInterface {
 	public void newGame(final GameInterface game) {
 		//TODO: adjust parameters instead of new object? rebinding the handler is very ugly
 		SwingUtilities.invokeLater(new Runnable(){
-
 		@Override
 		public void run() {
+			//create a new playarea
 			mainPanel.remove(playArea);
 			MouseListener listeners[]=playArea.getListeners(MouseListener.class);
 			playArea=new PlayAreaView();

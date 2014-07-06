@@ -52,14 +52,20 @@ public class SideBar extends JPanel {
 	 * Construct a SideBar
 	 */
 	public SideBar() {
+		//make us a bit darker and set our size 
 		this.setBackground(new Color(0xCCCCCC));
 		this.setPreferredSize(new Dimension(200,0));
 		this.setMinimumSize(new Dimension(200,0));
+		
+		//'simple' box layout
 		BoxLayout layout = new BoxLayout(this,BoxLayout.Y_AXIS);
 		this.setLayout(layout);
+		
+		//the panel to hold all 'build tower' buttons
 		JPanel twrPane=new JPanel();
 		twrPane.setLayout(new GridLayout(2,2,4,4));
 		
+		//buttons can't have accelerators as menu items can. we need to imitate this behaviour
 		Action acceleratingAction=new AbstractAction(){
 			private static final long serialVersionUID = -3185980796146069261L;
 
@@ -69,15 +75,17 @@ public class SideBar extends JPanel {
 			}
 		};
 		
+		//the buttons to build towers
 		buildDD=new JButton();
 		buildDD.setActionCommand("build_dd");
 		buildDD.setToolTipText("Feuert auf einen Creep");
-		buildDD.setVerticalTextPosition(SwingConstants.BOTTOM);
+		buildDD.setVerticalTextPosition(SwingConstants.BOTTOM); //align text under icon
 		buildDD.setHorizontalTextPosition(SwingConstants.CENTER);
 		buildDD.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_DD)));
 		buildDD.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0), "build_accel");
-		buildDD.getActionMap().put("build_accel", acceleratingAction);
+		buildDD.getActionMap().put("build_accel", acceleratingAction); //to imitate accelerator behaviour
 		twrPane.add(buildDD);
+		
 		buildAE=new JButton();
 		buildAE.setActionCommand("build_ae");
 		buildAE.setToolTipText("F�gt allen Creeps in Reichweite Schaden zu");
@@ -87,6 +95,7 @@ public class SideBar extends JPanel {
 		buildAE.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "build_accel");
 		buildAE.getActionMap().put("build_accel", acceleratingAction);
 		twrPane.add(buildAE);
+		
 		buildSL=new JButton();
 		buildSL.setActionCommand("build_sl");
 		buildSL.setToolTipText("Verlangsamt Creeps");
@@ -96,6 +105,7 @@ public class SideBar extends JPanel {
 		buildSL.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "build_accel");
 		buildSL.getActionMap().put("build_accel", acceleratingAction);
 		twrPane.add(buildSL);
+		
 		buildP=new JButton();
 		buildP.setActionCommand("build_p");
 		buildP.setToolTipText("Vergiftet Creeps");
@@ -106,6 +116,7 @@ public class SideBar extends JPanel {
 		buildP.getActionMap().put("build_accel", acceleratingAction);
 		twrPane.add(buildP);
 		
+		//to have a headline for the buttons
 		JPanel twrWrapper=new JPanel();
 		twrWrapper.setPreferredSize(new Dimension(200,160));
 		twrWrapper.setMaximumSize(new Dimension(200,160));
@@ -118,19 +129,22 @@ public class SideBar extends JPanel {
 		
 		this.add(Box.createVerticalGlue());
 		
+		//the buttons to upgrade and sell a tower
 		JPanel uPane=new JPanel();
 		uPane.setLayout(new GridLayout(2,2,4,4));
-		//JButton b;
+		
 		upgradeDmg=new JButton();
 		upgradeDmg.setActionCommand("upgrade_damage");
 		upgradeDmg.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "build_accel");
 		upgradeDmg.getActionMap().put("build_accel", acceleratingAction);
 		uPane.add(upgradeDmg);
+		
 		upgradeRange=new JButton();
 		upgradeRange.setActionCommand("upgrade_range");
 		upgradeRange.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), "build_accel");
 		upgradeRange.getActionMap().put("build_accel", acceleratingAction);
 		uPane.add(upgradeRange);
+		
 		upgradeFirerate=new JButton();
 		upgradeFirerate.setActionCommand("upgrade_firerate");
 		upgradeFirerate.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "build_accel");
@@ -140,6 +154,7 @@ public class SideBar extends JPanel {
 		sellTower.setActionCommand("sell_tower");
 		uPane.add(sellTower);
 		
+		//again for a nice headline
 		JPanel uWrapper=new JPanel();
 		uWrapper.setPreferredSize(new Dimension(200,160));
 		uWrapper.setMaximumSize(new Dimension(200,160));
@@ -153,13 +168,14 @@ public class SideBar extends JPanel {
 		
 		this.add(Box.createVerticalGlue());
 		
+		//information about the game
 		JPanel iPane=new JPanel();
-		//iPane.setBackground(new Color(0x0000FF));
 		iPane.setOpaque(false);
 		iPane.setLayout(new GridLayout(0,1));
 		iPane.setPreferredSize(new Dimension(200,80));
 		iPane.setMinimumSize(new Dimension(200,80));
 		iPane.setMaximumSize(new Dimension(200,80));
+		//gold, lives, and current wave
 		goldLabel=new JLabel();
 		iPane.add(goldLabel);
 		livesLabel=new JLabel();
@@ -191,13 +207,14 @@ public class SideBar extends JPanel {
 	 */
 	void updateState(final TdState state){
 		GameInterface game=state.getGame();
-		//We need to save these variables as we update the UI from the UI thread whereas updateState is called by our view-thread
+		//We need to save these variables as we update the UI from the UI thread (via invokeLater) whereas updateState is called by our view-thread
 		final int lives=game.getLives();
 		final int gold=game.getGold();
 		final int waveIndex=game.getCurrentWaveIndex()+1;
 		final int waveCount=game.getWaveCount();
 		final String waveName=game.getCurrentWaveName();
 		
+		//Tower texts
 		final String ddText="Preis: "+game.getPrice(TowerType.DIRECT_DMG);
 		final String aeText="Preis: "+game.getPrice(TowerType.AREA_OF_EFFECT);
 		final String slText="Preis: "+game.getPrice(TowerType.SLOW);
@@ -209,6 +226,7 @@ public class SideBar extends JPanel {
 		boolean tenableUpgrade;
 		final boolean enableBuild,enableUpgrade;
 		
+		//upgrade Texts, these might throw an invalidfieldexception if we selected a field without a tower, we need to catch it
 		try{
 			int dmgUPrice=game.getTowerUpgradePrice(state.getSelectedField(),UpgradeType.DAMAGE);
 			int rangeUPrice=game.getTowerUpgradePrice(state.getSelectedField(),UpgradeType.RANGE);
@@ -223,25 +241,30 @@ public class SideBar extends JPanel {
 			tfrLabel="<html><p style=\"text-align:center\">Feuerrate<br /><br />Preis: "+rateUPrice+"</p></html>";
 			tenableUpgrade=true;
 		} catch (InvalidFieldException e) {
+			//we selected an invalid field, we can't display useful information, also grey out the upgrade buttons 
 			tdmgLabel="Schaden";
 			trngLabel="Reichweite";
 			tfrLabel="Feuerrate";
 			tenableUpgrade=false;
 		}
+		//the final variables for the anonymous class
 		dmgLabel=tdmgLabel;
 		rngLabel=trngLabel;
 		frLabel=tfrLabel;
 		enableUpgrade=tenableUpgrade;
 		
+		//should we grey out the building buttons?
 		enableBuild=game.canBuildHere(state.getSelectedField());
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				//set our information
 				livesLabel.setText("Leben: "+lives);
 				goldLabel.setText("Gold: "+gold);
 				waveLabel.setText("Welle: "+waveIndex+"/"+(waveCount + 1)+" "+waveName);
 				
+				//set texts and grey/notgrey the tower buttons
 				buildDD.setText(ddText);
 				buildDD.setEnabled(enableBuild);
 				buildAE.setText(aeText);
@@ -251,6 +274,7 @@ public class SideBar extends JPanel {
 				buildP.setText(pText);
 				buildP.setEnabled(enableBuild);
 				
+				//and the same for upgrade buttons
 				upgradeDmg.setText(dmgLabel);
 				upgradeDmg.setEnabled(enableUpgrade);
 				upgradeRange.setText(rngLabel);

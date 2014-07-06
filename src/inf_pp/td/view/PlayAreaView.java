@@ -60,6 +60,7 @@ public class PlayAreaView extends JPanel {
 		
 		BufferedImage nextFrame;
 		
+		//get all data from the model
 		width=game.getPlayArea().getWidth();
 		height=game.getPlayArea().getHeight();
 		waypoints=game.getPlayArea().getWaypoints();
@@ -76,9 +77,11 @@ public class PlayAreaView extends JPanel {
 		if(waypoints==null)
 			return;
 
+		//the dimensions of a tile
 		int tw=(this.getWidth()/width);
 		int th=(this.getHeight()/height);
 
+		//draw the background, if available
 		Image bg=Tiles.get(TileId.WORLD);
 		if(bg!=null) {
 			g.drawImage(bg,0,0,tw*width,th*height,null);
@@ -88,7 +91,7 @@ public class PlayAreaView extends JPanel {
 				g.fillRect(wp.x*tw, wp.y*th, 1*tw, 1*th);
 			}
 		}
-		g.setColor(new Color(0xFF0000));
+		//draw the towers
 		for(TowerInterface t: towers){
 			Tiles.TileId gt=null;
 			switch(t.getType()){
@@ -109,6 +112,7 @@ public class PlayAreaView extends JPanel {
 				continue;
 			g.drawImage(Tiles.get(gt), t.getPosition().x*tw, t.getPosition().y*th, tw, th, null);
 		}
+		//draw the creeps
 		for(CreepInterface c : creeps){
 			Tiles.TileId t=null;
 			switch(c.getType()) {
@@ -133,7 +137,9 @@ public class PlayAreaView extends JPanel {
 			}
 			if(t==null)
 				continue;
+			//the creep itself
 			g.drawImage(Tiles.get(t), (int)((c.getPosition().x+.25)*tw), (int)((c.getPosition().y+.25)*th), (int)(.5*tw), (int)(.5*th), null);
+			//and a health bar
 			g.setColor(Color.getHSBColor(c.getHealthPercentage()/3,1,1));
 			int hbHeight=Math.max((int)(.075*th),1);
 			g.fillRect((int)((c.getPosition().x+.25)*tw), (int)((c.getPosition().y+.25)*th)-hbHeight, (int)(.5*c.getHealthPercentage()*tw), hbHeight);
@@ -144,9 +150,13 @@ public class PlayAreaView extends JPanel {
 			AffineTransform at=new AffineTransform();
 			Image tile=Tiles.get(Tiles.TileId.PROJECTILE);
 			Point2D.Float direction=p.getMoveVector();
+			//move the center of the coordinate system to the correct position
 			at.translate((p.getPosition().x+.5)*tw,(p.getPosition().y+.5)*th);
+			//scale the tile to the correct size
 			at.scale(tw/(float)2/tile.getWidth(null),th/(float)2/tile.getHeight(null));
+			//rotate it to the correct angle
 			at.rotate(Math.atan2(direction.x,-direction.y));
+			//and finally move the tile's center to the previous coordinate space's center
 			at.translate(-tw/2,-th/2);
 			g.drawImage(tile, at, null);
 		}
