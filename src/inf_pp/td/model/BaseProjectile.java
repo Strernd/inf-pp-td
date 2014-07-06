@@ -34,7 +34,7 @@ public abstract class BaseProjectile implements java.io.Serializable, Projectile
 	 */
 	public BaseProjectile(Point2D.Float position){
 		this.position=position;
-		moveSpeed=0.0025f;
+		moveSpeed=0.004f;
 		damage=0;
 	}
 	

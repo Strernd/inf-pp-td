@@ -80,7 +80,7 @@ public class SideBar extends JPanel {
 		twrPane.add(buildDD);
 		buildAE=new JButton();
 		buildAE.setActionCommand("build_ae");
-		buildAE.setToolTipText("Fügt allen Creeps in Reichweite Schaden zu");
+		buildAE.setToolTipText("Fï¿½gt allen Creeps in Reichweite Schaden zu");
 		buildAE.setIcon(new ImageIcon(Tiles.get(Tiles.TileId.TOWER_AE)));
 		buildAE.setVerticalTextPosition(SwingConstants.BOTTOM);
 		buildAE.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -240,7 +240,7 @@ public class SideBar extends JPanel {
 			public void run() {
 				livesLabel.setText("Leben: "+lives);
 				goldLabel.setText("Gold: "+gold);
-				waveLabel.setText("Welle: "+waveIndex+"/"+waveCount+" "+waveName);
+				waveLabel.setText("Welle: "+waveIndex+"/"+(waveCount + 1)+" "+waveName);
 				
 				buildDD.setText(ddText);
 				buildDD.setEnabled(enableBuild);

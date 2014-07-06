@@ -25,9 +25,9 @@ final class PriceProvider {
 		case AREA_OF_EFFECT:
 			return 200;
 		case SLOW:
-			return 200;
+			return 140;
 		case POISON:
-			return 300;
+			return 150;
 		default:
 			return 100;
 

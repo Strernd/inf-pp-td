@@ -122,9 +122,9 @@ public class CreepWaveSpawner implements java.io.Serializable {
 		waves.add(new CreepWave(90,0.0007f,27,BaseCreep.class,"zombie",15,1500,"Zombies (II)",5000));
 		waves.add(new CreepWave(110,0.001f,30,BaseCreep.class,"skeleton",15,1500,"Skeletons (I)",5000));
 		waves.add(new CreepWave(125,0.001f,33,BaseCreep.class,"skeleton",15,1500,"Skeletons (II)",5000));
-		waves.add(new CreepWave(450,0.0005f,110,BaseCreep.class,"stonegiant",5,1500,"Stone Giants (I)",25000));
+		waves.add(new CreepWave(450,0.0005f,110,BaseCreep.class,"stonegiant",5,1500,"Stone Giants (I)",5000));
 		waves.add(new CreepWave(500,0.0005f,120,BaseCreep.class,"stonegiant",5,1500,"Stone Giants (II)",25000));
-		waves.add(new CreepWave(250,0.0008f,65,BaseCreep.class,"reaper",10,1500,"Reapers (I)",5000));
+		waves.add(new CreepWave(250,0.0008f,65,BaseCreep.class,"reaper",10,1500,"Reapers (I)",25000));
 		waves.add(new CreepWave(260,0.0008f,75,BaseCreep.class,"reaper",10,1500,"Reapers (II)",5000));
 		waves.add(new CreepWave(2500,0.0008f,1000,BaseCreep.class,"reaper",1,1500,"Reaper (final)",5000));
 		lastCreep+=waves.get(waveIndex).waitBefore;
