@@ -15,7 +15,7 @@ public class PoisonTower extends BaseTower {
 	public PoisonTower(){
 		ExponentialUpgrade up=new ExponentialUpgrade();
 		upgradePolicy=up;
-		up.setFunction(UpgradeType.DAMAGE,new ExponentialUpgrade.ExpFun(0,0.7f,1500));
+		up.setFunction(UpgradeType.DAMAGE,new ExponentialUpgrade.ExpFun(0,0.8f,1500));
 		up.setFunction(UpgradeType.RANGE,new ExponentialUpgrade.ExpFun(.2f,1.1f,1));
 		up.setFunction(UpgradeType.FIRERATE,new ExponentialUpgrade.ExpFun(33,0.75f,967));
 		towerType=TowerType.POISON;
@@ -43,7 +43,7 @@ public class PoisonTower extends BaseTower {
 		if(minCreep==null)
 			return 0;
 		
-		GuidedProjectile p=new PoisonProjectile(new Point2D.Float(position.x,position.y),minCreep,0.004f,((Float)upgradePolicy.getValue(UpgradeType.DAMAGE)).intValue());
+		GuidedProjectile p=new PoisonProjectile(new Point2D.Float(position.x,position.y),minCreep,0.003f,((Float)upgradePolicy.getValue(UpgradeType.DAMAGE)).intValue());
 		game.addProjectile(p);
 		return ((Float)upgradePolicy.getValue(UpgradeType.FIRERATE)).intValue();
 	}

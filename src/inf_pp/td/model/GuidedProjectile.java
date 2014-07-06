@@ -24,7 +24,7 @@ public class GuidedProjectile extends BaseProjectile {
 	public GuidedProjectile(Point2D.Float position, BaseCreep target) {
 		super(position);
 		this.target=target;
-		this.moveSpeed=0.0015f;
+		this.moveSpeed=0.003f;
 		this.damage=0;
 	}
 	
